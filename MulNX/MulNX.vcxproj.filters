@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Main">
+      <UniqueIdentifier>{8b11145a-97c4-4ec3-9b53-a13b0c49fbbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty">
+      <UniqueIdentifier>{4edb6597-a462-4f6c-8665-a2d785943e03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\pugixml">
+      <UniqueIdentifier>{8604a664-6f7a-4b82-87a3-b9c356c94999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{4f354b23-0876-4fcb-b11e-644edebf71c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\Charsets">
+      <UniqueIdentifier>{2e0e8723-ebd4-46ac-8bc4-e00a6e90c9cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNXeCore">
+      <UniqueIdentifier>{1260a1a6-e159-4869-a128-97b042cc8787}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNXeCore\IPCer">
+      <UniqueIdentifier>{778e9e90-7d67-481b-a3fc-2ec2520592bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNXeCore\ConfigManager">
+      <UniqueIdentifier>{adcfb44e-12e3-4f65-b93a-52be1b9dd286}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\ImGui">
+      <UniqueIdentifier>{8f1c74db-b51a-454a-9e8a-cff9c2a50440}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main\Main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\pugixml\pugixml.cpp">
+      <Filter>ThirdParty\pugixml</Filter>
+    </ClCompile>
+    <ClCompile Include="Include\Charsets\Charsets.cpp">
+      <Filter>Include\Charsets</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNXeCore\MulNXeCore.cpp">
+      <Filter>MulNXeCore</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNXeCore\IPCer\IPCer.cpp">
+      <Filter>MulNXeCore\IPCer</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNXeCore\ConfigManager\ConfigManager.cpp">
+      <Filter>MulNXeCore\ConfigManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_demo.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_draw.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_impl_dx11.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_impl_win32.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_tables.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\ImGui\imgui_widgets.cpp">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ThirdParty\pugixml\pugiconfig.hpp">
+      <Filter>ThirdParty\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\pugixml\pugixml.hpp">
+      <Filter>ThirdParty\pugixml</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\All_pugixml.hpp">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Charsets\Charsets.hpp">
+      <Filter>Include\Charsets</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNXeCore\MulNXeCore.hpp">
+      <Filter>MulNXeCore</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNXeCore\IPCer\IPCer.hpp">
+      <Filter>MulNXeCore\IPCer</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNXeCore\ConfigManager\ConfigManager.hpp">
+      <Filter>MulNXeCore\ConfigManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\All_ImGui.hpp">
+      <Filter>ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imconfig.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui_impl_dx11.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui_impl_win32.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imgui_internal.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imstb_rectpack.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imstb_textedit.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h">
+      <Filter>ThirdParty\ImGui</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

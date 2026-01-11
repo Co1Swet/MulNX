@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="MulNX">
+      <UniqueIdentifier>{62e7c9b7-56d1-4cf3-b99a-d3c3c2616c6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX">
+      <UniqueIdentifier>{a96607b6-df97-4fe6-a7c5-04cee9a4c219}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\Licenses">
+      <UniqueIdentifier>{5ea7501c-f686-455b-82b8-514878ce9dd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\Licenses\ThirdParty">
+      <UniqueIdentifier>{b498a876-4c66-445c-841f-d7df2bfd752b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX\DLLToCS">
+      <UniqueIdentifier>{335cea44-392c-458b-a32c-8b25c0ab8a56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX\Saves">
+      <UniqueIdentifier>{6573fadd-c35c-4d7e-9801-77f289f42ca4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\彩蛋">
+      <UniqueIdentifier>{70d9e511-f75e-4e42-bfd3-8f49a8b8e850}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX\Saves\Internal">
+      <UniqueIdentifier>{91cf04cc-13d7-41ed-817f-fb99b2035b49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX\Saves\External">
+      <UniqueIdentifier>{4468721d-2430-42a5-b6b9-42f96dc3ead6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX\Saves\External\Core">
+      <UniqueIdentifier>{46a338d7-dcbe-467f-9ae7-b2726a7e50da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX\Saves\External\Core\Configs">
+      <UniqueIdentifier>{aad4fd24-6472-4c35-8824-d82150b48555}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX\Saves\Internal\Core">
+      <UniqueIdentifier>{bd6bd7e8-7aab-4118-bf9e-c73d77de676f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX\Saves\Internal\Core\CameraSystem">
+      <UniqueIdentifier>{d656b035-308c-4882-b0a6-900ef3174895}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX\Saves\Internal\Core\CameraSystem\Workspaces">
+      <UniqueIdentifier>{2690aff9-18ef-4065-876a-9cea05d5325a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX\Saves\Internal\Core\CameraSystem\Workspaces\DefaultWorkspace">
+      <UniqueIdentifier>{fe1ae212-f1d7-4108-a036-8fbf85fce215}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX\CS2Resources">
+      <UniqueIdentifier>{041182e2-ce51-49da-91d4-2cd1de64a2f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\MulNX\CS2Resources\Backups">
+      <UniqueIdentifier>{ae9c8d03-0b18-44f8-b724-c7fd5a3260e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="doc">
+      <UniqueIdentifier>{6323c6fc-5023-4191-b884-529d45efe374}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Output">
+      <UniqueIdentifier>{e56e7c5f-30f1-4a21-9da7-7060cc87a7c9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="MulNX\Licenses\ThirdParty\cs2_dumper_LICENSE.txt">
+      <Filter>MulNX\Licenses\ThirdParty</Filter>
+    </Text>
+    <Text Include="MulNX\Licenses\ThirdParty\imgui_LICENSE.txt">
+      <Filter>MulNX\Licenses\ThirdParty</Filter>
+    </Text>
+    <Text Include="MulNX\Licenses\ThirdParty\minhook_LICENSE.txt">
+      <Filter>MulNX\Licenses\ThirdParty</Filter>
+    </Text>
+    <Text Include="MulNX\Licenses\ThirdParty\pugixml_LICENSE.txt">
+      <Filter>MulNX\Licenses\ThirdParty</Filter>
+    </Text>
+    <Text Include="..\版本文档.txt">
+      <Filter>doc</Filter>
+    </Text>
+    <Text Include="..\当前文件夹树.txt">
+      <Filter>doc</Filter>
+    </Text>
+    <Text Include="..\打开更新依赖项.bat">
+      <Filter>doc</Filter>
+    </Text>
+    <Text Include="..\MulNX架构设计.txt">
+      <Filter>doc</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MulNX\MulNX\Saves\Internal\Core\MulNXUIConfig.ini">
+      <Filter>MulNX\MulNX\Saves\Internal\Core</Filter>
+    </None>
+    <None Include="MulNX\MulNX\MulNX.exe">
+      <Filter>MulNX\MulNX</Filter>
+    </None>
+    <None Include="MulNX\MulNX\DLLToCS\MulNXDLL.dll">
+      <Filter>MulNX\MulNX\DLLToCS</Filter>
+    </None>
+    <None Include="..\README.md">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="Pack.py" />
+    <None Include="MulNX.zip" />
+    <None Include="CalculateLines.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="MulNX\MulNX\Saves\External\Core\Configs\MulNX.xml">
+      <Filter>MulNX\MulNX\Saves\External\Core\Configs</Filter>
+    </Xml>
+    <Xml Include="MulNX\MulNX\Saves\External\Core\Configs\Paths.xml">
+      <Filter>MulNX\MulNX\Saves\External\Core\Configs</Filter>
+    </Xml>
+    <Xml Include="MulNX\MulNX\Saves\Internal\Core\CameraSystem\Workspaces\DefaultWorkspace\WorkspaceConfig.xml">
+      <Filter>MulNX\MulNX\Saves\Internal\Core\CameraSystem\Workspaces\DefaultWorkspace</Filter>
+    </Xml>
+  </ItemGroup>
+</Project>

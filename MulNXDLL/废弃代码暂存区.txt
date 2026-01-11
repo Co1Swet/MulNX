@@ -1,0 +1,10 @@
+//获取客户端网络
+MulNXB::Memory::Read(this->Modules.engine2 + cs2_dumper::offsets::engine2_dll::dwNetworkGameClient, this->NetworkGameClient);
+if (this->NetworkGameClient) {
+	float time;
+	MulNXB::Memory::Read(this->NetworkGameClient + 0xB8, time);
+	this->RenderTime.store(time);
+	if (this->RenderTime) {
+
+	}
+}
