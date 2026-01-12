@@ -13,27 +13,23 @@ void MulNXSingleUIContext::Draw() {
 		}
 	}
 }
-bool MulNXSingleUIContext::SendTothis(std::unique_ptr<MulNXMessage> Msg) {
-	this->MsgChannel->PushMessage(std::move(Msg));
+bool MulNXSingleUIContext::SendToOwner(std::unique_ptr<MulNXMessage> Msg) {
+	this->OwnerMsgChannel->PushMessage(std::move(Msg));
 	return true;
 }
-bool MulNXSingleUIContext::SendTothis(MsgType Type) {
+bool MulNXSingleUIContext::SendToOwner(MsgType Type, int ParamInt) {
 	auto Msg = std::make_unique<MulNXMessage>(Type);
-	return this->SendTothis(std::move(Msg));
+	Msg->ParamInt = ParamInt;
+	return this->SendToOwner(std::move(Msg));
 }
 void MulNXSingleUIContext::AddElement(std::unique_ptr<MulNXUIFunction>&& Element) {
 	this->Elements.push_back(std::move(Element));
 }
 
-std::unique_ptr<MulNXSingleUIContext> MulNXSingleUIContext::Create(const ModuleBase* const MB) {
-	auto SContext = std::make_unique<MulNXSingleUIContext>();
-	SContext->HModule = MB->HModule;
-	IMessageChannel* pChannel = MB->IGetMessageChannel();
-	if (pChannel) {
-		SContext->MsgChannel = pChannel;
-	}
-	else {
-		return nullptr;
-	}
-	return std::move(SContext);
+MulNXB::any_unique_ptr MulNXSingleUIContext::Create(const ModuleBase* const MB) {
+	auto SContext = MulNXB::make_any_unique<MulNXSingleUIContext>();
+	MulNXSingleUIContext* SContextPtr = SContext.get<MulNXSingleUIContext>();
+	SContextPtr->HModule = MB->HModule;
+	SContextPtr->OwnerMsgChannel = MB->IGetMessageChannel();
+	return SContext;
 }

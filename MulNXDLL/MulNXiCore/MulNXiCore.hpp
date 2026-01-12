@@ -42,6 +42,7 @@ public:
     KeyTracker& KT();
     ConsoleManager& ConsoleManager();
     GameSettingsManager& GameSettingsManager();
+    HandleSystem& HandleSystem();
     IDebugger& IDebugger();
     ICameraSystem& ICameraSystem();
     VirtualUser& VirtualUser();

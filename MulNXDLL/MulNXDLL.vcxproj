@@ -171,8 +171,7 @@
     <ClInclude Include="MulNXiCore\MulNXiGlobalVars\MulNXiGlobalVarsOnlyRead.hpp" />
     <ClInclude Include="MulNXiCore\MulNXUISystem\MulNXUIContext\MulNXSingleUIContext\MulNXSingleUIContext.hpp" />
     <ClInclude Include="MulNXiCore\MulNXUISystem\MulNXUIContext\MulNXUIContext.hpp" />
-    <ClInclude Include="MulNXiCore\MulNXUISystem\MulNXUIElements\MulNXUIElements.hpp" />
-    <ClInclude Include="MulNXiCore\MulNXUISystem\MulNXUIElements\MulNXUIFunction\MulNXUIFunction.hpp" />
+    <ClInclude Include="MulNXiCore\MulNXUISystem\MulNXUIFunction\MulNXUIFunction.hpp" />
     <ClInclude Include="MulNXiCore\MulNXUISystem\MulNXUISystem.hpp" />
     <ClInclude Include="MulNXiCore\MulNXUISystem\IMulNXUISystem.hpp" />
     <ClInclude Include="MulNXiCore\CSController\ConVarSystem\ConVarSystem.hpp" />
@@ -269,8 +268,7 @@
     <ClCompile Include="MulNXiCore\MulNXiCore.cpp" />
     <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUIContext\MulNXSingleUIContext\MulNXSingleUIContext.cpp" />
     <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUIContext\MulNXUIContext.cpp" />
-    <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUIElements\MulNXUIElements.cpp" />
-    <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUIElements\MulNXUIFunction\MulNXUIFunction.cpp" />
+    <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUIFunction\MulNXUIFunction.cpp" />
     <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUISystem.cpp" />
     <ClCompile Include="MulNXiCore\CSController\ConVarSystem\ConVarSystem.cpp" />
     <ClCompile Include="MulNXiCore\CSController\CSController.cpp" />

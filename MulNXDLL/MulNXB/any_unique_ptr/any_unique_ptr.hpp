@@ -61,6 +61,9 @@ namespace MulNXB {
         any_unique_ptr() noexcept : ptr_(nullptr) {}
         explicit any_unique_ptr(detail::any_base* ptr) noexcept : ptr_(ptr) {}
 
+		//添加一个用nullptr_t构造的构造函数
+		any_unique_ptr(std::nullptr_t) noexcept : ptr_(nullptr) {}
+
         any_unique_ptr(any_unique_ptr&& other) noexcept
             : ptr_(other.release()) {
         }
@@ -83,6 +86,16 @@ namespace MulNXB {
             detail::any_base* temp = ptr_;
             ptr_ = nullptr;
             return temp;
+        }
+
+        template<typename T>
+        std::unique_ptr<T> release_unique() noexcept {
+            if (!ptr_ || ptr_->type() != typeid(T)) return nullptr;
+            auto* derived = static_cast<detail::any_derived<T>*>(ptr_);
+            T* p = new T(std::move(derived->get()));
+            delete ptr_;
+            ptr_ = nullptr;
+            return std::unique_ptr<T>(p);
         }
 
         void reset(detail::any_base* ptr = nullptr) noexcept {
@@ -121,21 +134,6 @@ namespace MulNXB {
             auto* derived = reinterpret_cast<detail::any_derived<T>*>(ptr_);
             if (derived) return &derived->get();
             return nullptr;
-        }
-
-        // 安全地提取为独占指针：构造一个新的 T（移动内部值），删除 any_base，返回拥有的 T
-        template<typename T>
-        std::unique_ptr<T> to_unique() {
-            if (!ptr_) return nullptr;
-            if (ptr_->type() != typeid(T)) return nullptr;
-
-            auto* derived = static_cast<detail::any_derived<T>*>(ptr_);
-            // 移动构造一个新的 T，确保生命周期正确
-            std::unique_ptr<T> result = std::make_unique<T>(std::move(derived->get()));
-            // 删除原有容器并清空指针
-            delete ptr_;
-            ptr_ = nullptr;
-            return result;
         }
 
         explicit operator bool() const noexcept {

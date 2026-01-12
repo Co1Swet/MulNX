@@ -27,6 +27,7 @@
 #include<functional>
 #include<memory>
 #include<variant>
+#include<array>
 
 #undef min
 #undef max
@@ -38,8 +39,8 @@ typedef float GameTime_t;
 //MulNX资源句柄
 class MulNXHandle {
 public:
-	constexpr inline static uint32_t Invalid = 0xFFFFFFFF;
-	uint32_t Value;
+	constexpr inline static uint64_t Invalid = 0xFFFFFFFFFFFFFFFF;
+	uint64_t Value;
 
 	MulNXHandle() {
 		this->Value = MulNXHandle::Invalid;
@@ -55,7 +56,7 @@ namespace std {
 	template<>
 	struct hash<MulNXHandle> {
 		size_t operator()(const MulNXHandle& Handle)const noexcept {
-			return std::hash<uint32_t>{}(Handle.Value);
+			return std::hash<uint64_t>{}(Handle.Value);
 		}
 	};
 }
@@ -67,6 +68,10 @@ class CameraSystemIO;
 
 //核心管理器
 class MulNXiCore;
+//模块基类
+class ModuleBase;
+//MulNX句柄系统
+class HandleSystem;
 //MulNX消息
 class MulNXMessage;
 //MulNX消息类型

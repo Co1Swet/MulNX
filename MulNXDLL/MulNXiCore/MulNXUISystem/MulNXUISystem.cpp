@@ -3,6 +3,7 @@
 #include"../MulNXiCore.hpp"
 #include"../MessageManager/IMessageManager.hpp"
 #include"../IPCer/IPCer.hpp"
+#include"../HandleSystem/HandleSystem.hpp"
 
 bool MulNXUISystem::Init() {
 	this->ICreateMessageChannel();
@@ -15,10 +16,10 @@ bool MulNXUISystem::Init() {
 void MulNXUISystem::ProcessMsg(MulNXMessage* Msg) {
 	switch (Msg->Type) {
 	case MsgType::UISystem_ModulePush: {
-		auto UIMsg = static_cast<MulNXMessage*>(Msg);
-		MulNXB::any_unique_ptr pCtx = std::move(UIMsg->ParamData);
-		std::unique_ptr<MulNXSingleUIContext> pSContext = std::move(pCtx.to_unique<MulNXSingleUIContext>());
-		this->UIContext.AddSingleContext(std::move(pSContext));
+		//MulNXB::any_unique_ptr pCtx = std::move(Msg->ParamData);
+		MulNXHandle hContext = Msg->Handle;
+		MulNXB::any_unique_ptr pCtx = this->MulNXi->HandleSystem().ReleaseHandle<HContext>(hContext);
+		this->UIContext.AddSingleContext(hContext, std::move(pCtx));
 		break;
 	}
 	}
@@ -81,21 +82,7 @@ void MulNXUISystem::d3dInit(IDXGISwapChain* _this) {
 			);
 			ImGui_ImplDX11_CreateDeviceObjects();
 
-			/*this->imguiIniPath = this->MulNXi->IPCer().PathGet_Core() / "MulNXUIConfig.ini";
-			static std::string str = this->imguiIniPath.generic_u16string()
-			io.IniFilename = str.c_str();*/
-
-
 			// 转换为GBK（供ImGui使用）
-			this->imguiIniPath = this->MulNXi->IPCer().PathGet_Core() / "MulNXUIConfig.ini";
-
-			//static std::string str2 = "C:/Users/lenovo/Desktop/测试/ImGui.ini";
-			//static std::string str2 = PathToGBKForwardSlash(this->imguiIniPath);
-			static std::string str1 = this->imguiIniPath.string();
-			std::replace(str1.begin(), str1.end(), L'\\', L'/');
-			io.IniFilename = str1.c_str();
-			io.IniFilename = "C:/Users/lenovo/Desktop/测试/ImGui.ini";
-			this->InitUIStyle();
 
 			this->imguiIniPath = this->MulNXi->IPCer().PathGet_Core() / "MulNXUIConfig.ini";
 			std::u8string u8path = this->imguiIniPath.u8string();
@@ -103,6 +90,7 @@ void MulNXUISystem::d3dInit(IDXGISwapChain* _this) {
 			std::replace(utf8Path.begin(), utf8Path.end(), '\\', '/');
 			io.IniFilename = utf8Path.c_str();
 
+			this->InitUIStyle();
 			this->ImGuiInited = true;
 		}
 

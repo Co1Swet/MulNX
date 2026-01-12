@@ -2,12 +2,11 @@
 
 #include"IMulNXUISystem.hpp"
 
-#include<filesystem>
-
 class MulNXUISystem final :public IMulNXUISystem {
 	bool UIInited = false;
 	std::shared_mutex UIMutex{};
 	MulNXUIContext UIContext{};
+	
 public:
 	MulNXUISystem(MulNXiCore* MulNXi) :IMulNXUISystem(MulNXi) {
 		this->Type = ModuleType::MulNXUISystem;
@@ -28,4 +27,8 @@ public:
 	HRESULT __stdcall RenderBefore(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags);
 	HRESULT __stdcall RenderBehind(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags);
 	HRESULT __stdcall Render(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)override;
+
+	MulNXSingleUIContext* GetSingleContext(const HContext& hContext)override {
+		return this->UIContext.GetSingleContext(hContext);
+	}
 };

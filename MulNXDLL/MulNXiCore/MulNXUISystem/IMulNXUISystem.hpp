@@ -3,7 +3,6 @@
 #include"../ModuleBase/ModuleBase.hpp"
 
 #include"MulNXUIContext/MulNXUIContext.hpp"
-#include"MulNXUIElements/MulNXUIElements.hpp"
 
 class IMulNXUISystem :public ModuleBase {
 public:
@@ -28,4 +27,6 @@ public:
 	virtual std::shared_mutex& GetMutex() = 0;
 
 	virtual HRESULT __stdcall Render(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags) = 0;
+
+	virtual MulNXSingleUIContext* GetSingleContext(const HContext& hContext) = 0;
 };

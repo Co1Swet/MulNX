@@ -9,6 +9,7 @@
 #include"GameCfgManager/GameCfgManager.hpp"
 #include"GameSettingsManager/GameSettingsManager.hpp"
 #include"MulNXiGlobalVars/MulNXiGlobalVars.hpp"
+#include"HandleSystem/HandleSystem.hpp"
 #include"HookManager/HookManager.hpp"
 #include"IPCer/IPCer.hpp"
 #include"KeyTracker/KeyTracker.hpp"
@@ -40,6 +41,7 @@ public:
     AbstractLayer3D AL3D;
     IPCer IPCer;
     HookManager HookManager;
+	HandleSystem HandleSystem;
     MessageManager MessageManager;
     MulNXiGlobalVars MulNXiGlobalVars;
     //上层建筑
@@ -62,6 +64,7 @@ public:
 		, AL3D(MulNXi)
 		, IPCer(MulNXi)
 		, HookManager(MulNXi)
+		, HandleSystem(MulNXi)
 		, MessageManager(MulNXi)
 		, MulNXiGlobalVars(MulNXi)
 		, ConsoleManager(MulNXi)
@@ -87,13 +90,14 @@ MulNXiCore::~MulNXiCore() {
 	return;
 }
 
-//获取子模块的接口实现
+//获取子模块的接口实现v
 CSController& MulNXiCore::CS() { return this->pImpl->CS; }
 IAbstractLayer3D& MulNXiCore::IAbstractLayer3D() { return this->pImpl->AL3D; }
 IPCer& MulNXiCore::IPCer() { return this->pImpl->IPCer; }
 KeyTracker& MulNXiCore::KT() { return this->pImpl->KT; }
 ConsoleManager& MulNXiCore::ConsoleManager() { return this->pImpl->ConsoleManager; }
 GameSettingsManager& MulNXiCore::GameSettingsManager() { return this->pImpl->GameSettingsManager; }
+HandleSystem& MulNXiCore::HandleSystem() { return this->pImpl->HandleSystem; }
 IDebugger& MulNXiCore::IDebugger() { return this->pImpl->Debugger; }
 ICameraSystem& MulNXiCore::ICameraSystem() { return this->pImpl->CameraSystem; }
 VirtualUser& MulNXiCore::VirtualUser() { return this->pImpl->VirtualUser; }

@@ -1,10 +1,15 @@
 ﻿#include"../ModuleBase/ModuleBase.hpp"
 
-class MulNXUIMessage;
+#include"../HandleSystem/HandleSystem.hpp"
+
+class MulNXSingleUIContext;
+class TripleBufferBase;
 
 class DemoHelper final :public ModuleBase {
 private:
 	std::vector<float>Marks{};
+	std::atomic<MulNXB::any_unique_ptr*>* ppUpdateData = nullptr;
+	HContext hContext{};
 public:
 	DemoHelper(MulNXiCore* MulNXi) :ModuleBase(MulNXi) {};
 
@@ -13,6 +18,7 @@ public:
 	void VirtualMain()override;
 	void ProcessMsg(MulNXMessage* Msg)override;
 
+	void HandleUICommand(MulNXMessage* Msg);
 	//void HandleUICommand(MulNXMessage* Msg);
 
 	bool MarkTime();

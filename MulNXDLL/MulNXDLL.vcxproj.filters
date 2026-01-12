@@ -190,20 +190,17 @@
     <Filter Include="MulNXiCore\MulNXUISystem\MulNXUIContext">
       <UniqueIdentifier>{cd02fa3a-b933-4865-b1a5-8b0bbeb0ca2c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MulNXiCore\MulNXUISystem\MulNXUIElements">
-      <UniqueIdentifier>{fb1a9264-aa64-4389-bb66-ff1c87a40a88}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MulNXiCore\MulNXUISystem\MulNXUIContext\MulNXSingleUIContext">
       <UniqueIdentifier>{2019cecd-6ad6-435b-86d2-4578041b9bfd}</UniqueIdentifier>
     </Filter>
     <Filter Include="MulNXiCore\HandleSystem">
       <UniqueIdentifier>{108843b2-5888-47c4-8e32-7b8f1b4b82e0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MulNXiCore\MulNXUISystem\MulNXUIElements\MulNXUIFunction">
-      <UniqueIdentifier>{14c3d7fb-a570-406d-a150-813fb4e0f126}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MulNXB\any_unique_ptr">
       <UniqueIdentifier>{226aabdf-491b-4f3e-adb3-0cdd7364041c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNXiCore\MulNXUISystem\MulNXUIFunction">
+      <UniqueIdentifier>{14c3d7fb-a570-406d-a150-813fb4e0f126}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -498,9 +495,6 @@
     <ClInclude Include="MulNXiCore\MulNXUISystem\IMulNXUISystem.hpp">
       <Filter>MulNXiCore\MulNXUISystem</Filter>
     </ClInclude>
-    <ClInclude Include="MulNXiCore\MulNXUISystem\MulNXUIElements\MulNXUIElements.hpp">
-      <Filter>MulNXiCore\MulNXUISystem\MulNXUIElements</Filter>
-    </ClInclude>
     <ClInclude Include="MulNXiCore\MulNXUISystem\MulNXUIContext\MulNXUIContext.hpp">
       <Filter>MulNXiCore\MulNXUISystem\MulNXUIContext</Filter>
     </ClInclude>
@@ -513,11 +507,11 @@
     <ClInclude Include="MulNXiCore\HandleSystem\HandleSystem.hpp">
       <Filter>MulNXiCore\HandleSystem</Filter>
     </ClInclude>
-    <ClInclude Include="MulNXiCore\MulNXUISystem\MulNXUIElements\MulNXUIFunction\MulNXUIFunction.hpp">
-      <Filter>MulNXiCore\MulNXUISystem\MulNXUIElements\MulNXUIFunction</Filter>
-    </ClInclude>
     <ClInclude Include="MulNXB\any_unique_ptr\any_unique_ptr.hpp">
       <Filter>MulNXB\any_unique_ptr</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNXiCore\MulNXUISystem\MulNXUIFunction\MulNXUIFunction.hpp">
+      <Filter>MulNXiCore\MulNXUISystem\MulNXUIFunction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -701,9 +695,6 @@
     <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUISystem.cpp">
       <Filter>MulNXiCore\MulNXUISystem</Filter>
     </ClCompile>
-    <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUIElements\MulNXUIElements.cpp">
-      <Filter>MulNXiCore\MulNXUISystem\MulNXUIElements</Filter>
-    </ClCompile>
     <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUIContext\MulNXUIContext.cpp">
       <Filter>MulNXiCore\MulNXUISystem\MulNXUIContext</Filter>
     </ClCompile>
@@ -713,8 +704,8 @@
     <ClCompile Include="MulNXiCore\HandleSystem\HandleSystem.cpp">
       <Filter>MulNXiCore\HandleSystem</Filter>
     </ClCompile>
-    <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUIElements\MulNXUIFunction\MulNXUIFunction.cpp">
-      <Filter>MulNXiCore\MulNXUISystem\MulNXUIElements\MulNXUIFunction</Filter>
+    <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUIFunction\MulNXUIFunction.cpp">
+      <Filter>MulNXiCore\MulNXUISystem\MulNXUIFunction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include"../../../../MulNXB/MulNXB.hpp"
+#include"../../../MulNXB/MulNXB.hpp"
 
 class MulNXUIElementKey {
 public:

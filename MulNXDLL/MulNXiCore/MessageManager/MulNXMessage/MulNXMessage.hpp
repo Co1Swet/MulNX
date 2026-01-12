@@ -6,6 +6,8 @@
 #include"../../../MulNXB/MulNXB.hpp"
 
 enum class MsgType :uint32_t {
+	Null,//无效消息，用于实现默认构造
+
 	Core_Begin,
 	Core_Shutdown,
 	Core_Tick1,
@@ -22,10 +24,12 @@ enum class MsgType :uint32_t {
 	//Core_CheckBack,
 	Core_ReHook,
 
-	UISystem_UIPull,//UI通知组件拉取信息
-	UISystem_ModulePush,//组件响应信息，更新相关上下文
-	UISystem_UICommand,//UI通知组件处理UI命令
-	UISystem_ModuleRespon,//组件通知UI命令已处理完毕，可继续进行
+	UISystem_UIPull,//UI系统级，UI通知组件拉取信息
+	UISystem_ModulePush,//UI系统级，组件响应信息，更新相关上下文
+
+	UISystem_UIRequest,//上下文级，UI请求组件提供某些数据
+	UISystem_UICommand,//上下文级，UI通知组件处理UI命令
+	UISystem_ModuleRespose,//上下文级，组件通知UI命令已处理完毕，可继续进行
 
 	Game_NewRound,
 	Game_RoundStart,
@@ -50,7 +54,12 @@ public:
 	//Int型参数
 	int ParamInt{};
 	//类型擦除参数
-	MulNXB::any_unique_ptr ParamData{};
+	//MulNXB::any_unique_ptr ParamData{};
+
+	//句柄
+	MulNXHandle Handle{};
+
+	float ParamFloat{};
 
 	MulNXMessage() = delete;
 	MulNXMessage(MsgType Type) :Type(Type) {}
@@ -60,7 +69,7 @@ public:
 		//调用真实类的拷贝构造函数，实现多态拷贝
 		//至于是深拷贝还是浅拷贝由具体类型决定
 		//提示，最好都实现为深拷贝
-		this->ParamData = Other.ParamData.clone();
+		this->Handle = Other.Handle;
 	}
 	std::unique_ptr<MulNXMessage> Clone()const{
 		return std::make_unique<MulNXMessage>(*this);
