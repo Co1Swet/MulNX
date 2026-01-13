@@ -1,123 +1,165 @@
-C:.
+├─.vs
+│  ├─CopilotSnapshots
+│  │  └─9EE8758BE16C0042BAE339A658AD5C12
+│  │      └─61946D294E769E4383740E33F6B12984
+│  └─MulNX
+│      ├─copilot-chat
+│      │  ├─6a96c89e
+│      │  │  └─sessions
+│      │  └─950f6093
+│      │      └─sessions
+│      ├─CopilotIndices
+│      │  └─17.14.1561.44479
+│      ├─FileContentIndex
+│      └─v17
+│          └─ipch
+│              └─AutoPCH
+│                  └─b23711047aae0a9b
+├─dist
+│  ├─.vs
+│  │  └─dist
+│  │      ├─CopilotIndices
+│  │      │  └─17.14.1561.44479
+│  │      ├─FileContentIndex
+│  │      └─v17
+│  ├─MulNX
+│  │  ├─Licenses
+│  │  └─MulNX
+│  │      ├─CS2Resources
+│  │      │  └─Cfg
+│  │      ├─DLLToCS
+│  │      └─Saves
+│  │          ├─External
+│  │          │  └─Core
+│  │          │      └─Configs
+│  │          └─Internal
+│  │              └─Core
+│  │                  └─CameraSystem
+│  │                      └─Workspaces
+│  │                          └─DefaultWorkspace
+│  │                              ├─Mtp
+│  │                              │  ├─Elements
+│  │                              │  └─Solutions
+│  │                              ├─new
+│  │                              │  ├─Elements
+│  │                              │  └─Solutions
+│  │                              └─tttttttt
+│  │                                  ├─Elements
+│  │                                  └─Solutions
+│  └─Output
+│      └─MulNX
+│          ├─Licenses
+│          │  └─ThirdParty
+│          ├─MulNX
+│          │  ├─CS2Resources
+│          │  │  └─Cfg
+│          │  ├─DLLToCS
+│          │  └─Saves
+│          │      ├─External
+│          │      │  └─Core
+│          │      │      └─Configs
+│          │      └─Internal
+│          │          └─Core
+│          │              └─CameraSystem
+│          │                  └─Workspaces
+│          │                      └─DefaultWorkspace
+│          │                          ├─Mtp
+│          │                          │  ├─Elements
+│          │                          │  └─Solutions
+│          │                          ├─new
+│          │                          │  ├─Elements
+│          │                          │  └─Solutions
+│          │                          └─tttttttt
+│          │                              ├─Elements
+│          │                              └─Solutions
+│          └─彩蛋
 ├─MulNX
-│  ├─MulNXeCore
-│  │  ├─ConfigManager
-│  │  ├─MulNXeMainWindowManager
-│  │  │  ├─ConsoleManager
-│  │  │  └─MenuManager
-│  │  └─IPCer
 │  ├─Include
 │  │  └─Charsets
 │  ├─Main
+│  ├─MulNXeCore
+│  │  ├─ConfigManager
+│  │  └─IPCer
 │  ├─ThirdParty
+│  │  ├─ImGui
 │  │  └─pugixml
 │  └─x64
-│      ├─Debug
-│      │  └─MulNX.tlog
-│      └─Release
+│      └─Debug
 │          └─MulNX.tlog
-├─MulNXDLL
-│  ├─MulNXB
-│  │  ├─Math
-│  │  └─Memory
-│  ├─MulNXiCore
-│  │  ├─AbstractLayer3D
-│  │  ├─CameraSystem
-│  │  │  ├─CameraDrawer
-│  │  │  ├─CameraSystemIO
-│  │  │  ├─Elements
-│  │  │  │  ├─DerivedElements
-│  │  │  │  │  ├─FirstPersonCameraPath
-│  │  │  │  │  ├─FreeCameraPath
-│  │  │  │  │  └─LockedCameraPath
-│  │  │  │  ├─ElementBase
-│  │  │  │  └─ElementManager
-│  │  │  │      └─ElementDebugger
-│  │  │  ├─Projects
-│  │  │  │  ├─Project
-│  │  │  │  └─ProjectManager
-│  │  │  ├─Solutions
-│  │  │  │  ├─Solution
-│  │  │  │  └─SolutionManager
-│  │  │  └─Workspaces
-│  │  │      ├─Workspace
-│  │  │      └─WorkspaceManager
-│  │  ├─ConsoleManager
-│  │  ├─MulNXiGlobalVars
-│  │  ├─CSController
-│  │  │  ├─ConVarSystem
-│  │  │  ├─CSGameRules
-│  │  │  ├─EntityList
-│  │  │  │  └─Entity
-│  │  │  │      ├─Controller
-│  │  │  │      └─Pawn
-│  │  │  │          ├─CameraServices
-│  │  │  │          ├─GameSceneNode
-│  │  │  │          └─ObserverServices
-│  │  │  ├─GlobalVars
-│  │  │  ├─LocalPlayer
-│  │  │  ├─PlantedC4
-│  │  │  └─vmt
-│  │  ├─Debugger
-│  │  ├─GameCfgManager
-│  │  ├─GameSettingsManager
-│  │  ├─HomeManager
-│  │  ├─HookManager
-│  │  ├─IPCer
-│  │  ├─KeyTracker
-│  │  ├─MessageManager
-│  │  │  └─MulNXMessage
-│  │  ├─MiniMap
-│  │  ├─ModuleBase
-│  │  └─VirtualUser
-│  ├─DllMain
-│  ├─ThirdParty
-│  │  ├─cs2_dumper
-│  │  ├─imgui_d11
-│  │  ├─minhook_debug_x64
-│  │  │  ├─include
-│  │  │  └─lib
-│  │  │      └─minhook
-│  │  └─pugixml
-│  └─x64
-│      ├─Debug
-│      │  ├─MulNXDLL.tlog
-│      │  └─MulNXToolkit.tlog
-│      └─Release
-│          ├─MulNXDLL.tlog
-│          └─MulNXToolkit.tlog
-├─dist
-│  ├─MulNX
-│  │  ├─MulNX
-│  │  │  ├─CS2Resources
-│  │  │  │  └─Cfg
-│  │  │  ├─DLLToCS
-│  │  │  └─Saves
-│  │  │      ├─External
-│  │  │      │  └─Core
-│  │  │      │      └─Configs
-│  │  │      └─Internal
-│  │  │          └─Core
-│  │  │              └─CameraSystem
-│  │  │                  └─Workspaces
-│  │  │                      └─DefaultWorkspace
-│  │  │                          ├─Mtp
-│  │  │                          │  ├─Elements
-│  │  │                          │  └─Solutions
-│  │  │                          ├─new
-│  │  │                          │  ├─Elements
-│  │  │                          │  └─Solutions
-│  │  │                          └─tttttttt
-│  │  │                              ├─Elements
-│  │  │                              └─Solutions
-│  │  ├─Licenses
-│  │  │  └─ThirdParty
-│  │  └─彩蛋
-│  └─x64
-│      ├─Debug
-│      │  └─dist.tlog
-│      └─Release
-│          └─dist.tlog
-└─x64
-    ├─Debug
-    └─Release
+└─MulNXDLL
+    ├─DllMain
+    ├─MulNXB
+    │  ├─any_unique_ptr
+    │  ├─CameraSystemIO
+    │  ├─HookUtility
+    │  ├─Math
+    │  ├─Memory
+    │  └─WIN32Msg
+    ├─MulNXiCore
+    │  ├─AbstractLayer3D
+    │  ├─CameraSystem
+    │  │  ├─CameraDrawer
+    │  │  ├─Elements
+    │  │  │  ├─DerivedElements
+    │  │  │  │  ├─FirstPersonCameraPath
+    │  │  │  │  ├─FreeCameraPath
+    │  │  │  │  └─LockedCameraPath
+    │  │  │  ├─ElementBase
+    │  │  │  └─ElementManager
+    │  │  │      └─ElementDebugger
+    │  │  ├─Projects
+    │  │  │  ├─Project
+    │  │  │  └─ProjectManager
+    │  │  ├─Solutions
+    │  │  │  ├─Solution
+    │  │  │  └─SolutionManager
+    │  │  └─Workspaces
+    │  │      ├─Workspace
+    │  │      └─WorkspaceManager
+    │  ├─ConsoleManager
+    │  ├─CSController
+    │  │  ├─ConVarSystem
+    │  │  ├─CSGameRules
+    │  │  ├─EntityList
+    │  │  │  └─Entity
+    │  │  │      ├─Controller
+    │  │  │      └─Pawn
+    │  │  │          ├─CameraServices
+    │  │  │          ├─GameSceneNode
+    │  │  │          └─ObserverServices
+    │  │  ├─GlobalVars
+    │  │  ├─LocalPlayer
+    │  │  ├─PlantedC4
+    │  │  └─vmt
+    │  ├─Debugger
+    │  ├─DemoHelper
+    │  ├─GameCfgManager
+    │  ├─GameSettingsManager
+    │  ├─HandleSystem
+    │  ├─HookManager
+    │  ├─IPCer
+    │  ├─KeyTracker
+    │  ├─MessageManager
+    │  │  └─MulNXMessage
+    │  ├─MiniMap
+    │  ├─ModuleBase
+    │  ├─MulNXiGlobalVars
+    │  ├─MulNXUISystem
+    │  │  ├─MulNXUIContext
+    │  │  │  └─MulNXSingleUIContext
+    │  │  └─MulNXUIFunction
+    │  └─VirtualUser
+    ├─ThirdParty
+    │  ├─cs2_dumper
+    │  ├─imgui_d11
+    │  ├─minhook_debug_x64
+    │  │  ├─include
+    │  │  └─lib
+    │  │      └─minhook
+    │  └─pugixml
+    └─x64
+        └─Debug
+            ├─microsoft
+            │  └─STL
+            ├─MulNXDLL.tlog
+            └─MulNXDLL_MD.tlog

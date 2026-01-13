@@ -129,7 +129,7 @@ public:
 	//自动订阅消息类型
 	void ISubscribe(MsgType MsgType);
 	//自动发送消息
-	void IPublish(std::unique_ptr<MulNXMessage> Msg);
+	void IPublish(MulNXMessage&& Msg);
 	//根据类型自动构建消息并发送
 	void IPublish(MsgType Msg);
 	//自动创建私有消息管道

@@ -199,8 +199,11 @@
     <Filter Include="MulNXB\any_unique_ptr">
       <UniqueIdentifier>{226aabdf-491b-4f3e-adb3-0cdd7364041c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MulNXiCore\MulNXUISystem\MulNXUIFunction">
-      <UniqueIdentifier>{14c3d7fb-a570-406d-a150-813fb4e0f126}</UniqueIdentifier>
+    <Filter Include="MulNXiCore\MulNXUISystem\MulNXUIContext\MulNXSingleUIContext\Buffer">
+      <UniqueIdentifier>{2810b342-9455-42b2-8930-0579c6ad3ba4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNXiCore\MessageManager\MessageChannel">
+      <UniqueIdentifier>{2779c60e-2d7b-4ee0-89d4-18dc926563db}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -510,8 +513,14 @@
     <ClInclude Include="MulNXB\any_unique_ptr\any_unique_ptr.hpp">
       <Filter>MulNXB\any_unique_ptr</Filter>
     </ClInclude>
-    <ClInclude Include="MulNXiCore\MulNXUISystem\MulNXUIFunction\MulNXUIFunction.hpp">
-      <Filter>MulNXiCore\MulNXUISystem\MulNXUIFunction</Filter>
+    <ClInclude Include="MulNXiCore\MulNXUISystem\MulNXUIContext\MulNXSingleUIContext\Buffer\Buffer.hpp">
+      <Filter>MulNXiCore\MulNXUISystem\MulNXUIContext\MulNXSingleUIContext\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNXiCore\MessageManager\MessageChannel\IMessageChannel.hpp">
+      <Filter>MulNXiCore\MessageManager\MessageChannel</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNXiCore\MessageManager\MessageChannel\MessageChannel.hpp">
+      <Filter>MulNXiCore\MessageManager\MessageChannel</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -671,9 +680,6 @@
     <ClCompile Include="MulNXiCore\CSController\PlantedC4\PlantedC4.cpp">
       <Filter>MulNXiCore\CSController\PlantedC4</Filter>
     </ClCompile>
-    <ClCompile Include="MulNXiCore\MessageManager\MessageChannel.cpp">
-      <Filter>MulNXiCore\MessageManager</Filter>
-    </ClCompile>
     <ClCompile Include="MulNXiCore\CSController\LocalPlayer\LocalPlayer.cpp">
       <Filter>MulNXiCore\CSController\LocalPlayer</Filter>
     </ClCompile>
@@ -704,8 +710,11 @@
     <ClCompile Include="MulNXiCore\HandleSystem\HandleSystem.cpp">
       <Filter>MulNXiCore\HandleSystem</Filter>
     </ClCompile>
-    <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUIFunction\MulNXUIFunction.cpp">
-      <Filter>MulNXiCore\MulNXUISystem\MulNXUIFunction</Filter>
+    <ClCompile Include="MulNXiCore\MulNXUISystem\MulNXUIContext\MulNXSingleUIContext\Buffer\Buffer.cpp">
+      <Filter>MulNXiCore\MulNXUISystem\MulNXUIContext\MulNXSingleUIContext\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNXiCore\MessageManager\MessageChannel\MessageChannel.cpp">
+      <Filter>MulNXiCore\MessageManager\MessageChannel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

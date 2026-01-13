@@ -33,7 +33,6 @@ public:
     //主循环
     void VirtualMain();
     //窗口逻辑
-    bool OpenMainWindow = false;
     void MulNXiMainWindow();
     
     //获取子模块的接口

@@ -33,9 +33,8 @@ static void MyDraw(MulNXSingleUIContext* This) {
 			ImGui::SameLine();
 			std::string str = "跳转##" + std::to_string(time);
 			if (ImGui::Button(str.c_str())) {
-				auto Msg = std::make_unique<MulNXMessage>(MsgType::UISystem_UICommand);
-				Msg->ParamInt = 0x102;
-				Msg->ParamFloat = time;
+				MulNXMessage Msg(MsgType::UISystem_UICommand, 0x102);
+				Msg.ParamFloat = time;
 				This->SendToOwner(std::move(Msg));
 			}
 		}
@@ -52,23 +51,18 @@ bool DemoHelper::Init() {
 	(*MsgChannel)
 		.Subscribe(MsgType::UISystem_UICommand);
 
-	auto Msg = std::make_unique<MulNXMessage>(MsgType::UISystem_ModulePush);
+	MulNXMessage Msg(MsgType::UISystem_ModulePush);
 
 	MulNXB::any_unique_ptr SingleContext = MulNXSingleUIContext::Create(this);
-	MulNXSingleUIContext* SContextPtr = SingleContext.get<MulNXSingleUIContext>();
-	//this->hContext = this->MulNXi->HandleSystem().CreateHandle<HContext>();
-	
+	MulNXSingleUIContext* SContextPtr = SingleContext.get<MulNXSingleUIContext>();	
+	SContextPtr->name = "DemoHelper";
 
-	auto ElemFunc = std::make_unique<MulNXUIFunction>("任何你想要的ID，多语言支持");
-	ElemFunc->MyFunc = MyDraw;
-	SContextPtr->AddElement(std::move(ElemFunc));
+	SContextPtr->MyFunc = MyDraw;
 
-	//SContextPtr->pBuffer = MulNXB::make_any_unique<TripleBuffer<DemoHelperPrivateData>>();
-	SContextPtr->pBuffer = new TripleBuffer<DemoHelperPrivateData>();
+	SContextPtr->pBuffer = MulNXB::make_any_unique<TripleBuffer<DemoHelperPrivateData>>();
 
 	this->hContext = this->MulNXi->HandleSystem().RegisteHandle<HContext>(std::move(SingleContext));
-	Msg->Handle = this->hContext;
-	//Msg->ParamData = std::move(SingleContext);
+	Msg.Handle = this->hContext;
 	this->IPublish(std::move(Msg));
 
 	return true;
@@ -85,7 +79,7 @@ void DemoHelper::ProcessMsg(MulNXMessage* Msg) {
 }
 
 void DemoHelper::HandleUICommand(MulNXMessage* Msg) {
-	switch (Msg->ParamInt) {
+	switch (Msg->SubType) {
 	case 0x101: {
 		this->MarkTime();
 		ClickCount++;

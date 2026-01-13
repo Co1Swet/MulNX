@@ -49,7 +49,7 @@ void HookManager::ThreadMain() {
 		this->CreateHook();
 
 		//发送重新Hook消息
-		auto Msg = std::make_unique<MulNXMessage>(MsgType::Core_ReHook);
+		MulNXMessage Msg(MsgType::Core_ReHook);
 		this->IPublish(std::move(Msg));
 
 		ReHook = false;

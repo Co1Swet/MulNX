@@ -2,6 +2,8 @@
 
 #include"../MulNXiCore.hpp"
 
+#include"MessageChannel/MessageChannel.hpp"
+
 bool MessageManager::Registe(ModuleBase* const Module) {
 	std::unique_lock lock(this->MyThreadMutex);
 	//指针引用以重定向，得到访问当前消息服务
@@ -46,7 +48,7 @@ bool MessageManager::Unsubscribe(const MsgType MsgType, ModuleBase* const Module
 
 	return true;
 }
-bool MessageManager::Publish(std::unique_ptr<MulNXMessage>Msg) {
+bool MessageManager::Publish(MulNXMessage&& Msg) {
 	//先获取锁
 	std::unique_lock lock(this->MyThreadMutex);
 	//总线订阅
@@ -60,13 +62,13 @@ bool MessageManager::Publish(std::unique_ptr<MulNXMessage>Msg) {
 	//[N>0]: 总线+管道或纯管道订阅总数-1
 	int Index = -1;
 	//检查是否有在总线的订阅者
-	auto SubscribeMapIt = this->SubscribeMap.find(Msg->Type);
+	auto SubscribeMapIt = this->SubscribeMap.find(Msg.Type);
 	if (SubscribeMapIt != this->SubscribeMap.end()) {
 		HasMain = true;
 		++Index;
 	}
 	//检查是否存在管道订阅者
-	auto ChannelSubscribeMapIt = this->ChannelSubscribeMap.find(Msg->Type);
+	auto ChannelSubscribeMapIt = this->ChannelSubscribeMap.find(Msg.Type);
 	if (ChannelSubscribeMapIt != this->ChannelSubscribeMap.end()) {
 		//如果有管道订阅者
 		auto& SubscriberVector = ChannelSubscribeMapIt->second;//获取订阅者容器
@@ -76,7 +78,7 @@ bool MessageManager::Publish(std::unique_ptr<MulNXMessage>Msg) {
 	if (HasMain) {
 		if (Index) {
 			//索引非0，这里需要拷贝
-			this->Messages.push_back(Msg->Clone());
+			this->Messages.push_back(Msg);
 			--Index;
 		}
 		else {
@@ -90,7 +92,7 @@ bool MessageManager::Publish(std::unique_ptr<MulNXMessage>Msg) {
 	for (; Index >= 0; --Index) {
 		if (Index) {
 			//其他订阅者使用克隆的消息
-			SubscriberVector[Index]->PushMessage(Msg->Clone());
+			SubscriberVector[Index]->PushMessage(MulNXMessage(Msg));
 		}
 		else {
 			//最后一个订阅者获得原始消息
@@ -131,7 +133,7 @@ bool MessageManager::NextMsg() {
 		//处理下一条消息
 		//分发消息给订阅者
 		
-		auto it = this->SubscribeMap.find(this->Messages.front()->Type);
+		auto it = this->SubscribeMap.find(this->Messages.front().Type);
 		if (it == this->SubscribeMap.end()) {
 			this->Messages.pop_front();
 			this->RefCount.store(0);
@@ -142,7 +144,7 @@ bool MessageManager::NextMsg() {
 			//设置引用计数为订阅者数量
 			this->RefCount.store(subscriberCount);
 			//修改当前消息指针传递消息
-			this->CurrentMessage = this->Messages.front().get();
+			this->CurrentMessage = &this->Messages.front();
 			for (auto& Module : it->second) {
 				Module->CurrentMsg.store(this->CurrentMessage); //通知订阅者
 			}

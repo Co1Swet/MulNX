@@ -14,7 +14,7 @@ namespace MulNXB {
             virtual const std::type_info& type() const = 0;
             virtual void* data() noexcept = 0;
             virtual const void* data() const noexcept = 0;
-            virtual any_base* clone() const = 0;
+            //virtual any_base* clone() const = 0;
 
             any_base() = default;
             any_base(any_base&&) noexcept = default;
@@ -48,9 +48,9 @@ namespace MulNXB {
             T& get() { return value_; }
             const T& get() const { return value_; }
 
-            any_base* clone() const override {
+            /*any_base* clone() const override {
                 return new any_derived<T>(*this);
-            }
+            }*/
         };
     } // namespace detail
 
@@ -144,12 +144,12 @@ namespace MulNXB {
             return ptr_ ? ptr_->type() : typeid(void);
         }
 
-        any_unique_ptr clone() const {
+        /*any_unique_ptr clone() const {
             if (ptr_) {
                 return any_unique_ptr(ptr_->clone());
             }
             return any_unique_ptr();
-        }
+        }*/
     };
 
     template<typename T, typename... Args>

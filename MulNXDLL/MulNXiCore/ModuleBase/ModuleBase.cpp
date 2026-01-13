@@ -78,9 +78,9 @@ void ModuleBase::BaseVirtualMain() {
 void ModuleBase::BaseProcessMsg() {
     IMessageChannel* Channel = this->IGetMessageChannel();
     if (Channel != nullptr) {
-        std::unique_ptr<MulNXMessage> Msg = nullptr;
+        MulNXMessage Msg{ MsgType::Null };
         while (Channel->PullMessage(Msg)) {
-            this->ProcessMsg(Msg.get());
+            this->ProcessMsg(&Msg);
         }
     }
     return;
@@ -158,12 +158,12 @@ void ModuleBase::IRegiste() {
 void ModuleBase::ISubscribe(MsgType MsgType) {
     this->IMsgManager->Subscribe(MsgType, this);
 }
-void ModuleBase::IPublish(std::unique_ptr<MulNXMessage> Msg) {
+void ModuleBase::IPublish(MulNXMessage&& Msg) {
     this->IMsgManager->Publish(std::move(Msg));
 }
 void ModuleBase::IPublish(MsgType Type) {
     //消息管理器会负责消息生命周期
-    auto Msg = std::make_unique<MulNXMessage>(Type);
+    MulNXMessage Msg(Type);
     this->IMsgManager->Publish(std::move(Msg));
 }
 bool ModuleBase::ICreateMessageChannel() {

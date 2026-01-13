@@ -4,22 +4,28 @@
 #include"../MessageManager/IMessageManager.hpp"
 #include"../IPCer/IPCer.hpp"
 #include"../HandleSystem/HandleSystem.hpp"
+#include"../KeyTracker/KeyTracker.hpp"
 
 bool MulNXUISystem::Init() {
 	this->ICreateMessageChannel();
 	IMessageChannel* Channel = this->IGetMessageChannel();
 	(*Channel)
+		.Subscribe(MsgType::UISystem_Start)
 		.Subscribe(MsgType::UISystem_ModulePush);
 	return true;
 }
 
 void MulNXUISystem::ProcessMsg(MulNXMessage* Msg) {
 	switch (Msg->Type) {
+	case MsgType::UISystem_Start: {
+		MulNXB::any_unique_ptr pEntryStr = this->MulNXi->HandleSystem().ReleaseHandle<MulNXHandle>(Msg->Handle);
+		std::string* pStr = pEntryStr.get<std::string>();
+		this->UIContext.EntryDraw = std::move(*pStr);
+		break;
+	}
 	case MsgType::UISystem_ModulePush: {
-		//MulNXB::any_unique_ptr pCtx = std::move(Msg->ParamData);
-		MulNXHandle hContext = Msg->Handle;
-		MulNXB::any_unique_ptr pCtx = this->MulNXi->HandleSystem().ReleaseHandle<HContext>(hContext);
-		this->UIContext.AddSingleContext(hContext, std::move(pCtx));
+		MulNXB::any_unique_ptr pCtx = this->MulNXi->HandleSystem().ReleaseHandle<HContext>(Msg->Handle);
+		this->UIContext.AddSingleContext(Msg->Handle, std::move(pCtx));
 		break;
 	}
 	}
@@ -118,14 +124,14 @@ HRESULT __stdcall MulNXUISystem::Render(IDXGISwapChain* swapChain, UINT syncInte
 	std::unique_lock lock(this->UIMtx);
 	this->RenderBefore(swapChain, syncInterval, flags);
 
-	this->MulNXi->VirtualMain();
 	this->EntryProcessMsg();
-
-	static bool OpThis = true;
-	if (OpThis) {
-		ImGui::Begin("异步UI", &OpThis);
+	
+	if (this->MulNXi->KT().CheckComboClick(VK_INSERT, 1)) {
+		this->UIContext.Active = !this->UIContext.Active;
+	}
+	if(this->UIContext.Active) {
+		this->MulNXi->VirtualMain();
 		this->UIContext.Draw();
-		ImGui::End();
 	}
 	
 	this->RenderBehind(swapChain, syncInterval, flags);

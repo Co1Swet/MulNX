@@ -1,8 +1,5 @@
 ﻿#pragma once
 
-#include<cstdint>
-#include<memory>
-
 #include"../../../MulNXB/MulNXB.hpp"
 
 enum class MsgType :uint32_t {
@@ -23,6 +20,8 @@ enum class MsgType :uint32_t {
 	//Core_Check,
 	//Core_CheckBack,
 	Core_ReHook,
+
+	UISystem_Start,//由核心向UI系统发送，启动UI系统
 
 	UISystem_UIPull,//UI系统级，UI通知组件拉取信息
 	UISystem_ModulePush,//UI系统级，组件响应信息，更新相关上下文
@@ -51,27 +50,22 @@ class MulNXMessage {
 public:
 	//消息类型
 	MsgType Type;
-	//Int型参数
-	int ParamInt{};
-	//类型擦除参数
-	//MulNXB::any_unique_ptr ParamData{};
-
+	//消息子类型
+	uint32_t SubType;
 	//句柄
 	MulNXHandle Handle{};
+	//Int型参数
+	int ParamInt;
+	//浮点型参数
+	float ParamFloat;
 
-	float ParamFloat{};
+	char Reserved[8]{};
 
 	MulNXMessage() = delete;
 	MulNXMessage(MsgType Type) :Type(Type) {}
-	MulNXMessage(const MulNXMessage& Other)
-		: Type(Other.Type),
-		ParamInt(Other.ParamInt) {
-		//调用真实类的拷贝构造函数，实现多态拷贝
-		//至于是深拷贝还是浅拷贝由具体类型决定
-		//提示，最好都实现为深拷贝
-		this->Handle = Other.Handle;
+	MulNXMessage(MsgType Type, uint32_t SubType)
+		: Type(Type)
+		, SubType(SubType) {
 	}
-	std::unique_ptr<MulNXMessage> Clone()const{
-		return std::make_unique<MulNXMessage>(*this);
-	}
+	MulNXMessage(const MulNXMessage& Other) = default;
 };

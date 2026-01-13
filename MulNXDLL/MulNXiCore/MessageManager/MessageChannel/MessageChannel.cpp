@@ -1,4 +1,5 @@
-﻿#include"MessageManager.hpp"
+﻿#include"MessageChannel.hpp"
+#include"../MessageManager.hpp"
 
 MessageChannel::MessageChannel(MessageManager* MsgManager) {
 	this->MsgManager = MsgManager;
@@ -21,7 +22,7 @@ IMessageChannel& MessageChannel::Unsubscribe(const MsgType MsgType) {
 	}
 	return *this;
 }
-bool MessageChannel::PullMessage(std::unique_ptr<MulNXMessage>& OutMsg) {
+bool MessageChannel::PullMessage(MulNXMessage& OutMsg) {
 	std::unique_lock lock(this->ChannelMutex);
 	if (!this->Messages.empty()) {
 		OutMsg = std::move(this->Messages.front());
@@ -30,7 +31,7 @@ bool MessageChannel::PullMessage(std::unique_ptr<MulNXMessage>& OutMsg) {
 	}
 	return false;
 }
-bool MessageChannel::PushMessage(std::unique_ptr<MulNXMessage> Msg) {
+bool MessageChannel::PushMessage(MulNXMessage&& Msg) {
 	std::unique_lock lock(this->ChannelMutex);
 	this->Messages.push_back(std::move(Msg));
 	return true;

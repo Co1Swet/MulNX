@@ -118,8 +118,8 @@ void MiniMap::Windows() {
 				std::ostringstream oss;
 				oss << "点击玩家: " << i << " 位置: (" << Player.Position.x << ", " << Player.Position.y << ", " << Player.Position.z << ")";
 				this->IDebugger->AddInfo(oss.str().c_str());
-				auto ClickMsg = std::make_unique<MulNXMessage>(MsgType::Command_SpecPlayer);
-				ClickMsg->ParamInt = i;
+				MulNXMessage ClickMsg(MsgType::Command_SpecPlayer);
+				ClickMsg.ParamInt = i;
 				this->IPublish(std::move(ClickMsg));
 			}
 		}

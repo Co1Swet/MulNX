@@ -91,7 +91,7 @@ int CSController::BasicUpdate() {
 
 	static int OldRoundStartCount = this->CSGameRules.m_nRoundStartCount;
 	if (OldRoundStartCount != this->CSGameRules.m_nRoundStartCount) {
-		std::unique_ptr<MulNXMessage> Msg = std::make_unique<MulNXMessage>(MsgType::Game_NewRound);
+		MulNXMessage Msg(MsgType::Game_NewRound);
 		this->IPublish(std::move(Msg));
 		OldRoundStartCount = this->CSGameRules.m_nRoundStartCount;
 	}

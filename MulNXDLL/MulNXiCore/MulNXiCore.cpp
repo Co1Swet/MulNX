@@ -172,17 +172,51 @@ void MulNXiCore::Init() {
 	this->pImpl->Debugger.AddSucc("各模块初始化完成！");
 	this->pImpl->Debugger.AddWarning("您正在使用测试版本！！");
 	this->pImpl->AL3D.ExecuteCommand("playdemo 111");
-	//打开主窗口
-	this->OpenMainWindow = true;
+
 	
+	//UI系统主界面初始化
+	auto StartString = MulNXB::make_any_unique<std::string>("MainDraw");
+	MulNXHandle hStr = this->HandleSystem().RegisteHandle<MulNXHandle>(std::move(StartString));
+	MulNXMessage StartMsg(MsgType::UISystem_Start);
+	StartMsg.Handle = hStr;
+	this->pImpl->MessageManager.Publish(std::move(StartMsg));
+
+
+	//注册主窗口UI上下文
+	auto SContext = MulNXB::make_any_unique<MulNXSingleUIContext>();
+	MulNXSingleUIContext* SContextPtr = SContext.get<MulNXSingleUIContext>();
+	SContextPtr->name = "MainDraw";
+	SContextPtr->MyFunc = [](MulNXSingleUIContext* This)->void {
+		ImGui::Begin("主窗口");
+		if (ImGui::BeginTabBar("主标签页集")) {
+			if (ImGui::BeginTabItem("总控台")) {
+				This->SetNextSingleUIContext("DemoHelper");
+				ImGui::EndTabItem();
+			}
+			if (ImGui::BeginTabItem("游戏设置")) {
+				This->SetNextSingleUIContext("空");
+				ImGui::EndTabItem();
+			}
+			ImGui::EndTabBar();
+		}
+
+		ImGui::End();
+		};
+	HContext hContext = this->HandleSystem().RegisteHandle<HContext>(std::move(SContext));
+
+	MulNXMessage Msg(MsgType::UISystem_ModulePush); 
+	Msg.Handle = hContext;
+	this->pImpl->MessageManager.Publish(std::move(Msg));
+
+
+	//打开主窗口	
 	this->pImpl->MulNXiGlobalVars.SystemReady = true;
 	return;
 }
 
 //主窗口
 void MulNXiCore::MulNXiMainWindow() {
-	if (!this->OpenMainWindow)return;
-	ImGui::Begin(MulNXiGlobalVarsOnlyRead::FullName, &this->OpenMainWindow);//窗口标题
+	ImGui::Begin(MulNXiGlobalVarsOnlyRead::FullName);//窗口标题
 
 	//Tab Bar
 	if (ImGui::BeginTabBar("MainTabBar")) {
@@ -233,12 +267,8 @@ void MulNXiCore::MulNXiMainWindow() {
 	return;
 }
 
-//主逻辑，在DllMain中被调用
+//主逻辑
 void MulNXiCore::VirtualMain() {
-	if (this->pImpl->KT.CheckComboClick(VK_INSERT, 1)) {
-		this->OpenMainWindow = !this->OpenMainWindow;
-	}
-
 	this->pImpl->MulNXiGlobalVars.EntryVirtualMain();
 	this->pImpl->AL3D.EntryVirtualMain();
 	this->pImpl->VirtualUser.EntryVirtualMain();
@@ -249,15 +279,12 @@ void MulNXiCore::VirtualMain() {
 	
 	this->pImpl->DemoHelper.EntryVirtualMain();
 
-	if (this->OpenMainWindow) {
-		this->MulNXiMainWindow();
-		this->pImpl->Debugger.EntryWindows();
-		this->pImpl->CameraSystem.EntryWindows();
-		this->pImpl->GameCfgManager.EntryWindows();
-	}
-	this->pImpl->MiniMap.EntryWindows();
 
-	
+	this->MulNXiMainWindow();
+	this->pImpl->Debugger.EntryWindows();
+	this->pImpl->CameraSystem.EntryWindows();
+	this->pImpl->GameCfgManager.EntryWindows();
+	this->pImpl->MiniMap.EntryWindows();
 
 	return;
 }
