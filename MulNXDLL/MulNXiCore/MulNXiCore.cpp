@@ -1,4 +1,4 @@
-﻿#include"MulNXiCore.hpp"
+#include"MulNXiCore.hpp"
 
 #include"AbstractLayer3D/AbstractLayer3D.hpp"
 #include"CameraSystem/CameraSystem.hpp"
@@ -176,7 +176,7 @@ void MulNXiCore::Init() {
 	
 	//UI系统主界面初始化
 	auto StartString = MulNXB::make_any_unique<std::string>("MainDraw");
-	MulNXHandle hStr = this->HandleSystem().RegisteHandle<MulNXHandle>(std::move(StartString));
+	MulNXHandle hStr = this->HandleSystem().RegisteHandle(std::move(StartString));
 	MulNXMessage StartMsg(MsgType::UISystem_Start);
 	StartMsg.Handle = hStr;
 	this->pImpl->MessageManager.Publish(std::move(StartMsg));
@@ -186,15 +186,12 @@ void MulNXiCore::Init() {
 	auto SContext = MulNXB::make_any_unique<MulNXSingleUIContext>();
 	MulNXSingleUIContext* SContextPtr = SContext.get<MulNXSingleUIContext>();
 	SContextPtr->name = "MainDraw";
+	SContextPtr->MyMsgChannel = this->pImpl->MulNXUISystem.ICreateAndGetMessageChannel();
 	SContextPtr->MyFunc = [](MulNXSingleUIContext* This)->void {
 		ImGui::Begin("主窗口");
 		if (ImGui::BeginTabBar("主标签页集")) {
-			if (ImGui::BeginTabItem("总控台")) {
-				This->SetNextSingleUIContext("DemoHelper");
-				ImGui::EndTabItem();
-			}
-			if (ImGui::BeginTabItem("游戏设置")) {
-				This->SetNextSingleUIContext("空");
+			if (ImGui::BeginTabItem("Demo助手")) {
+				This->CallSingleUIContext("DemoHelper");
 				ImGui::EndTabItem();
 			}
 			ImGui::EndTabBar();
@@ -202,14 +199,13 @@ void MulNXiCore::Init() {
 
 		ImGui::End();
 		};
-	HContext hContext = this->HandleSystem().RegisteHandle<HContext>(std::move(SContext));
+	MulNXHandle hContext = this->HandleSystem().RegisteHandle(std::move(SContext));
 
 	MulNXMessage Msg(MsgType::UISystem_ModulePush); 
 	Msg.Handle = hContext;
 	this->pImpl->MessageManager.Publish(std::move(Msg));
 
 
-	//打开主窗口	
 	this->pImpl->MulNXiGlobalVars.SystemReady = true;
 	return;
 }

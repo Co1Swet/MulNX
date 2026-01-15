@@ -1,4 +1,4 @@
-﻿#include"MulNXUISystem.hpp"
+#include"MulNXUISystem.hpp"
 
 #include"../MulNXiCore.hpp"
 #include"../MessageManager/IMessageManager.hpp"
@@ -7,9 +7,8 @@
 #include"../KeyTracker/KeyTracker.hpp"
 
 bool MulNXUISystem::Init() {
-	this->ICreateMessageChannel();
-	IMessageChannel* Channel = this->IGetMessageChannel();
-	(*Channel)
+	this->MainMsgChannel = this->ICreateAndGetMessageChannel();
+	(*this->MainMsgChannel)
 		.Subscribe(MsgType::UISystem_Start)
 		.Subscribe(MsgType::UISystem_ModulePush);
 	return true;
@@ -18,13 +17,13 @@ bool MulNXUISystem::Init() {
 void MulNXUISystem::ProcessMsg(MulNXMessage* Msg) {
 	switch (Msg->Type) {
 	case MsgType::UISystem_Start: {
-		MulNXB::any_unique_ptr pEntryStr = this->MulNXi->HandleSystem().ReleaseHandle<MulNXHandle>(Msg->Handle);
+		MulNXB::any_unique_ptr pEntryStr = this->MulNXi->HandleSystem().ReleaseHandle(Msg->Handle);
 		std::string* pStr = pEntryStr.get<std::string>();
 		this->UIContext.EntryDraw = std::move(*pStr);
 		break;
 	}
 	case MsgType::UISystem_ModulePush: {
-		MulNXB::any_unique_ptr pCtx = this->MulNXi->HandleSystem().ReleaseHandle<HContext>(Msg->Handle);
+		MulNXB::any_unique_ptr pCtx = this->MulNXi->HandleSystem().ReleaseHandle(Msg->Handle);
 		this->UIContext.AddSingleContext(Msg->Handle, std::move(pCtx));
 		break;
 	}

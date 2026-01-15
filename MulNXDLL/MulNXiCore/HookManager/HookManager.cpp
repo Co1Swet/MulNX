@@ -1,4 +1,4 @@
-﻿#include"HookManager.hpp"
+#include"HookManager.hpp"
 
 #include"../MulNXiCore.hpp"
 #include"../IPCer/IPCer.hpp"
@@ -12,8 +12,7 @@
 
 static bool AllowReHook = false;//允许重hook
 bool HookManager::Init() {
-	this->ICreateMessageChannel();
-	IMessageChannel* Channel = this->IGetMessageChannel();
+	this->MainMsgChannel = this->ICreateAndGetMessageChannel();
 	return true;
 }
 

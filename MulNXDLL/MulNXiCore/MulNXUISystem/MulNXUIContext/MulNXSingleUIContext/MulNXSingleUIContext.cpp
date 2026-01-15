@@ -1,21 +1,23 @@
-﻿#include"MulNXSingleUIContext.hpp"
-
-#include"../../../MessageManager/IMessageManager.hpp"
+#include"MulNXSingleUIContext.hpp"
 
 #include"../MulNXUIContext.hpp"
 
+#include"../../../../MulNXiCore/MulNXiCore.hpp"
+#include"../../../MessageManager/IMessageManager.hpp"
+
 void MulNXSingleUIContext::Draw() {
+	if (this->MyMsgChannel->HasMessage()) {
+		MulNXMessage Msg(MsgType::Null);
+		while(this->MyMsgChannel->PullMessage(Msg)){
+			if(Msg.Type == MsgType::UISystem_ModuleRespose){
+				this->WaitingResponse = false;
+			}
+		}
+	}
 	this->MyFunc(this);
-	//for (const auto& It : this->Elements) {
-	//	//std::unique_ptr<MulNXMessage> Msg = 
-	//		It->Draw(this);
-	//	/*if (Msg) {
-	//		IMessageChannel* MsgChannel = IMessageManager::GetMessageChannel(this->HModule);
-	//		if (MsgChannel) {
-	//			MsgChannel->PushMessage(std::move(Msg));
-	//		}
-	//	}*/
-	//}
+}
+bool MulNXSingleUIContext::CallSingleUIContext(std::string&& Name) {
+	return this->MainContext->CallSingleContext(Name);
 }
 bool MulNXSingleUIContext::SetNextSingleUIContext(std::string&& Name) {
 	this->MainContext->next = std::move(Name);
@@ -23,20 +25,31 @@ bool MulNXSingleUIContext::SetNextSingleUIContext(std::string&& Name) {
 }
 
 bool MulNXSingleUIContext::SendToOwner(MulNXMessage&& Msg) {
+	if (this->WaitingResponse) {
+		this->MainContext->EnableErrorHandle = true;
+		return false;
+	}
 	this->OwnerMsgChannel->PushMessage(std::move(Msg));
+	this->WaitingResponse = true;
 	return true;
 }
-bool MulNXSingleUIContext::SendToOwner(MsgType Type, uint32_t SubType) {
-	MulNXMessage Msg(Type);
+MulNXMessage MulNXSingleUIContext::CreateMsg(uint32_t SubType) {
+	MulNXMessage Msg(MsgType::UISystem_UICommand);
 	Msg.SubType = SubType;
-	return this->SendToOwner(std::move(Msg));
+	Msg.pMsgChannel = this->MyMsgChannel;
+	return Msg;
 }
-
 
 MulNXB::any_unique_ptr MulNXSingleUIContext::Create(const ModuleBase* const MB) {
 	auto SContext = MulNXB::make_any_unique<MulNXSingleUIContext>();
 	MulNXSingleUIContext* SContextPtr = SContext.get<MulNXSingleUIContext>();
 	SContextPtr->HModule = MB->HModule;
-	SContextPtr->OwnerMsgChannel = MB->IGetMessageChannel();
+	SContextPtr->OwnerMsgChannel = MB->MainMsgChannel;
+	SContextPtr->MyMsgChannel = MulNXiCore::GetInstance().IMessageManager()
+		.GetMessageChannel(
+			MulNXiCore::GetInstance()
+			.IMessageManager()
+			.CreateMessageChannel()
+		);
 	return SContext;
 }

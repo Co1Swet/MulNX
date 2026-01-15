@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"../../../MulNXB/MulNXB.hpp"
 
@@ -48,18 +48,18 @@ enum class MsgType :uint32_t {
 //MulNX消息基类
 class MulNXMessage {
 public:
-	//消息类型
+	//消息类型，用于区分消息
 	MsgType Type;
-	//消息子类型
+	//消息子类型，用于细分消息，一般用于私有消息
 	uint32_t SubType;
-	//句柄
+	//句柄，用于传递任意类型数据，需要通过句柄系统取出
 	MulNXHandle Handle{};
-	//Int型参数
+	//Int型参数，这只是一个整数参数，可以用它传递想传递的整数
 	int ParamInt;
-	//浮点型参数
+	//浮点型参数，这只是一个浮点参数，可以用它传递想传递的浮点数
 	float ParamFloat;
-
-	char Reserved[8]{};
+	//消息管道指针，一般用于指示消息来源
+	IMessageChannel* pMsgChannel = nullptr;
 
 	MulNXMessage() = delete;
 	MulNXMessage(MsgType Type) :Type(Type) {}

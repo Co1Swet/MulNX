@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"../../MulNXB/MulNXB.hpp"
 
@@ -16,6 +16,9 @@ protected:
 	MulNXiGlobalVars* MulNXiGlobalVars = nullptr;
 	//3D抽象层指针
 	IAbstractLayer3D* AL3D = nullptr;
+public:
+	//主要消息管道指针
+	IMessageChannel* MainMsgChannel = nullptr;
 private:
 	//当前消息指针
 	std::atomic<MulNXMessage*> CurrentMsg = nullptr;
@@ -133,10 +136,7 @@ public:
 	//根据类型自动构建消息并发送
 	void IPublish(MsgType Msg);
 	//自动创建私有消息管道
-	bool ICreateMessageChannel();
-public:
-	//自动得到私有消息管道
-	IMessageChannel* IGetMessageChannel()const;
+	IMessageChannel* ICreateAndGetMessageChannel();
 };
 
 //自动子窗口管理类，一般在Menu函数中使用

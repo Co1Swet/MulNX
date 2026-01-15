@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"../../../../MulNXB/MulNXB.hpp"
 
@@ -30,11 +30,12 @@ public:
 	//初始化即可
 	MulNXHandle HModule{};
 	IMessageChannel* OwnerMsgChannel = nullptr;
+	IMessageChannel* MyMsgChannel = nullptr;
 
 	//跨线程数据
 
 	std::atomic<bool>Active = true;
-	std::atomic<bool>WaitResponse = false;
+	std::atomic<bool>WaitingResponse = false;
 	std::atomic<MulNXMessage*>pUpdateData = nullptr;
 
 
@@ -42,21 +43,14 @@ public:
 
 	void Draw();
 	bool SendToOwner(MulNXMessage&& Msg);
-	bool SendToOwner(MsgType Type, uint32_t SubType);
+	MulNXMessage CreateMsg(uint32_t SubType);
 
+	bool CallSingleUIContext(std::string&& Name);
 	bool SetNextSingleUIContext(std::string&& Name);
 
 	static MulNXB::any_unique_ptr Create(const ModuleBase* const MB);
 
-	//默认构造函数
 	MulNXSingleUIContext() = default;
-    ~MulNXSingleUIContext() {
-        if (this->pBuffer) {
-            //delete this->pBuffer;
-            this->pBuffer = nullptr;
-        }
-    }
-
-	//拷贝构造函数实现
+	//禁止拷贝
 	MulNXSingleUIContext(const MulNXSingleUIContext& Other) = delete;
 };

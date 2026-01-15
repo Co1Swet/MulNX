@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"MulNXSingleUIContext/MulNXSingleUIContext.hpp"
 
@@ -6,22 +6,25 @@
 
 class MulNXUIContext {
 private:
+	friend class MulNXSingleUIContext;
 	bool CallSingleContext(const std::string& Name);
 public:
 	bool Active = true;
 
+	bool EnableErrorHandle = false;
+
 	//入口点字符串
 	std::string EntryDraw{};
 	//由字符串映射到句柄
-	std::unordered_map<std::string, HContext>CallMap{};
+	std::unordered_map<std::string, MulNXHandle>CallMap{};
 	//这里存储所有句柄
-	std::vector<HContext>ContextOrder{};
+	std::vector<MulNXHandle>ContextOrder{};
 	//然后从句柄得到具体的单上下文
-	std::unordered_map<HContext, MulNXB::any_unique_ptr>ContextMap{};
+	std::unordered_map<MulNXHandle, MulNXB::any_unique_ptr>ContextMap{};
 	
 	std::string next;
 
 	void Draw();
-	void AddSingleContext(HContext hContext, MulNXB::any_unique_ptr SContext);
-	MulNXSingleUIContext* GetSingleContext(const HContext& hContext);
+	void AddSingleContext(MulNXHandle hContext, MulNXB::any_unique_ptr SContext);
+	MulNXSingleUIContext* GetSingleContext(const MulNXHandle& hContext);
 };

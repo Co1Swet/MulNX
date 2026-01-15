@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"IMulNXUISystem.hpp"
 
@@ -28,7 +28,7 @@ public:
 	HRESULT __stdcall RenderBehind(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags);
 	HRESULT __stdcall Render(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags)override;
 
-	MulNXSingleUIContext* GetSingleContext(const HContext& hContext)override {
+	MulNXSingleUIContext* GetSingleContext(const MulNXHandle& hContext)override {
 		return this->UIContext.GetSingleContext(hContext);
 	}
 };

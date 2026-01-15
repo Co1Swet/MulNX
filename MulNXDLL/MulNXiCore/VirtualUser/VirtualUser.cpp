@@ -1,4 +1,4 @@
-﻿#include"VirtualUser.hpp"
+#include"VirtualUser.hpp"
 
 #include"../MulNXiCore.hpp"
 
@@ -17,9 +17,8 @@ bool VirtualUser::Init() {
 #ifdef _DEBUG
 	this->ISubscribe(MsgType::Core_Tick30min);
 #endif // _DEBUG
-	this->ICreateMessageChannel();
-	IMessageChannel* Channel = this->IGetMessageChannel();
-	(*Channel)
+	this->MainMsgChannel = this->ICreateAndGetMessageChannel();
+	(*this->MainMsgChannel)
 		.Subscribe(MsgType::CameraSystem_PlayingShutdown)
 		.Subscribe(MsgType::Command_SpecPlayer)
 		.Subscribe(MsgType::Game_NewRound);

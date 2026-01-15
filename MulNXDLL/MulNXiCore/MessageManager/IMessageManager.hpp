@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"../ModuleBase/ModuleBase.hpp"
 
@@ -18,9 +18,9 @@ public:
 	//订阅，获得对应类型消息推送
 	virtual bool Subscribe(const MsgType MsgType, ModuleBase* const Module) = 0;
 	//创建私有消息队列（但是生命周期仍然委托给消息管理器）
-	virtual bool CreateMessageChannel(ModuleBase* const Module) = 0;
+	virtual MulNXHandle CreateMessageChannel() = 0;
 	//获取消息管道
-	static IMessageChannel* GetMessageChannel(const MulNXHandle& Handle);
+	virtual IMessageChannel* GetMessageChannel(const MulNXHandle& hChannel) = 0;
 	//取消订阅
 	virtual bool Unsubscribe(const MsgType MsgType, ModuleBase* const Module) = 0;
 	//发布，在堆空间创建消息后传递，所有权转移至总线

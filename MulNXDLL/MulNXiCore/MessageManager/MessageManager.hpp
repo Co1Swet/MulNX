@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 //MessageManager.hpp
 //跨线程安全的消息管理器
 //管理整个系统消息的发送和接受
@@ -37,9 +37,9 @@ public:
 	//订阅，获得对应类型消息推送
 	bool Subscribe(const MsgType MsgType, ModuleBase* const Module)override;
 	//创建私有消息队列（但是生命周期仍然委托给消息管理器）
-	bool CreateMessageChannel(ModuleBase* const Module)override;
+	MulNXHandle CreateMessageChannel()override;
 	//获取消息管道
-	//static IMessageChannel* GetMessageChannel(const MulNXHandle& Handle);
+	IMessageChannel* GetMessageChannel(const MulNXHandle& hChannel)override;
 	//取消订阅
 	bool Unsubscribe(const MsgType MsgType, ModuleBase* const Module)override;
 	//需要在堆中构建消息，消息的创建由发送者负责，消息的销毁由消息总线负责

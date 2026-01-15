@@ -1,4 +1,4 @@
-﻿#include"../ModuleBase/ModuleBase.hpp"
+#include"../ModuleBase/ModuleBase.hpp"
 
 #include"../HandleSystem/HandleSystem.hpp"
 
@@ -9,7 +9,7 @@ class DemoHelper final :public ModuleBase {
 private:
 	std::vector<float>Marks{};
 	std::atomic<MulNXB::any_unique_ptr*>* ppUpdateData = nullptr;
-	HContext hContext{};
+	MulNXHandle hContext{};
 public:
 	DemoHelper(MulNXiCore* MulNXi) :ModuleBase(MulNXi) {};
 

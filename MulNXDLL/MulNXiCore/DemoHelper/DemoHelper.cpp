@@ -1,4 +1,4 @@
-﻿#include"DemoHelper.hpp"
+#include"DemoHelper.hpp"
 
 #include"../MulNXiCore.hpp"
 #include"../MessageManager/IMessageManager.hpp"
@@ -16,10 +16,9 @@ static std::atomic<int> ClickCount = 0;
 static void MyDraw(MulNXSingleUIContext* This) {
 	auto ReadData = This->GetRead<DemoHelperPrivateData>();
 	auto ThisData = ReadData.get();
-	ImGui::Begin("Demo助手");
 	ImGui::Text("第一个异步模块");
 	if (ImGui::Button("标记当前时间")) {
-		This->SendToOwner(MsgType::UISystem_UICommand, 0x101);
+		This->SendToOwner(This->CreateMsg(0x101));
 	}
 	ImGui::Text("目前，时间列表容器是");
 	ImGui::SameLine();
@@ -33,22 +32,20 @@ static void MyDraw(MulNXSingleUIContext* This) {
 			ImGui::SameLine();
 			std::string str = "跳转##" + std::to_string(time);
 			if (ImGui::Button(str.c_str())) {
-				MulNXMessage Msg(MsgType::UISystem_UICommand, 0x102);
+				MulNXMessage Msg = This->CreateMsg(0x102);
 				Msg.ParamFloat = time;
 				This->SendToOwner(std::move(Msg));
 			}
 		}
 	}
 	ImGui::Text("按钮已被点击 %d 次", ClickCount.load());
-	ImGui::End();
 
 	return;
 }
 
 bool DemoHelper::Init() {
-	this->ICreateMessageChannel();
-	IMessageChannel* MsgChannel = this->IGetMessageChannel();
-	(*MsgChannel)
+	this->MainMsgChannel = this->ICreateAndGetMessageChannel();
+	(*this->MainMsgChannel)
 		.Subscribe(MsgType::UISystem_UICommand);
 
 	MulNXMessage Msg(MsgType::UISystem_ModulePush);
@@ -61,7 +58,7 @@ bool DemoHelper::Init() {
 
 	SContextPtr->pBuffer = MulNXB::make_any_unique<TripleBuffer<DemoHelperPrivateData>>();
 
-	this->hContext = this->MulNXi->HandleSystem().RegisteHandle<HContext>(std::move(SingleContext));
+	this->hContext = this->MulNXi->HandleSystem().RegisteHandle(std::move(SingleContext));
 	Msg.Handle = this->hContext;
 	this->IPublish(std::move(Msg));
 
@@ -73,6 +70,7 @@ void DemoHelper::ProcessMsg(MulNXMessage* Msg) {
 	case MsgType::UISystem_UICommand: {
 		this->IDebugger->AddSucc("测试成功");
 		this->HandleUICommand(Msg);
+		Msg->pMsgChannel->PushMessage(MulNXMessage(MsgType::UISystem_ModuleRespose));
 		break;
 	}
 	}

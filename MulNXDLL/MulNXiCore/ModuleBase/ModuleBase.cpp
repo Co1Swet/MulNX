@@ -1,4 +1,4 @@
-﻿#include"ModuleBase.hpp"
+#include"ModuleBase.hpp"
 
 #include"../MulNXiCore.hpp"
 
@@ -76,7 +76,7 @@ void ModuleBase::BaseVirtualMain() {
     return;
 }
 void ModuleBase::BaseProcessMsg() {
-    IMessageChannel* Channel = this->IGetMessageChannel();
+    IMessageChannel* Channel = this->MainMsgChannel;
     if (Channel != nullptr) {
         MulNXMessage Msg{ MsgType::Null };
         while (Channel->PullMessage(Msg)) {
@@ -166,13 +166,9 @@ void ModuleBase::IPublish(MsgType Type) {
     MulNXMessage Msg(Type);
     this->IMsgManager->Publish(std::move(Msg));
 }
-bool ModuleBase::ICreateMessageChannel() {
-    return this->IMsgManager->CreateMessageChannel(this);
+IMessageChannel* ModuleBase::ICreateAndGetMessageChannel() {
+    return this->IMsgManager->GetMessageChannel(this->IMsgManager->CreateMessageChannel());
 }
-IMessageChannel* ModuleBase::IGetMessageChannel()const {
-    return this->IMsgManager->GetMessageChannel(this->HModule);
-}
-
 
 AutoChild::AutoChild(ModuleBase* Module, const float HeightRatio, const float WidthRatio)
     :Module(Module) {

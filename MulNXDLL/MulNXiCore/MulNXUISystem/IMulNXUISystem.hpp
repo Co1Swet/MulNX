@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"../ModuleBase/ModuleBase.hpp"
 
@@ -28,5 +28,5 @@ public:
 
 	virtual HRESULT __stdcall Render(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags) = 0;
 
-	virtual MulNXSingleUIContext* GetSingleContext(const HContext& hContext) = 0;
+	virtual MulNXSingleUIContext* GetSingleContext(const MulNXHandle& hContext) = 0;
 };

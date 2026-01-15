@@ -1,4 +1,4 @@
-﻿#include"MessageChannel.hpp"
+#include"MessageChannel.hpp"
 #include"../MessageManager.hpp"
 
 MessageChannel::MessageChannel(MessageManager* MsgManager) {
@@ -29,10 +29,19 @@ bool MessageChannel::PullMessage(MulNXMessage& OutMsg) {
 		this->Messages.pop_front();
 		return true;
 	}
+	this->bHasMessage = false;
 	return false;
 }
 bool MessageChannel::PushMessage(MulNXMessage&& Msg) {
 	std::unique_lock lock(this->ChannelMutex);
 	this->Messages.push_back(std::move(Msg));
+	this->bHasMessage.store(true);
 	return true;
+}
+bool MessageChannel::HasMessage()const {
+	return this->bHasMessage.load();
+}
+
+MulNXHandle MessageChannel::GetHandle()const {
+	return this->hChannel;
 }

@@ -1,8 +1,9 @@
-﻿#include"MessageManager.hpp"
+#include"MessageManager.hpp"
 
 #include"../MulNXiCore.hpp"
 
 #include"MessageChannel/MessageChannel.hpp"
+#include"../HandleSystem/HandleSystem.hpp"
 
 bool MessageManager::Registe(ModuleBase* const Module) {
 	std::unique_lock lock(this->MyThreadMutex);
@@ -19,21 +20,19 @@ bool MessageManager::Subscribe(const MsgType MsgType, ModuleBase* const Module) 
 }
 
 //创建私有消息队列（但是生命周期仍然委托给消息管理器）
-bool MessageManager::CreateMessageChannel(ModuleBase* const Module) {
+MulNXHandle MessageManager::CreateMessageChannel() {
 	std::unique_lock lock(this->MyThreadMutex);
-	if (!Module->HModule.IsValid())return false;
-	if (this->Channels.find(Module->HModule) != this->Channels.end())return false;
 	std::unique_ptr<MessageChannel> Channel = std::make_unique<MessageChannel>(this);
-	this->Channels[Module->HModule] = std::move(Channel);
-	return true;
+	MulNXHandle hChannel = this->MulNXi->HandleSystem().CreateHandle();
+	Channel->hChannel = hChannel;
+	this->Channels[hChannel] = std::move(Channel);
+	return hChannel;
 }
-//获取消息管道
-IMessageChannel* IMessageManager::GetMessageChannel(const MulNXHandle& Handle){
-	static MessageManager* This = static_cast<MessageManager*>(&MulNXiCore::GetInstance().IMessageManager());
-	std::unique_lock lock(This->MyThreadMutex);
-	if (!Handle.IsValid())return nullptr;
-	if (This->Channels.find(Handle) == This->Channels.end())return nullptr;
-	return This->Channels[Handle].get();
+IMessageChannel* MessageManager::GetMessageChannel(const MulNXHandle& hChannel) {
+	std::unique_lock lock(this->MyThreadMutex);
+	auto it = this->Channels.find(hChannel);
+	if (it == this->Channels.end())return nullptr;
+	return it->second.get();
 }
 
 

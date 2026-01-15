@@ -1,10 +1,6 @@
-﻿#pragma once
+#pragma once
 
 #include"../ModuleBase/ModuleBase.hpp"
-
-using HContext = MulNXHandle;
-using HMessageChannel = MulNXHandle;
-using HModule = MulNXHandle;
 
 template<typename T>
 concept Handles = std::derived_from<T, MulNXHandle>;
@@ -23,24 +19,21 @@ public:
 
 	bool Init()override { return true; }
 
-	template<Handles T>
-	T CreateHandle() {
-		T handle{};
+	MulNXHandle CreateHandle() {
+		MulNXHandle handle{};
 		handle.Value = this->CurrentHandleValue.fetch_add(1);
 		return handle;
 	}
 
-	template<Handles T>
-	T RegisteHandle(MulNXB::any_unique_ptr Resource) {
+	MulNXHandle RegisteHandle(MulNXB::any_unique_ptr Resource) {
 		std::unique_lock lock(this->MapMutex);
-		T handle{};
+		MulNXHandle handle{};
 		handle.Value = this->CurrentHandleValue.fetch_add(1);
 		this->Resources[handle] = std::move(Resource);
 		return handle;
 	}
 
-	template<Handles T>
-	MulNXB::any_unique_ptr ReleaseHandle(T Handle) {
+	MulNXB::any_unique_ptr ReleaseHandle(MulNXHandle Handle) {
 		std::unique_lock lock(this->MapMutex);
 		auto it = this->Resources.find(Handle);
 		if (it == this->Resources.end()) {
