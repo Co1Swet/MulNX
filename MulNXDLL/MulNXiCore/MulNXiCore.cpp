@@ -21,7 +21,6 @@
 //页面枚举
 enum class Page :int {
 	Control,
-	GameSettings,
 	Debug,
 	CameraSystem
 };
@@ -194,6 +193,12 @@ void MulNXiCore::Init() {
 				This->CallSingleUIContext("DemoHelper");
 				ImGui::EndTabItem();
 			}
+			if (ImGui::BeginTabItem("游戏设置")) {
+				This->CallSingleUIContext("GameSettings");
+				ImGui::EndTabItem();
+			}
+
+
 			ImGui::EndTabBar();
 		}
 
@@ -220,10 +225,6 @@ void MulNXiCore::MulNXiMainWindow() {
 			this->pImpl->Page = Page::Control;
 			ImGui::EndTabItem();
 		}
-		if (ImGui::BeginTabItem("游戏设置")) {
-			this->pImpl->Page = Page::GameSettings;
-			ImGui::EndTabItem();
-		}
 		if (ImGui::BeginTabItem("调试")) {
 			this->pImpl->Page = Page::Debug;
 			ImGui::EndTabItem();
@@ -241,10 +242,6 @@ void MulNXiCore::MulNXiMainWindow() {
 		//两个模块，上下分栏，各占一半
 		this->pImpl->ConsoleManager.Menu();
 		this->pImpl->VirtualUser.Menu();
-		break;
-	}
-	case Page::GameSettings: {
-		this->pImpl->GameSettingsManager.Menu();
 		break;
 	}
 	case Page::Debug: {

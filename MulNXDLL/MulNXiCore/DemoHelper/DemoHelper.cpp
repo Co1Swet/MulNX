@@ -53,11 +53,8 @@ bool DemoHelper::Init() {
 	MulNXB::any_unique_ptr SingleContext = MulNXSingleUIContext::Create(this);
 	MulNXSingleUIContext* SContextPtr = SingleContext.get<MulNXSingleUIContext>();	
 	SContextPtr->name = "DemoHelper";
-
-	SContextPtr->MyFunc = MyDraw;
-
 	SContextPtr->pBuffer = MulNXB::make_any_unique<TripleBuffer<DemoHelperPrivateData>>();
-
+	SContextPtr->MyFunc = MyDraw;
 	this->hContext = this->MulNXi->HandleSystem().RegisteHandle(std::move(SingleContext));
 	Msg.Handle = this->hContext;
 	this->IPublish(std::move(Msg));

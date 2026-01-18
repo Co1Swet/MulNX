@@ -7,24 +7,24 @@
 class ScreenSettings {
 public:
 	bool XRay = true;
-	bool ESPBox = false;
+	std::atomic<bool> ESPBox = false;
 
 	bool operator==(const ScreenSettings&)const = default;
 };
 
 class SoundSettings {
 public:
-	bool snd_mute_losefocus = false;//ÓÎÏ·´°¿ÚÊ§È¥½¹µãÊ±¾²Òô
+	bool snd_mute_losefocus = false;//æ¸¸æˆçª—å£å¤±å»ç„¦ç‚¹æ—¶é™éŸ³
 
-	float snd_menumusic_volume = 0; //Ö÷²Ëµ¥ÒôÁ¿
-	float snd_roundstart_volume = 0; //»ØºÏ¿ªÊ¼ÒôÁ¿
-	float snd_roundaction_volume = 0; //»ØºÏ¿ªÊ¼ĞĞ¶¯ÒôÁ¿
-	float snd_roundend_volume = 0; //»ØºÏ½áÊøÒôÁ¿
-	float snd_mvp_volume = 0; //MVPÒôÁ¿
-	float snd_mapobjective_volume = 0; //Õ¨µ¯/ÈËÖÊÒôÁ¿
-	float snd_tensecondwarning_volume = 0; //Ê®Ãë¾¯¸æÒôÁ¿(0.04¾ÍÊÇÓÎÏ·ÉèÖÃÖĞµÄ20)
-	float snd_deathcamera_volume = 0; //ËÀÍöÊÓ½ÇÒôÁ¿
-	bool snd_mute_mvp_music_live_players = true; //µ±Ë«·½ÍÅ¶Ó³ÉÔ±¶¼´æ»îÊ±¹Ø±ÕMVPÒôÀÖ(0--·ñ£¬1--ÊÇ)
+	float snd_menumusic_volume = 0; //ä¸»èœå•éŸ³é‡
+	float snd_roundstart_volume = 0; //å›åˆå¼€å§‹éŸ³é‡
+	float snd_roundaction_volume = 0; //å›åˆå¼€å§‹è¡ŒåŠ¨éŸ³é‡
+	float snd_roundend_volume = 0; //å›åˆç»“æŸéŸ³é‡
+	float snd_mvp_volume = 0; //MVPéŸ³é‡
+	float snd_mapobjective_volume = 0; //ç‚¸å¼¹/äººè´¨éŸ³é‡
+	float snd_tensecondwarning_volume = 0; //åç§’è­¦å‘ŠéŸ³é‡(0.04å°±æ˜¯æ¸¸æˆè®¾ç½®ä¸­çš„20)
+	float snd_deathcamera_volume = 0; //æ­»äº¡è§†è§’éŸ³é‡
+	bool snd_mute_mvp_music_live_players = true; //å½“åŒæ–¹å›¢é˜Ÿæˆå‘˜éƒ½å­˜æ´»æ—¶å…³é—­MVPéŸ³ä¹(0--å¦ï¼Œ1--æ˜¯)
 	
 	bool operator==(const SoundSettings&)const = default;
 };
@@ -47,14 +47,14 @@ public:
 
 class dof {
 public:
-	//boolÖ¸Õë£¬Ä¬ÈÏnullptr
+	//boolæŒ‡é’ˆï¼Œé»˜è®¤nullptr
 	bool* r_dof_override = nullptr;
 
 	float FocusDistance = 1000;
 	float CrispRadius = 100;
 	float BlurDistance = 100;
 
-	//floatÖ¸Õë£¬Ä¬ÈÏnullptr
+	//floatæŒ‡é’ˆï¼Œé»˜è®¤nullptr
 	float* r_dof_override_far_blurry = nullptr;
 	float* r_dof_override_far_crisp = nullptr;
 	float* r_dof_override_near_blurry = nullptr;
@@ -66,65 +66,25 @@ class GameSettingsManager final :public ModuleBase {
 private:
 	CSController* CS = nullptr;
 	C_GameSettings GameSettings{};
-	C_GameSettings OldGameSettings;
-	uintptr_t pNow;
-	uintptr_t pOld;
 
 	dof dof{};
 	bool* sv_cheats = nullptr;
+
+	MulNXHandle hContext{};
 public:
 	GameSettingsManager(MulNXiCore* MulNXi) :ModuleBase(MulNXi) {
 		this->Type = ModuleType::GameSettingsManager;
 	}
 
 	
-	//»ùÀà½Ó¿ÚÊµÏÖ
+	//åŸºç±»æ¥å£å®ç°
 
 	bool Init()override;
 
 	void VirtualMain()override;
-	void Menu()override;
-
-	void Override();
 
 	void SettingGraphFloat(const char* Label, float* V, const float& min, const float& max);
 	void SettingGraphInt(const char* Label, int* V, const int& min, const int& max);
 
 	void ESPDraw();
-
-
-	bool CommandExecute(const char* cmd);
-
-
-	//³£Êı
-	template<typename T>
-	void CommandOverride(const char* Command, T* pNewValue) {
-		// ¼ÆËã³ÉÔ±ÔÚ½á¹¹ÌåÖĞµÄÆ«ÒÆÁ¿
-		auto offset = reinterpret_cast<uintptr_t>(pNewValue) - this->pNow;
-		// »ñÈ¡¾ÉÖµÖ¸Õë
-		T* pOldValue = reinterpret_cast<T*>(this->pOld + offset);
-		if (*pNewValue != *pOldValue) {
-			std::string commandStr = std::string(Command) + " " + std::to_string(*pNewValue);//²¼¶ûÀàĞÍ¿ÉÒÔ×ª»¯³É0»ò1£¬true»òfalse¶¼¿ÉÒÔÕı³£¼æÈİ
-			this->CommandExecute(commandStr.c_str());
-			*pOldValue = *pNewValue;
-		}
-	}
-
-	bool SafeCmdUse();
-	//ÄÚÖÃÆ½·½·½·¨
-	template<typename T>
-	void CommandOverrideSquare(const char* Command, T* pNewValue) {
-		// ¼ÆËã³ÉÔ±ÔÚ½á¹¹ÌåÖĞµÄÆ«ÒÆÁ¿
-		auto offset = reinterpret_cast<uintptr_t>(pNewValue) - this->pNow;
-		// »ñÈ¡¾ÉÖµÖ¸Õë
-		T* pOldValue = reinterpret_cast<T*>(this->pOld + offset);
-		if (*pNewValue != *pOldValue) {
-			if (!SafeCmdUse())return;
-			std::string commandStr = std::string(Command) + " " + std::to_string((*pNewValue) * (*pNewValue));
-			this->CommandExecute(commandStr.c_str());
-			*pOldValue = *pNewValue;
-		}
-	}
-
-
 };
