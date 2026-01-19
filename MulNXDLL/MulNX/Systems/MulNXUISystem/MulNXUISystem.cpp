@@ -20,13 +20,13 @@ bool MulNX::UISystem::Init() {
 void MulNX::UISystem::ProcessMsg(MulNX::Messaging::Message* Msg) {
 	switch (Msg->Type) {
 	case MulNX::Messaging::MsgType::UISystem_Start: {
-		MulNXB::any_unique_ptr pEntryStr = this->MulNXi->IHandleSystem().ReleaseHandle(Msg->Handle);
+		MulNX::Base::any_unique_ptr pEntryStr = this->MulNXi->IHandleSystem().ReleaseHandle(Msg->Handle);
 		std::string* pStr = pEntryStr.get<std::string>();
 		this->UIContext.EntryDraw = std::move(*pStr);
 		break;
 	}
 	case MulNX::Messaging::MsgType::UISystem_ModulePush: {
-		MulNXB::any_unique_ptr pCtx = this->MulNXi->IHandleSystem().ReleaseHandle(Msg->Handle);
+		MulNX::Base::any_unique_ptr pCtx = this->MulNXi->IHandleSystem().ReleaseHandle(Msg->Handle);
 		this->UIContext.AddSingleContext(Msg->Handle, std::move(pCtx));
 		break;
 	}

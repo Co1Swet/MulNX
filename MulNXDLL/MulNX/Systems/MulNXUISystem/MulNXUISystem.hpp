@@ -4,10 +4,12 @@
 
 namespace MulNX {
 	class UISystem final :public IUISystem {
+	private:
 		bool UIInited = false;
 		std::shared_mutex UIMutex{};
 		MulNXUIContext UIContext{};
-
+		std::function<void(void)>FrameBefore = nullptr;
+		std::function<void(void)>FrameBehind = nullptr;
 	public:
 		UISystem(MulNX::Core* MulNXi) :IUISystem(MulNXi) {
 			this->Type = ModuleType::MulNXUISystem;

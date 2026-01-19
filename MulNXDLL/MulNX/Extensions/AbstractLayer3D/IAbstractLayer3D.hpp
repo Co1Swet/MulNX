@@ -50,7 +50,7 @@ public:
 	//设置阶段总时长
 	virtual void SetPhaseDuration(float duration) = 0;
 
-	virtual MulNXB::Math::SpatialState GetSpatialState()const = 0;
+	virtual MulNX::Base::Math::SpatialState GetSpatialState()const = 0;
 
 	virtual float* GetViewMatrix()const = 0;
 	virtual float GetWinWidth()const = 0;

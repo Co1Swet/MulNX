@@ -9,19 +9,19 @@ class MulNXUIContext;
 
 class MulNXSingleUIContext {
 public:
-    MulNXB::any_unique_ptr pBuffer = nullptr;
+    MulNX::Base::any_unique_ptr pBuffer = nullptr;
 	std::string name{};
 	std::function<void(MulNXSingleUIContext*)>MyFunc = nullptr;
 
 	template<typename T>
-	DataRead<T> GetRead() {
-		auto* buf = this->pBuffer.get<TripleBuffer<T>>();
-		return DataRead<T>(static_cast<TripleBufferBase*>(buf));
+	MulNX::Base::DataRead<T> GetRead() {
+		auto* buf = this->pBuffer.get<MulNX::Base::TripleBuffer<T>>();
+		return MulNX::Base::DataRead<T>(static_cast<MulNX::Base::TripleBufferBase*>(buf));
 	}
 	template<typename T>
-	DataWrite<T> GetWrite() {
-		auto* buf = this->pBuffer.get<TripleBuffer<T>>();
-		return DataWrite<T>(static_cast<TripleBufferBase*>(buf));
+	MulNX::Base::DataWrite<T> GetWrite() {
+		auto* buf = this->pBuffer.get<MulNX::Base::TripleBuffer<T>>();
+		return MulNX::Base::DataWrite<T>(static_cast<MulNX::Base::TripleBufferBase*>(buf));
 	}
 
 	//按照线程管理进行成员分类
@@ -47,7 +47,7 @@ public:
 	bool CallSingleUIContext(std::string&& Name);
 	bool SetNextSingleUIContext(std::string&& Name);
 
-	static MulNXB::any_unique_ptr Create(const MulNX::ModuleBase* const MB);
+	static MulNX::Base::any_unique_ptr Create(const MulNX::ModuleBase* const MB);
 
 	MulNXSingleUIContext() = default;
 	//禁止拷贝

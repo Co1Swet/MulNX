@@ -49,7 +49,7 @@ public:
 	//设置阶段总时长
 	void SetPhaseDuration(float duration)override;
 
-	MulNXB::Math::SpatialState GetSpatialState()const override;
+	MulNX::Base::Math::SpatialState GetSpatialState()const override;
 	float* GetViewMatrix()const override;
 	float GetWinWidth()const override;
 	float GetWinHeight()const override;

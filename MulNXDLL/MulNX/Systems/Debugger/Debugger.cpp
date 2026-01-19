@@ -90,7 +90,7 @@ void MulNX::Debugger::Menu() {
     if (ImGui::IsKeyPressed(ImGuiKey_K)) {
         TestPosition = this->MulNXi->CS().GetLocalPlayer().GetPosition();
         TestRotationEuler = this->MulNXi->CS().GetLocalPlayer().GetRotationEuler();
-        MulNXB::Math::CSEulerToQuat(TestRotationEuler, TestRotation4);
+        MulNX::Base::Math::CSEulerToQuat(TestRotationEuler, TestRotation4);
     }
 
     // 显示存储的测试值
@@ -104,7 +104,7 @@ void MulNX::Debugger::Menu() {
         TestRotation4.x, TestRotation4.y, TestRotation4.z, TestRotation4.w);
 
     DirectX::XMFLOAT3 back{};
-	MulNXB::Math::CSQuatToEuler(TestRotation4, back);
+	MulNX::Base::Math::CSQuatToEuler(TestRotation4, back);
     ImGui::Text("回转欧拉角：X: %.6f, Y: %.6f, Z: %.6f",
         back.x, back.y, back.z);
 

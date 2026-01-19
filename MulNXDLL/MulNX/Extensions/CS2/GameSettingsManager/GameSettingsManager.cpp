@@ -35,10 +35,10 @@ bool GameSettingsManager::Init() {
 
 	MulNX::Messaging::Message Msg(MulNX::Messaging::MsgType::UISystem_ModulePush);
 
-	MulNXB::any_unique_ptr SingleContext = MulNXSingleUIContext::Create(this);
+	MulNX::Base::any_unique_ptr SingleContext = MulNXSingleUIContext::Create(this);
 	MulNXSingleUIContext* SContextPtr = SingleContext.get<MulNXSingleUIContext>();
 	SContextPtr->name = "GameSettings";
-	//->pBuffer = MulNXB::make_any_unique<TripleBuffer<DemoHelperPrivateData>>();
+	//->pBuffer = MulNX::Base::make_any_unique<TripleBuffer<DemoHelperPrivateData>>();
 	SContextPtr->MyFunc = [this](MulNXSingleUIContext* This)->void {
 		MulNX::AutoChild Child(this);
 		if (ImGui::Button("一键修复数字切人bug")) {
@@ -101,8 +101,8 @@ bool GameSettingsManager::Init() {
 					DOFChange |= ImGui::SliderFloat("清晰半径", &this->dof.CrispRadius, 0, 5000);
 					DOFChange |= ImGui::SliderFloat("模糊距离", &this->dof.BlurDistance, 0, 5000);
 					if (DOFChange) {
-						MulNXB::Math::DOFParam Param;
-						MulNXB::Math::CalculateDOFParameters(this->dof.FocusDistance, this->dof.CrispRadius, this->dof.BlurDistance, Param);
+						MulNX::Base::Math::DOFParam Param;
+						MulNX::Base::Math::CalculateDOFParameters(this->dof.FocusDistance, this->dof.CrispRadius, this->dof.BlurDistance, Param);
 
 						*this->dof.r_dof_override_near_blurry = Param.NearBlurry;//近模糊
 						*this->dof.r_dof_override_near_crisp = Param.NearCrisp;//近清晰
@@ -210,8 +210,8 @@ void GameSettingsManager::ESPDraw() {
 		DirectX::XMFLOAT2 EyePos2D{};
 		DirectX::XMFLOAT2 OriginPos2D{};
 
-		MulNXB::Math::XMWorldToScreen(EyePos3D, EyePos2D, this->MulNXi->IAbstractLayer3D().GetViewMatrix(), this->MulNXi->IAbstractLayer3D().GetWinWidth(), this->MulNXi->IAbstractLayer3D().GetWinHeight());
-		MulNXB::Math::XMWorldToScreen(OriginPos3D, OriginPos2D, this->MulNXi->IAbstractLayer3D().GetViewMatrix(), this->MulNXi->IAbstractLayer3D().GetWinWidth(), this->MulNXi->IAbstractLayer3D().GetWinHeight());
+		MulNX::Base::Math::XMWorldToScreen(EyePos3D, EyePos2D, this->MulNXi->IAbstractLayer3D().GetViewMatrix(), this->MulNXi->IAbstractLayer3D().GetWinWidth(), this->MulNXi->IAbstractLayer3D().GetWinHeight());
+		MulNX::Base::Math::XMWorldToScreen(OriginPos3D, OriginPos2D, this->MulNXi->IAbstractLayer3D().GetViewMatrix(), this->MulNXi->IAbstractLayer3D().GetWinWidth(), this->MulNXi->IAbstractLayer3D().GetWinHeight());
 
 		const float hight{ ::abs(EyePos2D.y - OriginPos2D.y) * 1.25f };
 		const float width{ hight / 2.f };

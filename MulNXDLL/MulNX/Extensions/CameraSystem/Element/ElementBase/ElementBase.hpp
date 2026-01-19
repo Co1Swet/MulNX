@@ -9,7 +9,7 @@
 #include<string>
 #include<filesystem>
 
-//元素的类型在MulNXB的CameraSystemIO中定义
+//元素的类型在MulNX::Base的CameraSystemIO中定义
 
 class CameraDrawer;
 

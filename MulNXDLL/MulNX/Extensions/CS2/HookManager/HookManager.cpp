@@ -14,6 +14,7 @@
 
 static bool AllowReHook = false;//允许重hook
 bool HookManager::Init() {
+	MH_Initialize();
 	this->MainMsgChannel = this->ICreateAndGetMessageChannel();
 	return true;
 }
@@ -136,11 +137,11 @@ LRESULT __stdcall HookManager::MyWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LP
 
 	ImGuiIO& io = ImGui::GetIO();
 	//鼠标：当ImGui想要捕获时总是拦截
-	if (io.WantCaptureMouse && MulNXB::WIN32Msg::IsMouseMessage(uMsg)) {
+	if (io.WantCaptureMouse && MulNX::Base::WIN32Msg::IsMouseMessage(uMsg)) {
 		return true;
 	}
 	//键盘：只在WantTextInput为true时拦截（表示输入框激活）
-	else if (io.WantTextInput && MulNXB::WIN32Msg::IsKeyboardMessage(uMsg)) {
+	else if (io.WantTextInput && MulNX::Base::WIN32Msg::IsKeyboardMessage(uMsg)) {
 		return true;
 	}
 

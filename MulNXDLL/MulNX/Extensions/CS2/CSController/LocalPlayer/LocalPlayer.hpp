@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include"../EntityList/EntityList.hpp"
 
@@ -19,7 +19,7 @@ public:
 	std::ostringstream GetMsg();
 
 	//读取
-	MulNXB::Math::SpatialState GetSpatialState();
+	MulNX::Base::Math::SpatialState GetSpatialState();
 	DirectX::XMFLOAT3 GetPosition();
 	DirectX::XMFLOAT3 GetRotationEuler();
 	float GetFov();

@@ -8,7 +8,7 @@ bool MulNXUIContext::CallSingleContext(const std::string& Name) {
 	MulNXHandle& hContext = ItEntry->second;
 	auto ItSContext = this->ContextMap.find(hContext);
 	if (ItSContext == this->ContextMap.end())return false;
-	MulNXB::any_unique_ptr& SContext = ItSContext->second;
+	MulNX::Base::any_unique_ptr& SContext = ItSContext->second;
 	MulNXSingleUIContext* pSContext = SContext.get<MulNXSingleUIContext>();
 	pSContext->Draw();
 	return true;
@@ -37,7 +37,7 @@ void MulNXUIContext::Draw() {
 		SContextPtr->Draw();
 	}*/
 }
-void MulNXUIContext::AddSingleContext(MulNXHandle hContext, MulNXB::any_unique_ptr SContext) {
+void MulNXUIContext::AddSingleContext(MulNXHandle hContext, MulNX::Base::any_unique_ptr SContext) {
 	MulNXSingleUIContext* SContextPtr = SContext.get<MulNXSingleUIContext>();
 	this->CallMap[SContextPtr->name] = hContext;
 	this->ContextOrder.push_back(hContext);

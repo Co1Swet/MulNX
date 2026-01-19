@@ -44,7 +44,7 @@ bool CSController::Init() {
 	this->Catch();
 
 	//获取全局变量
-	if (!MulNXB::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwGlobalVars, this->CSGlobalVars.Address)) {
+	if (!MulNX::Base::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwGlobalVars, this->CSGlobalVars.Address)) {
 		throw(111);
 	}
 	this->CSGlobalVars.Update();
@@ -78,14 +78,14 @@ void CSController::Catch() {
 }
 int CSController::BasicUpdate() {
 	//获取EntityList
-	if (!MulNXB::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwEntityList, this->EntityList.Address)) {
+	if (!MulNX::Base::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwEntityList, this->EntityList.Address)) {
 		return -1;
 	}
-	if (!MulNXB::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwGlobalVars, this->CSGlobalVars.Address)) {
+	if (!MulNX::Base::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwGlobalVars, this->CSGlobalVars.Address)) {
 		return -2;
 	}
 	//获取本地控制器
-	if (!MulNXB::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwLocalPlayerController, this->LocalPlayer.Entity.Controller.Address)) {
+	if (!MulNX::Base::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwLocalPlayerController, this->LocalPlayer.Entity.Controller.Address)) {
 		return -1001;
 	}
 	if (int result = this->LocalPlayer.Update()) {
@@ -137,7 +137,7 @@ int CSController::EntityListUpdate() {
 }
 int CSController::GameRulesUpdate() {
 	
-	MulNXB::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwGameRules, this->CSGameRules.Address);
+	MulNX::Base::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwGameRules, this->CSGameRules.Address);
 	this->CSGameRules.Update();
 	
 	return 0;
@@ -164,9 +164,9 @@ int CSController::TryGetMsg() {
 	}
 
 	uintptr_t ppPlantedC4;
-	MulNXB::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwPlantedC4, ppPlantedC4);
+	MulNX::Base::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwPlantedC4, ppPlantedC4);
 	if (ppPlantedC4) {
-		MulNXB::Memory::Read(ppPlantedC4, this->PlantedC4.Address);
+		MulNX::Base::Memory::Read(ppPlantedC4, this->PlantedC4.Address);
 		this->PlantedC4.Update();
 	}
 
@@ -199,7 +199,7 @@ void CSController::HandleFreeCameraPath(const CameraSystemIO* const IO) {
 		DirectX::XMFLOAT4 PosAndFOV = IO->Frame.GetPositionAndFOV();
 		DirectX::XMFLOAT3 RotEuler = IO->Frame.GetRotationEuler();
 #ifdef _DEBUG
-		static MulNXB::Math::Frame thisFrame;
+		static MulNX::Base::Math::Frame thisFrame;
 		if (thisFrame != IO->Frame) {
 			thisFrame = IO->Frame;
 			this->IDebugger->AddInfo(thisFrame.GetMsg());
@@ -249,7 +249,7 @@ void CSController::HandleAimAtEntity(int AimTargetIndexInMap) {
 
 	DirectX::XMFLOAT3 dir = TargetEyePos - LocalEyePos;
 	DirectX::XMFLOAT3 TargetViewAngles{};
-	MulNXB::Math::CSDirToEuler(dir, TargetViewAngles);
+	MulNX::Base::Math::CSDirToEuler(dir, TargetViewAngles);
 	
 	this->LocalPlayer.SetViewAngle(TargetViewAngles);
 }

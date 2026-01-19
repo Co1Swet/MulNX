@@ -15,6 +15,6 @@ DirectX::XMFLOAT3 C_Pawn::GetOriginPos()const {
 }
 DirectX::XMFLOAT3 C_Pawn::GetEyePos()const {
 	DirectX::XMFLOAT3 ViewOffset;
-	MulNXB::Memory::Read(this->Address + cs2_dumper::schemas::client_dll::C_BaseModelEntity::m_vecViewOffset, ViewOffset);
+	MulNX::Base::Memory::Read(this->Address + cs2_dumper::schemas::client_dll::C_BaseModelEntity::m_vecViewOffset, ViewOffset);
 	return this->GetOriginPos() + ViewOffset;
 }

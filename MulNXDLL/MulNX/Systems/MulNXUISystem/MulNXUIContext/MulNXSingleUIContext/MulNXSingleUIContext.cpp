@@ -41,8 +41,8 @@ MulNX::Messaging::Message MulNXSingleUIContext::CreateMsg(uint32_t SubType) {
 	return Msg;
 }
 
-MulNXB::any_unique_ptr MulNXSingleUIContext::Create(const MulNX::ModuleBase* const MB) {
-	auto SContext = MulNXB::make_any_unique<MulNXSingleUIContext>();
+MulNX::Base::any_unique_ptr MulNXSingleUIContext::Create(const MulNX::ModuleBase* const MB) {
+	auto SContext = MulNX::Base::make_any_unique<MulNXSingleUIContext>();
 	MulNXSingleUIContext* SContextPtr = SContext.get<MulNXSingleUIContext>();
 	SContextPtr->HModule = MB->HModule;
 	SContextPtr->OwnerMsgChannel = MB->MainMsgChannel;

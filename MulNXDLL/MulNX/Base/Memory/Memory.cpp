@@ -1,6 +1,6 @@
 #include "Memory.hpp"
 
-bool MulNXB::Memory::ReadString(const uintptr_t Address, char* Buffer, size_t BufferSize) {
+bool MulNX::Base::Memory::ReadString(const uintptr_t Address, char* Buffer, size_t BufferSize) {
     if (Buffer == nullptr || BufferSize == 0) {
         return false;
     }
@@ -21,7 +21,7 @@ bool MulNXB::Memory::ReadString(const uintptr_t Address, char* Buffer, size_t Bu
         return false;
     }
 }
-bool MulNXB::Memory::ReadWString(const uintptr_t Address, wchar_t* Buffer, size_t BufferCount) {
+bool MulNX::Base::Memory::ReadWString(const uintptr_t Address, wchar_t* Buffer, size_t BufferCount) {
     if (Buffer == nullptr || BufferCount == 0) {
         return false;
     }

@@ -58,6 +58,6 @@ public:
     void Draw(const char* label);
     void Update(float* pMatrixPtr, float pWinWidth, float pWinHeight);
     void DrawCamera(DirectX::XMFLOAT3 Position, DirectX::XMFLOAT3 Rotation, const char* label);
-    void DrawFrameCamera(const MulNXB::Math::Frame& frame, const char* label);
+    void DrawFrameCamera(const MulNX::Base::Math::Frame& frame, const char* label);
     void DrawFirstPersonCamera(const char* label);
 };

@@ -1,13 +1,13 @@
-﻿#include"FreeCameraPath.hpp"
+#include"FreeCameraPath.hpp"
 
 #include"../../../CameraDrawer/CameraDrawer.hpp"
 
 
 //拷贝语义版
-void FreeCameraPath::AddKeyframe(const MulNXB::Math::CameraKeyFrame& KeyFrame) {
+void FreeCameraPath::AddKeyframe(const MulNX::Base::Math::CameraKeyFrame& KeyFrame) {
 	//按照时间排序插入
     auto it = std::lower_bound(CameraKeyFrames.begin(), CameraKeyFrames.end(), KeyFrame,
-        [&](const MulNXB::Math::CameraKeyFrame& a, const MulNXB::Math::CameraKeyFrame& b) {//引用捕获加速
+        [&](const MulNX::Base::Math::CameraKeyFrame& a, const MulNX::Base::Math::CameraKeyFrame& b) {//引用捕获加速
             return a.KeyTime < b.KeyTime;
         });
     CameraKeyFrames.insert(it, KeyFrame); // 拷贝插入
@@ -16,10 +16,10 @@ void FreeCameraPath::AddKeyframe(const MulNXB::Math::CameraKeyFrame& KeyFrame) {
     return;
 }
 //移动语义版
-void FreeCameraPath::AddKeyframe(MulNXB::Math::CameraKeyFrame&& KeyFrame) {
+void FreeCameraPath::AddKeyframe(MulNX::Base::Math::CameraKeyFrame&& KeyFrame) {
 	//按照时间排序插入
     auto it = std::lower_bound(CameraKeyFrames.begin(), CameraKeyFrames.end(), KeyFrame,
-        [&](const MulNXB::Math::CameraKeyFrame& a, const MulNXB::Math::CameraKeyFrame& b) {//引用捕获加速
+        [&](const MulNX::Base::Math::CameraKeyFrame& a, const MulNX::Base::Math::CameraKeyFrame& b) {//引用捕获加速
             return a.KeyTime < b.KeyTime;
         });
     CameraKeyFrames.insert(it, std::move(KeyFrame)); // 移动插入
@@ -77,7 +77,7 @@ bool FreeCameraPath::Call(CameraSystemIO* IO)const {
 
     //查找当前时间所在的关键帧区间（使用绝对时间来搜索以匹配以绝对时间存储的关键帧）
     auto it = std::lower_bound(CameraKeyFrames.begin(), CameraKeyFrames.end(), Time,
-        [](const MulNXB::Math::CameraKeyFrame& k, float t) {
+        [](const MulNX::Base::Math::CameraKeyFrame& k, float t) {
             return k.KeyTime < t;
         });
 
@@ -89,10 +89,10 @@ bool FreeCameraPath::Call(CameraSystemIO* IO)const {
     if (index + 1 >= this->Size_Frames) return false;
 
     //获取相邻的四个关键帧用于插值
-    const MulNXB::Math::CameraKeyFrame& k1 = CameraKeyFrames[index];
-    const MulNXB::Math::CameraKeyFrame& k2 = CameraKeyFrames[index + 1];
-    const MulNXB::Math::CameraKeyFrame& k0 = (index > 0) ? CameraKeyFrames[index - 1] : k1;
-    const MulNXB::Math::CameraKeyFrame& k3 = (index + 2 < this->Size_Frames) ? CameraKeyFrames[index + 2] : k2;
+    const MulNX::Base::Math::CameraKeyFrame& k1 = CameraKeyFrames[index];
+    const MulNX::Base::Math::CameraKeyFrame& k2 = CameraKeyFrames[index + 1];
+    const MulNX::Base::Math::CameraKeyFrame& k0 = (index > 0) ? CameraKeyFrames[index - 1] : k1;
+    const MulNX::Base::Math::CameraKeyFrame& k3 = (index + 2 < this->Size_Frames) ? CameraKeyFrames[index + 2] : k2;
 
     //计算当前片段的时间比例 (0~1)
     float segmentDuration = k2.KeyTime - k1.KeyTime;
@@ -131,7 +131,7 @@ bool FreeCameraPath::Call(CameraSystemIO* IO)const {
 }
 //绘制函数（虚），各个元素按需实现
 bool FreeCameraPath::Draw(CameraDrawer* CamDrawer, const float* Matrix, const float WinWidth, const float WinHeight)const {
-    const std::vector<MulNXB::Math::CameraKeyFrame>& Frames = this->GetAllKeyFrames();
+    const std::vector<MulNX::Base::Math::CameraKeyFrame>& Frames = this->GetAllKeyFrames();
     int Size = Frames.size();
 
     // 存储上一个关键帧的位置（用于连线）
@@ -155,9 +155,9 @@ bool FreeCameraPath::Draw(CameraDrawer* CamDrawer, const float* Matrix, const fl
             DirectX::XMFLOAT2 prevScreenPos, currentScreenPos;
 
             // 使用CameraDrawer中的转换方法
-            MulNXB::Math::XMWorldToScreen(prevPosition, prevScreenPos, Matrix, WinWidth, WinHeight);
+            MulNX::Base::Math::XMWorldToScreen(prevPosition, prevScreenPos, Matrix, WinWidth, WinHeight);
 
-            MulNXB::Math::XMWorldToScreen(Frame.SpatialState.GetPosition(), currentScreenPos, Matrix, WinWidth, WinHeight);
+            MulNX::Base::Math::XMWorldToScreen(Frame.SpatialState.GetPosition(), currentScreenPos, Matrix, WinWidth, WinHeight);
 
             // 绘制连线
             drawList->AddLine(
@@ -181,9 +181,9 @@ std::string FreeCameraPath::GetMsg()const {
     const size_t& Size = this->CameraKeyFrames.size();
     oss << "  关键帧总数： " << std::to_string(Size) << "\n";
     for (size_t i = 0; i < Size; ++i) {
-        const MulNXB::Math::CameraKeyFrame& Frame = this->CameraKeyFrames.at(i);
+        const MulNX::Base::Math::CameraKeyFrame& Frame = this->CameraKeyFrames.at(i);
         DirectX::XMFLOAT3 Euler;
-        MulNXB::Math::CSQuatToEuler(Frame.SpatialState.GetRotationQuat(), Euler);
+        MulNX::Base::Math::CSQuatToEuler(Frame.SpatialState.GetRotationQuat(), Euler);
         oss << "编号： " << std::to_string(i) << Frame.GetMsg() << "\n";
     }
 	return oss.str();
@@ -192,10 +192,10 @@ std::string FreeCameraPath::GetMsg()const {
 size_t FreeCameraPath::GetKeyFrameCount() const {
     return this->CameraKeyFrames.size();
 }
-const MulNXB::Math::CameraKeyFrame& FreeCameraPath::GetKeyFrame(const size_t& index)const {
+const MulNX::Base::Math::CameraKeyFrame& FreeCameraPath::GetKeyFrame(const size_t& index)const {
     return this->CameraKeyFrames[index];
 }
-const std::vector<MulNXB::Math::CameraKeyFrame>& FreeCameraPath::GetAllKeyFrames()const {
+const std::vector<MulNX::Base::Math::CameraKeyFrame>& FreeCameraPath::GetAllKeyFrames()const {
     return this->CameraKeyFrames;
 }
 void FreeCameraPath::Clear() {
@@ -215,7 +215,7 @@ bool FreeCameraPath::ReadElementMain(const pugi::xml_node& node_ElementMain, std
         this->Clear();
         //读取流程
         for (; node_KeyFrame; node_KeyFrame = node_KeyFrame.next_sibling("KeyFrame")) {
-            MulNXB::Math::CameraKeyFrame CameraKeyFrame;
+            MulNX::Base::Math::CameraKeyFrame CameraKeyFrame;
             // 读取时间
             CameraKeyFrame.KeyTime = node_KeyFrame.attribute("Time").as_float();
 
@@ -237,7 +237,7 @@ bool FreeCameraPath::ReadElementMain(const pugi::xml_node& node_ElementMain, std
                 node_KeyFrame.attribute("Roll").as_float()
             };
             DirectX::XMFLOAT4 temQuat;
-            MulNXB::Math::CSEulerToQuat(temEuler, temQuat);
+            MulNX::Base::Math::CSEulerToQuat(temEuler, temQuat);
 
             CameraKeyFrame.SpatialState.RotationQuat = DirectX::XMLoadFloat4(&temQuat);
 
