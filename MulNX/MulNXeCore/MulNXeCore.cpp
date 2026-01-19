@@ -1,10 +1,10 @@
-﻿#include"MulNXeCore.hpp"
+#include"MulNXeCore.hpp"
 
 #include"IPCer/IPCer.hpp"
 #include"ConfigManager/ConfigManager.hpp"
 
 #include"../ThirdParty/ImGui/imgui.h"
-#include"../../MulNXDLL/MulNXiCore/MulNXiGlobalVars/MulNXiGlobalVarsOnlyRead.hpp"
+#include"../../MulNXDLL/MulNX/Systems/MulNXiGlobalVars/MulNXiGlobalVarsOnlyRead.hpp"
 
 //Impl
 class MulNXeCoreImpl {
