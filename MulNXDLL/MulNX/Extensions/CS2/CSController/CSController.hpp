@@ -20,7 +20,7 @@ public:
 namespace MulNX {
 	class Debugger;
 }
-//依赖自MulNXi体系
+//依赖自Core体系
 class CSController final :public MulNX::ModuleBase {
 	friend MulNX::Debugger;
 private:
@@ -43,7 +43,7 @@ private:
 	int GetIndexInEntityListFromIndexInMap(int IndexInMap);
 public:
 	//继承构造
-	CSController(MulNX::Core* MulNXi) :MulNX::ModuleBase(MulNXi) {
+	CSController() : ModuleBase() {
 		this->Type = MulNX::ModuleType::CSController;
 	}
 	//必要覆写

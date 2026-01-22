@@ -4,7 +4,6 @@
 
 #include <thread>
 #include <chrono>
-#include <Windows.h>
 
 namespace pugi {
 	class xml_node;
@@ -48,7 +47,7 @@ namespace MulNX {
 		std::atomic<unsigned int> Threshold = 200;//跨线程，原子化，单位为毫秒
 		KeyState KeysState[256]{};//跨线程，内部有关跨线程的内容已经原子化
 	public:
-		KeyTracker(MulNX::Core* MulNXi) :ModuleBase(MulNXi) {
+		KeyTracker() : ModuleBase() {
 			this->Type = ModuleType::KeyTracker;
 		}
 

@@ -58,7 +58,7 @@ bool DemoHelper::Init() {
 	SContextPtr->name = "DemoHelper";
 	SContextPtr->pBuffer = MulNX::Base::make_any_unique<MulNX::Base::TripleBuffer<DemoHelperPrivateData>>();
 	SContextPtr->MyFunc = MyDraw;
-	this->hContext = this->MulNXi->IHandleSystem().RegisteHandle(std::move(SingleContext));
+	this->hContext = this->Core->IHandleSystem().RegisteHandle(std::move(SingleContext));
 	Msg.Handle = this->hContext;
 	this->IPublish(std::move(Msg));
 
@@ -94,7 +94,7 @@ void DemoHelper::HandleUICommand(MulNX::Message* Msg) {
 
 void DemoHelper::VirtualMain() {
 	this->EntryProcessMsg();
-	auto ctx = this->MulNXi->IUISystem().GetSingleContext(this->hContext);
+	auto ctx = this->Core->IUISystem().GetSingleContext(this->hContext);
 	if (!ctx) return; // 或跳过本帧处理
 	auto data = ctx->GetWrite<DemoHelperPrivateData>();
 	data->TimeMarks = this->Marks;

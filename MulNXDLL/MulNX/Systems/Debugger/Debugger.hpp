@@ -19,7 +19,7 @@ namespace MulNX {
 		const std::string Warning = "[警告]";
 		const std::string Error = "[错误]";
 	public:
-		Debugger(MulNX::Core* MulNXi) :IDebugger(MulNXi) {
+		Debugger() :IDebugger() {
 			this->Type = ModuleType::Debugger;
 		};
 

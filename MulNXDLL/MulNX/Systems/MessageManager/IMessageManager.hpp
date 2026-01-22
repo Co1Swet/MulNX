@@ -11,7 +11,7 @@ namespace MulNX {
 			friend IMessageChannel;
 			friend class MessageChannel;
 		public:
-			IMessageManager(MulNX::Core* MulNXi) :ModuleBase(MulNXi) {
+			IMessageManager() : ModuleBase() {
 				this->Type = ModuleType::MessageManager;
 			}
 

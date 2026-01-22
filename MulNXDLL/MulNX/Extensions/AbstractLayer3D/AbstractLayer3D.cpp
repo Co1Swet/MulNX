@@ -11,7 +11,7 @@
 #include "../../Extensions/CS2/HookManager/HookManager.hpp"
 
 bool AbstractLayer3D::Init() {
-	this->CS = &this->MulNXi->CS();
+	this->CS = &this->Core->CS();
 
 	this->ISubscribe(MulNX::Messaging::MsgType::Core_ReHook);
 
@@ -29,7 +29,7 @@ bool AbstractLayer3D::Init() {
 void AbstractLayer3D::CheckWin() {
 	//获取客户区大小
 	RECT ClientRect;
-	GetClientRect(this->MulNXi->IUISystem().CS2hWnd, &ClientRect);
+	GetClientRect(this->Core->HookManager().CS2hWnd, &ClientRect);
 	this->CurrentWindowWidth = ClientRect.right - ClientRect.left;   // 宽度
 	this->CurrentWindowHeight = ClientRect.bottom - ClientRect.top;  // 高度
 

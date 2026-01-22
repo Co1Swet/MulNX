@@ -3,15 +3,14 @@
 #include"../../Elements.hpp"
 
 class ElementManager;
-class MulNX::Core;
 class IAbstractLayer3D;
 class CameraDrawer;
 
 class ElementDebugger {
 	friend ElementManager;
 private:
-	//MulNXi指针，用于其它服务
-	MulNX::Core* MulNXi = nullptr;
+	//Core指针，用于其它服务
+	MulNX::Core::Core* Core = nullptr;
 
 	IAbstractLayer3D* AL3D = nullptr;
 	CameraDrawer* CamDrawer = nullptr;
@@ -19,7 +18,7 @@ private:
 	ElementManager* EManager = nullptr;
 
 	//初始化
-	void Init(MulNX::Core* MulNXi, CameraDrawer* CamDrawer, ElementManager* EManager);
+	void Init(MulNX::Core::Core* Core, CameraDrawer* CamDrawer, ElementManager* EManager);
 
 	//调试菜单入口点
 	void DebugMenus(ElementBase* const pElement);

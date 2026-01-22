@@ -136,7 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="MulNX\Base\any_unique_ptr\any_unique_ptr.hpp" />
+    <ClInclude Include="MulNX\Base\any_smart_ptr\any_smart_ptr.hpp" />
     <ClInclude Include="MulNX\Base\Buffer\Buffer.hpp" />
     <ClInclude Include="MulNX\Base\HookUtility\HookUtility.hpp" />
     <ClInclude Include="MulNX\Base\Math\Math.hpp" />
@@ -146,6 +146,7 @@
     <ClInclude Include="MulNX\Base\WIN32Msg\WIN32Msg.hpp" />
     <ClInclude Include="MulNX\Core\ModuleBase\ModuleBase.hpp" />
     <ClInclude Include="MulNX\Core\Core.hpp" />
+    <ClInclude Include="MulNX\Core\ModuleManager\ModuleManager.hpp" />
     <ClInclude Include="MulNX\Extensions\AbstractLayer3D\AbstractLayer3D.hpp" />
     <ClInclude Include="MulNX\Extensions\AbstractLayer3D\IAbstractLayer3D.hpp" />
     <ClInclude Include="MulNX\Extensions\CameraSystem\CameraDrawer\CameraDrawer.hpp" />
@@ -187,7 +188,11 @@
     <ClInclude Include="MulNX\Extensions\CS2\GameSettingsManager\GameSettingsManager.hpp" />
     <ClInclude Include="MulNX\Extensions\CS2\HookManager\HookManager.hpp" />
     <ClInclude Include="MulNX\Extensions\MiniMap\MiniMap.hpp" />
+    <ClInclude Include="MulNX\Extensions\MQTT\MQTTClient\MQTTClient.hpp" />
+    <ClInclude Include="MulNX\Extensions\MQTT\ThirdParty\mqtt.h" />
+    <ClInclude Include="MulNX\Extensions\MQTT\ThirdParty\mqtt_pal.h" />
     <ClInclude Include="MulNX\Extensions\VirtualUser\VirtualUser.hpp" />
+    <ClInclude Include="MulNX\MulNX.hpp" />
     <ClInclude Include="MulNX\Systems\Debugger\Debugger.hpp" />
     <ClInclude Include="MulNX\Systems\Debugger\IDebugger.hpp" />
     <ClInclude Include="MulNX\Systems\HandleSystem\HandleSystem.hpp" />
@@ -206,6 +211,7 @@
     <ClInclude Include="MulNX\Systems\MulNXUISystem\MulNXUIContext\MulNXUIContext.hpp" />
     <ClInclude Include="MulNX\Systems\MulNXUISystem\MulNXUISystem.hpp" />
     <ClInclude Include="MulNX\Systems\Systems.hpp" />
+    <ClInclude Include="Projects\MulNX_CS2\DllMain\DllMain.hpp" />
     <ClInclude Include="ThirdParty\All_cs2_dumper.hpp" />
     <ClInclude Include="ThirdParty\All_ImGui.hpp" />
     <ClInclude Include="ThirdParty\All_MinHook.hpp" />
@@ -245,7 +251,6 @@
     <ClInclude Include="ThirdParty\pugixml\pugixml.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DllMain\DllMain.cpp" />
     <ClCompile Include="MulNX\Base\Buffer\Buffer.cpp" />
     <ClCompile Include="MulNX\Base\HookUtility\HookUtility.cpp" />
     <ClCompile Include="MulNX\Base\Math\Math.cpp" />
@@ -254,6 +259,7 @@
     <ClCompile Include="MulNX\Base\WIN32Msg\WIN32Msg.cpp" />
     <ClCompile Include="MulNX\Core\ModuleBase\ModuleBase.cpp" />
     <ClCompile Include="MulNX\Core\Core.cpp" />
+    <ClCompile Include="MulNX\Core\ModuleManager\ModuleManager.cpp" />
     <ClCompile Include="MulNX\Extensions\AbstractLayer3D\AbstractLayer3D.cpp" />
     <ClCompile Include="MulNX\Extensions\CameraSystem\CameraDrawer\CameraDrawer.cpp" />
     <ClCompile Include="MulNX\Extensions\CameraSystem\CameraSystem.cpp" />
@@ -289,7 +295,11 @@
     <ClCompile Include="MulNX\Extensions\CS2\GameSettingsManager\GameSettingsManager.cpp" />
     <ClCompile Include="MulNX\Extensions\CS2\HookManager\HookManager.cpp" />
     <ClCompile Include="MulNX\Extensions\MiniMap\MiniMap.cpp" />
+    <ClCompile Include="MulNX\Extensions\MQTT\MQTTClient\MQTTClient.cpp" />
+    <ClCompile Include="MulNX\Extensions\MQTT\ThirdParty\mqtt.c" />
+    <ClCompile Include="MulNX\Extensions\MQTT\ThirdParty\mqtt_pal.c" />
     <ClCompile Include="MulNX\Extensions\VirtualUser\VirtualUser.cpp" />
+    <ClCompile Include="MulNX\MulNX.cpp" />
     <ClCompile Include="MulNX\Systems\Debugger\Debugger.cpp" />
     <ClCompile Include="MulNX\Systems\HandleSystem\HandleSystem.cpp" />
     <ClCompile Include="MulNX\Systems\IPCer\IPCer.cpp" />
@@ -302,6 +312,7 @@
     <ClCompile Include="MulNX\Systems\MulNXUISystem\MulNXUIContext\MulNXUIContext.cpp" />
     <ClCompile Include="MulNX\Systems\MulNXUISystem\MulNXUISystem.cpp" />
     <ClCompile Include="MulNX\Systems\Systems.cpp" />
+    <ClCompile Include="Projects\MulNX_CS2\DllMain\DllMain.cpp" />
     <ClCompile Include="ThirdParty\imgui_d11\imgui.cpp" />
     <ClCompile Include="ThirdParty\imgui_d11\imgui_draw.cpp" />
     <ClCompile Include="ThirdParty\imgui_d11\imgui_impl_dx11.cpp" />
@@ -313,6 +324,9 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="ThirdParty\minhook_debug_x64\lib\minhook.x64d.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="MulNX\Extensions\MQTT\ThirdParty\License_MQTT-C.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -14,7 +14,7 @@ private:
 	// 是否随窗口大小联动
 	bool FollowWindow = true;
 public:
-	MiniMap(MulNX::Core* MulNXi) : ModuleBase(MulNXi) {
+	MiniMap() : ModuleBase() {
 		this->Type = MulNX::ModuleType::MiniMap;
 	}
 	bool Init()override;

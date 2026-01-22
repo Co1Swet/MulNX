@@ -5,16 +5,18 @@
 //模块基类
 namespace MulNX {
 	class ModuleBase {
-		friend MulNX::Core;
+		friend MulNX::Core::Core;
 	protected:
-		//核心管理器指针
-		MulNX::Core* MulNXi;
-		//模块类型
+		// 核心管理器指针
+		MulNX::Core::Core* Core;
+		// 模块类型
 		ModuleType Type = ModuleType::ModuleBase;
-		//全局变量指针
+		// 全局变量指针
 		MulNX::GlobalVars* GlobalVars = nullptr;
-		//3D抽象层指针
+		// 3D抽象层指针
 		IAbstractLayer3D* AL3D = nullptr;
+		// 按键追踪器指针
+		MulNX::KeyTracker* KT = nullptr;
 	public:
 		//主要消息管道指针
 		MulNX::Messaging::IMessageChannel* MainMsgChannel = nullptr;
@@ -46,13 +48,12 @@ namespace MulNX {
 		std::shared_mutex& GetMutex() { return this->MyThreadMutex; }
 	public:
 		//删除不需要的构造函数
-		ModuleBase() = delete;
 		ModuleBase(const ModuleBase&) = delete;
 		ModuleBase(ModuleBase&&) = delete;
 		ModuleBase& operator=(const ModuleBase&) = delete;
 		ModuleBase& operator=(ModuleBase&&) = delete;
 		//提供输入核心管理器指针的构造函数，进行绑定
-		ModuleBase(MulNX::Core* MulNXi);
+		ModuleBase();
 		//虚析构函数确保正确调用析构函数
 		virtual ~ModuleBase();
 	protected:
@@ -100,7 +101,7 @@ namespace MulNX {
 		void BaseWindows();
 
 		//入口点
-	private:
+	public:
 		//初始化入口
 		bool EntryInit();
 		//主循环入口

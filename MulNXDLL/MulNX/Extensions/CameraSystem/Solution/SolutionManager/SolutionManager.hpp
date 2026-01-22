@@ -4,28 +4,17 @@
 #include"SolutionConfig.hpp"
 #include"../../../../Systems/KeyTracker/KeyTracker.hpp"
 
-#include<filesystem>
-
-class MulNX::Core;
-
-class IAbstractLayer3D;
-
 class CameraDrawer;
 
 class ElementManager;
 class ProjectManager;
 
 //解决方案管理器，用于管理解决方案
-class SolutionManager {
+class SolutionManager final:public MulNX::ModuleBase {
 private:
-    MulNX::Core* MulNXi = nullptr;
-	IAbstractLayer3D* AL3D = nullptr;
-
     CameraDrawer* CamDrawer = nullptr;
     ElementManager* EManager = nullptr;
     ProjectManager* PManager = nullptr;
-
-    MulNX::KeyTracker* KeyTracker = nullptr;
 public:
     bool NeedRefresh = false;
     SolutionConfig Config{};
@@ -66,7 +55,9 @@ public:
 
     //解决方案管理器基本函数
     //初始化函数
-    void Init(MulNX::Core* MulNXi, CameraDrawer* CamDrawer, ElementManager* EManager, ProjectManager* PManager);
+    bool Init();
+	//依赖注入
+	void InjectDependence(CameraDrawer* CamDrawer, ElementManager* EManager, ProjectManager* PManager);
     //逻辑主函数
     void VirtualMain();
     //遍历，用于迭代处理每个解决方案

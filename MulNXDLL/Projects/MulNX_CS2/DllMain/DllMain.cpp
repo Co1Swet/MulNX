@@ -1,11 +1,13 @@
-#include"../MulNX/Core/Core.hpp"
+#include "DllMain.hpp"
 
-#include<Windows.h>
+#include "../../../MulNX/MulNX.hpp"
+
+#include <Windows.h>
 
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved) {
 	switch (ul_reason_for_call) {
 	case DLL_PROCESS_ATTACH: {
-		HANDLE hThread = CreateThread(NULL, 0, MulNX::Core::CoreStart, NULL, 0, NULL);
+		HANDLE hThread = CreateThread(NULL, 0, Main, NULL, 0, NULL);
 		break;
 	}
 	case DLL_THREAD_ATTACH: {
@@ -22,4 +24,12 @@ BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserv
 	}
 	}
 	return TRUE;
+}
+
+DWORD Main(void*) {
+	MulNX::Core::Core& core = MulNX::Core::Core::GetInstance();
+
+	core.Init();
+
+	return 0;
 }

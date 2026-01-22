@@ -12,13 +12,20 @@
 
 bool CameraSystem::Init() {
     //传递指针，注入依赖，提升性能，直接调用
-    //注意，本模块所有级别的管理器相互显示注入，其它服务借助MulNXi隐式注入
+    //注意，本模块所有级别的管理器相互显示注入，其它服务借助Core隐式注入
     //高频服务隐式注入，指针直调提升性能
     this->CamDrawer.Init(20.0, 30.0, 15.0, 10.0, IM_COL32(255, 0, 255, 255));
-    this->EManager.Init(this->MulNXi, &this->CamDrawer, &this->SManager, &this->PManager);
-    this->SManager.Init(this->MulNXi, &this->CamDrawer, &this->EManager, &this->PManager);
-    this->PManager.Init(this->MulNXi, &this->EManager, &this->SManager);
-    this->WManager.Init(this->MulNXi, &this->EManager, &this->SManager, &this->PManager);
+    this->EManager.EntryInit();
+	this->EManager.InjectDependence(&this->CamDrawer, &this->SManager, &this->PManager);
+
+    this->SManager.EntryInit();
+	this->SManager.InjectDependence(&this->CamDrawer, &this->EManager, &this->PManager);
+
+    this->PManager.EntryInit();
+	this->PManager.InjectDependence(&this->EManager, &this->SManager);
+
+    this->WManager.EntryInit();
+	this->WManager.InjectDependence(&this->EManager, &this->SManager, &this->PManager);
     
     return true;
 }
@@ -147,7 +154,7 @@ void CameraSystem::MenuElement() {
             }
         }
 		////调试模式下解锁更多元素类型的创建
-  //      if (this->MulNXi->GlobalVars().DebugMode) {
+  //      if (this->Core->GlobalVars().DebugMode) {
   //          
   //      }
   //      else {
@@ -163,7 +170,7 @@ void CameraSystem::MenuElement() {
         ImGui::SameLine();
         //载入成功则清空输入框
         if (ImGui::Button("载入##元素")) {
-            if (this->EManager.Element_LoadFromXML_Pre(LoadElementName, this->MulNXi->IPCer().PathGet_CurrentElements())) {
+            if (this->EManager.Element_LoadFromXML_Pre(LoadElementName, this->Core->IPCer().PathGet_CurrentElements())) {
                 LoadElementName.clear();
             }
         }
@@ -225,7 +232,7 @@ void CameraSystem::MenuSolution() {
         ImGui::SameLine();
 		//载入成功则清空输入框
         if (ImGui::Button("载入解决方案")) {
-            if (this->SManager.Solution_LoadFromXML(LoadSolutionName, this->MulNXi->IPCer().PathGet_CurrentSolutions())) {
+            if (this->SManager.Solution_LoadFromXML(LoadSolutionName, this->Core->IPCer().PathGet_CurrentSolutions())) {
                 this->IDebugger->AddSucc(("加载解决方案成功：" + LoadSolutionName).c_str());
                 LoadSolutionName.clear();
             }

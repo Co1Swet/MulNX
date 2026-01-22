@@ -5,7 +5,7 @@
 namespace MulNX {
 	class IDebugger :public MulNX::ModuleBase {
 	public:
-		IDebugger(MulNX::Core* MulNXi) :ModuleBase(MulNXi) {
+		IDebugger() :ModuleBase() {
 			this->Type = ModuleType::Debugger;
 		}
 

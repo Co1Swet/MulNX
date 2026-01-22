@@ -1,8 +1,8 @@
-#include"KeyTracker.hpp"
+#include "KeyTracker.hpp"
 
-#include"../../../ThirdParty/All_pugixml.hpp"
+#include "../../../ThirdParty/All_pugixml.hpp"
 
-#include<unordered_map>
+#include <unordered_map>
 
 std::string MulNX::KeyCheckPack::GetMsg()const {
     std::ostringstream oss;

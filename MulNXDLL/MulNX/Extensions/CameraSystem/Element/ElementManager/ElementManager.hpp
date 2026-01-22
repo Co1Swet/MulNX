@@ -15,11 +15,10 @@ class ProjectManager;
 class ElementDebugger;
 
 //元素管理器，用于管理元素
-class ElementManager {
+class ElementManager final : public MulNX::ModuleBase {
 	//对于元素，我们只给出三个通用接口：创建、获取、删除，具体的各个元素的功能由各个元素类自己实现
 private:
-	//MulNXi指针，用于其它服务
-	MulNX::Core* MulNXi = nullptr;
+	//Core指针，用于其它服务
 
 	IAbstractLayer3D* AL3D = nullptr;
 
@@ -63,9 +62,12 @@ public:
 	//元素管理器基本函数
 	
 	//初始化
-	void Init(MulNX::Core* MulNXi, CameraDrawer* CamDrawer, SolutionManager* SManager, ProjectManager* PManager);
+	bool Init()override;
+	//依赖注入
+	void InjectDependence(CameraDrawer* CamDrawer, SolutionManager* SManager, ProjectManager* PManager);
+
 	//逻辑主函数
-	void VirtualMain();
+	void VirtualMain()override;
 
 
 	//通用基础函数：
@@ -105,11 +107,11 @@ public:
 	bool Element_Create(const std::string& Name) {
 		// 检查是否已存在同名元素
 		if (this->Element_Get<ElementBase>(Name)) {
-			this->MulNXi->IDebugger().AddError("元素名已占用！ 元素名：" + Name);
+			this->IDebugger->AddError("元素名已占用！ 元素名：" + Name);
 			return false;
 		}
 		//输出成功信息
-		this->MulNXi->IDebugger().AddSucc("成功创建元素！  元素名：" + Name);
+		this->IDebugger->AddSucc("成功创建元素！  元素名：" + Name);
 		//创建指针
 		std::shared_ptr<T> Elem = std::make_shared<T>(std::move(Name));
 		//添加进Elements

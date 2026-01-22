@@ -57,7 +57,7 @@ private:
     ProjectManager PManager{};
     WorkspaceManager WManager{};
 public:
-    CameraSystem(MulNX::Core* MulNXi) : ICameraSystem(MulNXi) {
+    CameraSystem() : ICameraSystem() {
         this->Type = MulNX::ModuleType::CameraSystem;
     }
 

@@ -24,7 +24,7 @@ private:
 	int CurrentWindowWidth = 1920;
 	int CurrentWindowHeight = 1080;
 public:
-	AbstractLayer3D(MulNX::Core* MulNXi) :IAbstractLayer3D(MulNXi) {
+	AbstractLayer3D() : IAbstractLayer3D() {
 		this->Type = MulNX::ModuleType::AbstractLayer3D;
 	}
 	bool Init()override;

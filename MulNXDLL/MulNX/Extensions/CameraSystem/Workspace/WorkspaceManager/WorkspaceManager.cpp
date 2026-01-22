@@ -9,14 +9,13 @@
 #include "../../../../Systems/Debugger/IDebugger.hpp"
 #include "../../../../Systems/IPCer/IPCer.hpp"
 
-void WorkspaceManager::Init(MulNX::Core* MulNXi, ElementManager* EManager, SolutionManager* SManager, ProjectManager* PManager) {
-	//核心服务
-	this->MulNXi = MulNXi;
-
+bool WorkspaceManager::Init() {	
+	return true;
+}
+void WorkspaceManager::InjectDependence(ElementManager* EManager, SolutionManager* SManager, ProjectManager* PManager) {
 	this->EManager = EManager;
 	this->SManager = SManager;
 	this->PManager = PManager;
-	return;
 }
 void WorkspaceManager::VirtualMain() {
 	return;
@@ -24,12 +23,12 @@ void WorkspaceManager::VirtualMain() {
 
 bool WorkspaceManager::Workspace_Create(const std::string& Name) {
 	std::string strResult{};
-	if (this->MulNXi->IPCer().PathCreate_Workspace(Name)) {
-		this->MulNXi->IDebugger().AddSucc(strResult);
+	if (this->Core->IPCer().PathCreate_Workspace(Name)) {
+		this->IDebugger->AddSucc(strResult);
 		return true;
 	}
 	else {
-		this->MulNXi->IDebugger().AddError(strResult);
+		this->IDebugger->AddError(strResult);
 		return false;
 	}
 }
@@ -46,11 +45,11 @@ bool WorkspaceManager::Workspace_Save() {
 	if (!this->PManager->Project_Save()) {
 		return false;
 	}
-	this->MulNXi->IDebugger().AddSucc("工作区保存成功");
+	this->IDebugger->AddSucc("工作区保存成功");
 	return true;
 }
 bool WorkspaceManager::Workspace_TrySetPath(const std::string& Name) {
-	return this->MulNXi->IPCer().PathSet_Workspace(Name);
+	return this->Core->IPCer().PathSet_Workspace(Name);
 }
 bool WorkspaceManager::Workspace_Set(const std::string& Name) {
 	//尝试设置路径
@@ -64,7 +63,7 @@ bool WorkspaceManager::Workspace_Set(const std::string& Name) {
 	this->PManager->Project_ClearAll();
 	//制作指针
 	this->CurrentWorkspace = std::make_unique<Workspace>(Name);
-	MulNX::IPCer& IPCer = this->MulNXi->IPCer();
+	MulNX::IPCer& IPCer = this->Core->IPCer();
 	//获取配置信息
 	if (!this->Workspace_ConfigLoad(IPCer.PathGet_CurrentWorkspace())) {
 		return false;
@@ -105,12 +104,12 @@ bool WorkspaceManager::Workspace_ConfigSave() {
 		return false;
 	}
 	std::string strResult{};
-	if (this->CurrentWorkspace->SaveConfigToXML(this->MulNXi->IPCer().PathGet_CurrentWorkspace(), strResult)) {
-		this->MulNXi->IDebugger().AddSucc(strResult);
+	if (this->CurrentWorkspace->SaveConfigToXML(this->Core->IPCer().PathGet_CurrentWorkspace(), strResult)) {
+		this->IDebugger->AddSucc(strResult);
 		return true;
 	}
 	else {
-		this->MulNXi->IDebugger().AddError(strResult);
+		this->IDebugger->AddError(strResult);
 		return false;
 	}
 }
@@ -120,7 +119,7 @@ bool WorkspaceManager::Workspace_ConfigLoad(const std::filesystem::path& Workspa
 	}
     //检查文件路径和名称存在性
     if (WorkspacePath.empty()) {
-        this->MulNXi->IDebugger().AddError("文件夹路径为空，无法从XML文件加载工作区配置！");
+        this->IDebugger->AddError("文件夹路径为空，无法从XML文件加载工作区配置！");
         return false;
     }
 
@@ -128,11 +127,11 @@ bool WorkspaceManager::Workspace_ConfigLoad(const std::filesystem::path& Workspa
     std::filesystem::path FullPath = WorkspacePath / ("WorkspaceConfig.xml");
 
     //输出调试信息
-    this->MulNXi->IDebugger().AddInfo("尝试从XML文件加载工作区配置，文件路径：" + FullPath.string());
+    this->IDebugger->AddInfo("尝试从XML文件加载工作区配置，文件路径：" + FullPath.string());
 
     //检查文件本身存在性
     if (!std::filesystem::exists(FullPath)) {
-        this->MulNXi->IDebugger().AddError("XML文件不存在！文件路径：" + FullPath.string());
+        this->IDebugger->AddError("XML文件不存在！文件路径：" + FullPath.string());
         return false;
     }
 
@@ -142,7 +141,7 @@ bool WorkspaceManager::Workspace_ConfigLoad(const std::filesystem::path& Workspa
     //打开XML文件并检验结果
     pugi::xml_parse_result result = LoadXML.load_file(FullPath.c_str());
     if (!result) {
-        this->MulNXi->IDebugger().AddError("尝试从XML文件加载工作区配置失败，无法加载XML文件！ 文件路径：" + FullPath.string() +
+        this->IDebugger->AddError("尝试从XML文件加载工作区配置失败，无法加载XML文件！ 文件路径：" + FullPath.string() +
             "\n     错误描述：" + result.description());
         return false;
     }
@@ -151,7 +150,7 @@ bool WorkspaceManager::Workspace_ConfigLoad(const std::filesystem::path& Workspa
 	//获取WorkspaceConfig节点
 	pugi::xml_node node_WorkspaceConfig = LoadXML.child("WorkspaceConfig");
 	if (!node_WorkspaceConfig) {
-		this->MulNXi->IDebugger().AddError("尝试从XML文件加载工作区配置失败，XML文件格式错误，找不到根节点！ 文件路径：" + FullPath.string());
+		this->IDebugger->AddError("尝试从XML文件加载工作区配置失败，XML文件格式错误，找不到根节点！ 文件路径：" + FullPath.string());
 		return false;
 	}
 	WorkspaceConfig& Config = this->CurrentWorkspace->Config;
@@ -186,10 +185,10 @@ bool WorkspaceManager::Workspace_ConfigLoad(const std::filesystem::path& Workspa
 		}
 	}
 	catch (...) {
-		this->MulNXi->IDebugger().AddError("尝试从XML文件加载工作区配置失败，XML文件格式错误，读取节点时发生异常！ 文件路径：" + FullPath.string());
+		this->IDebugger->AddError("尝试从XML文件加载工作区配置失败，XML文件格式错误，读取节点时发生异常！ 文件路径：" + FullPath.string());
 		return false;
 	}
-	this->MulNXi->IDebugger().AddSucc("成功从XML文件加载工作区配置！ 文件路径：" + FullPath.string());
+	this->IDebugger->AddSucc("成功从XML文件加载工作区配置！ 文件路径：" + FullPath.string());
 	return true;
 }
 bool WorkspaceManager::Workspace_ConfigApply() {

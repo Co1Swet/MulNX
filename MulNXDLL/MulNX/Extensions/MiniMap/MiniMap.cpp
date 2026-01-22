@@ -22,7 +22,7 @@ bool MiniMap::Init() {
 }
 
 void MiniMap::VirtualMain() {
-	if (this->MulNXi->KT().CheckWithPack(MulNX::KeyCheckPack{ true,false,false,true,'M',1 })) {
+	if (this->KT->CheckWithPack(MulNX::KeyCheckPack{ true,false,false,true,'M',1 })) {
 		this->ShowWindow = !this->ShowWindow;
 	}
 
@@ -87,8 +87,8 @@ void MiniMap::Windows() {
 
 	// 绘制玩家并处理点击
 	for (int i = 1; i <= 10; ++i) {
-		std::shared_lock lk(this->MulNXi->IAbstractLayer3D().GetMtx());
-		D_Player& Player = this->MulNXi->IAbstractLayer3D().GetPlayerMsg(i);
+		std::shared_lock lk(this->AL3D->GetMtx());
+		D_Player& Player = this->AL3D->GetPlayerMsg(i);
 		if (!Player.Alive)continue;
 		ImVec2 PositionInMiniMap = ImVec2(centerScreen.x + Player.Position.x * worldToPixel, centerScreen.y - Player.Position.y * worldToPixel);
 

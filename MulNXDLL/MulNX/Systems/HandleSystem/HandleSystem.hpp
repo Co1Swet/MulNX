@@ -10,7 +10,7 @@ namespace MulNX {
 		std::unordered_map<MulNXHandle, MulNX::Base::any_unique_ptr>Resources{};
 		inline static std::atomic<uint64_t> CurrentHandleValue = 16;
 	public:
-		HandleSystem(MulNX::Core* MulNXi) :IHandleSystem(MulNXi) {
+		HandleSystem() :IHandleSystem() {
 			this->Type = ModuleType::HandleSystem;
 		}
 

@@ -6,16 +6,12 @@
 #include "../../../../Core/Core.hpp"
 #include "../../../../Systems/Systems.hpp"
 
-#include <filesystem>
-
 class ElementManager;
 class SolutionManager;
 
 //项目管理器，用于管理项目
-class ProjectManager {
+class ProjectManager final:public MulNX::ModuleBase {
 private:
-    MulNX::Core* MulNXi = nullptr;
-    MulNX::KeyTracker* KeyTracker = nullptr;
     ElementManager* EManager = nullptr;
     SolutionManager* SManager = nullptr;
 public:
@@ -47,9 +43,15 @@ public:
 
     //项目管理器基本函数
     //初始化函数
-    void Init(MulNX::Core* MulNXi, ElementManager* EManager, SolutionManager* SManager);
+
+    //初始化
+    bool Init()override;
+    //依赖注入
+    void InjectDependence(ElementManager* EManager, SolutionManager* SManager);
+
     //逻辑主函数
-    void VirtualMain();
+    void VirtualMain()override;
+
     //遍历
     void Traversal();
 

@@ -7,8 +7,8 @@
 #include "../../../ThirdParty/All_ImGui.hpp"
 
 //构造与析构函数，线程自动析构
-MulNX::ModuleBase::ModuleBase(MulNX::Core* MulNXi) {
-	this->MulNXi = MulNXi;
+MulNX::ModuleBase::ModuleBase() {
+	this->Core = &MulNX::Core::Core::GetInstance();
 }
 MulNX::ModuleBase::~ModuleBase() {
     this->CloseMyThread();
@@ -60,10 +60,11 @@ bool MulNX::ModuleBase::IsWindowOpen()const {
 
 //基本函数
 bool MulNX::ModuleBase::BaseInit() {
-	this->IMsgManager = &this->MulNXi->IMessageManager();
-	this->IDebugger = &this->MulNXi->IDebugger();
-    this->GlobalVars = &this->MulNXi->GlobalVars();
-    this->AL3D = &this->MulNXi->IAbstractLayer3D();
+	this->IMsgManager = &this->Core->IMessageManager();
+	this->IDebugger = &this->Core->IDebugger();
+    this->GlobalVars = &this->Core->GlobalVars();
+    this->AL3D = &this->Core->IAbstractLayer3D();
+	this->KT = &this->Core->KT();
 
     static uint32_t Begin = 1;
     this->HModule.Value = Begin;

@@ -12,7 +12,7 @@
 #include "../../../../ThirdParty/All_ImGui.hpp"
 
 bool GameSettingsManager::Init() {
-	this->CS = &this->MulNXi->CS();
+	this->CS = &this->Core->CS();
 	C_ConVarSystem& CVarSystem = this->CS->GetCvarSystem();
 
 	this->dof.r_dof_override = CVarSystem.GetCvar("r_dof_override")->GetPtr<bool>();
@@ -149,7 +149,7 @@ bool GameSettingsManager::Init() {
 
 		return;
 		};
-	this->hContext = this->MulNXi->IHandleSystem().RegisteHandle(std::move(SingleContext));
+	this->hContext = this->Core->IHandleSystem().RegisteHandle(std::move(SingleContext));
 	Msg.Handle = this->hContext;
 	this->IPublish(std::move(Msg));
 
@@ -204,14 +204,14 @@ void GameSettingsManager::VirtualMain() {
 
 void GameSettingsManager::ESPDraw() {
 	for (int i = 1;  i <= 10; ++i) {
-		const DirectX::XMFLOAT3 EyePos3D = this->MulNXi->IAbstractLayer3D().GetPlayerMsg(i).EyePosition;
-		const DirectX::XMFLOAT3 OriginPos3D = this->MulNXi->IAbstractLayer3D().GetPlayerMsg(i).Position;
+		const DirectX::XMFLOAT3 EyePos3D = this->Core->IAbstractLayer3D().GetPlayerMsg(i).EyePosition;
+		const DirectX::XMFLOAT3 OriginPos3D = this->Core->IAbstractLayer3D().GetPlayerMsg(i).Position;
 
 		DirectX::XMFLOAT2 EyePos2D{};
 		DirectX::XMFLOAT2 OriginPos2D{};
 
-		MulNX::Base::Math::XMWorldToScreen(EyePos3D, EyePos2D, this->MulNXi->IAbstractLayer3D().GetViewMatrix(), this->MulNXi->IAbstractLayer3D().GetWinWidth(), this->MulNXi->IAbstractLayer3D().GetWinHeight());
-		MulNX::Base::Math::XMWorldToScreen(OriginPos3D, OriginPos2D, this->MulNXi->IAbstractLayer3D().GetViewMatrix(), this->MulNXi->IAbstractLayer3D().GetWinWidth(), this->MulNXi->IAbstractLayer3D().GetWinHeight());
+		MulNX::Base::Math::XMWorldToScreen(EyePos3D, EyePos2D, this->Core->IAbstractLayer3D().GetViewMatrix(), this->Core->IAbstractLayer3D().GetWinWidth(), this->Core->IAbstractLayer3D().GetWinHeight());
+		MulNX::Base::Math::XMWorldToScreen(OriginPos3D, OriginPos2D, this->Core->IAbstractLayer3D().GetViewMatrix(), this->Core->IAbstractLayer3D().GetWinWidth(), this->Core->IAbstractLayer3D().GetWinHeight());
 
 		const float hight{ ::abs(EyePos2D.y - OriginPos2D.y) * 1.25f };
 		const float width{ hight / 2.f };

@@ -1,17 +1,15 @@
 #pragma once
 
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+
 #include "Math/Math.hpp"
 #include "Memory/Memory.hpp"
 #include "WIN32Msg/WIN32Msg.hpp"
 #include "HookUtility/HookUtility.hpp"
-#include "any_unique_ptr/any_unique_ptr.hpp"
+#include "any_smart_ptr/any_smart_ptr.hpp"
 #include "vmt/vmt.hpp"
 #include "Buffer/Buffer.hpp"
-
-//#include"../ThirdParty/All_cs2_dumper.hpp"
-//#include"../ThirdParty/All_ImGui.hpp"
-//#include"../ThirdParty/All_MinHook.hpp"
-//#include"../ThirdParty/All_pugixml.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -27,9 +25,6 @@
 #include <memory>
 #include <variant>
 #include <array>
-
-#undef min
-#undef max
 
 typedef float GameTime_t;
 
@@ -66,9 +61,11 @@ class CameraSystemIO;
 // 核心类前置声明
 
 namespace MulNX {
-	// 核心管理器
-	class Core;
-	// 模块基类
+	namespace Core {
+		// 核心管理器
+		class Core;
+		// 模块基类
+	}
 	class ModuleBase;
 	// 模块类型枚举
 	enum class ModuleType :unsigned int {

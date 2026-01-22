@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="DllMain">
-      <UniqueIdentifier>{3900ffb0-aad7-4069-aa23-2818525e35c1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ThirdParty">
       <UniqueIdentifier>{05774525-b342-4d8d-a8a6-2aa95046cb6b}</UniqueIdentifier>
     </Filter>
@@ -36,9 +33,6 @@
     </Filter>
     <Filter Include="MulNX\Base\WIN32Msg">
       <UniqueIdentifier>{c88091bd-3675-469a-a880-32689881bec8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MulNX\Base\any_unique_ptr">
-      <UniqueIdentifier>{226aabdf-491b-4f3e-adb3-0cdd7364041c}</UniqueIdentifier>
     </Filter>
     <Filter Include="MulNX\Core">
       <UniqueIdentifier>{4ed67fb1-70c4-4acb-bf8d-f980abb46b45}</UniqueIdentifier>
@@ -217,6 +211,30 @@
     <Filter Include="MulNX\Base\vmt">
       <UniqueIdentifier>{f410ffba-0249-4949-b8a2-4f46fd7a66cf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MulNX\Base\any_smart_ptr">
+      <UniqueIdentifier>{226aabdf-491b-4f3e-adb3-0cdd7364041c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\Extensions\MQTT">
+      <UniqueIdentifier>{0f93afc5-e3ed-4695-bbb6-0c52d936b9f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\Extensions\MQTT\ThirdParty">
+      <UniqueIdentifier>{56788ee5-12d1-4be5-9c3f-07dd1f45a307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\Extensions\MQTT\MQTTClient">
+      <UniqueIdentifier>{4280d292-2024-4b3d-9aa0-4d2d0a4f122a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects">
+      <UniqueIdentifier>{e2a0b836-613d-43b0-a6f6-ac0b25cff099}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\MulNX_CS2">
+      <UniqueIdentifier>{13325ae1-ea03-4253-a5bf-ccad2d2e45f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\MulNX_CS2\DllMain">
+      <UniqueIdentifier>{3900ffb0-aad7-4069-aa23-2818525e35c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\Core\ModuleManager">
+      <UniqueIdentifier>{3e2c71ed-121b-448e-8ca2-184a201934a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThirdParty\All_cs2_dumper.hpp">
@@ -332,9 +350,6 @@
     </ClInclude>
     <ClInclude Include="MulNX\Base\Base.hpp">
       <Filter>MulNX\Base</Filter>
-    </ClInclude>
-    <ClInclude Include="MulNX\Base\any_unique_ptr\any_unique_ptr.hpp">
-      <Filter>MulNX\Base\any_unique_ptr</Filter>
     </ClInclude>
     <ClInclude Include="MulNX\Base\HookUtility\HookUtility.hpp">
       <Filter>MulNX\Base\HookUtility</Filter>
@@ -540,11 +555,29 @@
     <ClInclude Include="MulNX\Systems\HandleSystem\IHandleSystem.hpp">
       <Filter>MulNX\Systems\HandleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="MulNX\Base\any_smart_ptr\any_smart_ptr.hpp">
+      <Filter>MulNX\Base\any_smart_ptr</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNX\Extensions\MQTT\ThirdParty\mqtt.h">
+      <Filter>MulNX\Extensions\MQTT\ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNX\Extensions\MQTT\ThirdParty\mqtt_pal.h">
+      <Filter>MulNX\Extensions\MQTT\ThirdParty</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNX\Extensions\MQTT\MQTTClient\MQTTClient.hpp">
+      <Filter>MulNX\Extensions\MQTT\MQTTClient</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNX\MulNX.hpp">
+      <Filter>MulNX</Filter>
+    </ClInclude>
+    <ClInclude Include="Projects\MulNX_CS2\DllMain\DllMain.hpp">
+      <Filter>Projects\MulNX_CS2\DllMain</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNX\Core\ModuleManager\ModuleManager.hpp">
+      <Filter>MulNX\Core\ModuleManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DllMain\DllMain.cpp">
-      <Filter>DllMain</Filter>
-    </ClCompile>
     <ClCompile Include="ThirdParty\imgui_d11\imgui.cpp">
       <Filter>ThirdParty\imgui_d11</Filter>
     </ClCompile>
@@ -737,10 +770,33 @@
     <ClCompile Include="MulNX\Systems\Systems.cpp">
       <Filter>MulNX\Systems</Filter>
     </ClCompile>
+    <ClCompile Include="MulNX\Extensions\MQTT\ThirdParty\mqtt.c">
+      <Filter>MulNX\Extensions\MQTT\ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNX\Extensions\MQTT\ThirdParty\mqtt_pal.c">
+      <Filter>MulNX\Extensions\MQTT\ThirdParty</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNX\Extensions\MQTT\MQTTClient\MQTTClient.cpp">
+      <Filter>MulNX\Extensions\MQTT\MQTTClient</Filter>
+    </ClCompile>
+    <ClCompile Include="Projects\MulNX_CS2\DllMain\DllMain.cpp">
+      <Filter>Projects\MulNX_CS2\DllMain</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNX\MulNX.cpp">
+      <Filter>MulNX</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNX\Core\ModuleManager\ModuleManager.cpp">
+      <Filter>MulNX\Core\ModuleManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="ThirdParty\minhook_debug_x64\lib\minhook.x64d.lib">
       <Filter>ThirdParty\minhook_debug_x64</Filter>
     </Library>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="MulNX\Extensions\MQTT\ThirdParty\License_MQTT-C.txt">
+      <Filter>MulNX\Extensions\MQTT\ThirdParty</Filter>
+    </Text>
   </ItemGroup>
 </Project>

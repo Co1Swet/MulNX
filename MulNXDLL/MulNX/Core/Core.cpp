@@ -20,6 +20,8 @@
 #include "../Extensions/CS2/GameSettingsManager/GameSettingsManager.hpp"
 #include "../Extensions/CS2/HookManager/HookManager.hpp"
 
+using namespace MulNX::Core;
+
 // 页面枚举
 enum class Page :int {
 	Control,
@@ -29,8 +31,6 @@ enum class Page :int {
 
 // 实现类，掌握所有的模块实例
 class CoreImpl {	
-private:
-	MulNX::Core* Core;
 public:
 	// 初始化页面
 	Page Page;
@@ -60,71 +60,46 @@ public:
     GameCfgManager GameCfgManager;
     
 public:
-	// 构造函数，绑定Core指针
-	CoreImpl(MulNX::Core* Core)
-		: Core(Core)
-		, Page(Page::CameraSystem)
-		, KT(Core)
-		, CS(Core)
-		, AL3D(Core)
-		, IPCer(Core)
-		, HookManager(Core)
-		, HandleSystem(Core)
-		, MessageManager(Core)
-		, GlobalVars(Core)
-		, ConsoleManager(Core)
-		, GameSettingsManager(Core)
-		, Debugger(Core)
-		, DemoHelper(Core)
-		, CameraSystem(Core)
-		, VirtualUser(Core)
-		, MiniMap(Core)
-		, GameCfgManager(Core)
-		, UISystem(Core) {
-
-	}
+	// 构造函数
+	CoreImpl() = default;
 };
 
 // 构造函数和析构函数需要管理pImpl的生命周期
-MulNX::Core::Core() {
+Core::Core() {
 	// 创建Impl实例
-	this->pImpl = std::make_unique<CoreImpl>(this);// 绑定指针
+	this->pImpl = std::make_unique<CoreImpl>();// 绑定指针
 }
 
-MulNX::Core::~Core() {
+Core::~Core() {
 	return;
 }
 
 //获取子模块的接口实现
-MulNX::IHandleSystem&				MulNX::Core::IHandleSystem() { return this->pImpl->HandleSystem; }
-MulNX::IDebugger&					MulNX::Core::IDebugger() { return this->pImpl->Debugger; }
-MulNX::IUISystem&					MulNX::Core::IUISystem() { return this->pImpl->UISystem; }
-MulNX::IPCer&						MulNX::Core::IPCer() { return this->pImpl->IPCer; }
-MulNX::KeyTracker&					MulNX::Core::KT() { return this->pImpl->KT; }
-MulNX::Messaging::IMessageManager&	MulNX::Core::IMessageManager() { return this->pImpl->MessageManager; }
-MulNX::GlobalVars&					MulNX::Core::GlobalVars() { return this->pImpl->GlobalVars; }
+MulNX::IHandleSystem&				Core::IHandleSystem() { return this->pImpl->HandleSystem; }
+MulNX::IDebugger&					Core::IDebugger() { return this->pImpl->Debugger; }
+MulNX::IUISystem&					Core::IUISystem() { return this->pImpl->UISystem; }
+MulNX::IPCer&						Core::IPCer() { return this->pImpl->IPCer; }
+MulNX::KeyTracker&					Core::KT() { return this->pImpl->KT; }
+MulNX::Messaging::IMessageManager&	Core::IMessageManager() { return this->pImpl->MessageManager; }
+MulNX::GlobalVars&					Core::GlobalVars() { return this->pImpl->GlobalVars; }
 
-CSController&						MulNX::Core::CS() { return this->pImpl->CS; }
-IAbstractLayer3D&					MulNX::Core::IAbstractLayer3D() { return this->pImpl->AL3D; }
-ConsoleManager&						MulNX::Core::ConsoleManager() { return this->pImpl->ConsoleManager; }
-GameSettingsManager&				MulNX::Core::GameSettingsManager() { return this->pImpl->GameSettingsManager; }
-ICameraSystem&						MulNX::Core::ICameraSystem() { return this->pImpl->CameraSystem; }
-VirtualUser&						MulNX::Core::VirtualUser() { return this->pImpl->VirtualUser; }
-HookManager&						MulNX::Core::HookManager() { return this->pImpl->HookManager; }
-MiniMap&							MulNX::Core::MiniMap() { return this->pImpl->MiniMap; }
-GameCfgManager&						MulNX::Core::GameCfgManager() { return this->pImpl->GameCfgManager; }
+CSController&						Core::CS() { return this->pImpl->CS; }
+IAbstractLayer3D&					Core::IAbstractLayer3D() { return this->pImpl->AL3D; }
+ConsoleManager&						Core::ConsoleManager() { return this->pImpl->ConsoleManager; }
+GameSettingsManager&				Core::GameSettingsManager() { return this->pImpl->GameSettingsManager; }
+ICameraSystem&						Core::ICameraSystem() { return this->pImpl->CameraSystem; }
+VirtualUser&						Core::VirtualUser() { return this->pImpl->VirtualUser; }
+HookManager&						Core::HookManager() { return this->pImpl->HookManager; }
+MiniMap&							Core::MiniMap() { return this->pImpl->MiniMap; }
+GameCfgManager&						Core::GameCfgManager() { return this->pImpl->GameCfgManager; }
 
-DWORD MulNX::Core::CoreStart(void*) {
-	MulNX::Core::GetInstance().Init();
-	return 0;
-}
-MulNX::Core& MulNX::Core::GetInstance() {
-	static MulNX::Core MulNXiCoreInstance;
-	return MulNXiCoreInstance;
+Core& Core::GetInstance() {
+	static Core CoreInstance;
+	return CoreInstance;
 }
 
 // 专用初始化函数
-void MulNX::Core::Init() {
+void Core::Init() {
 	std::thread([]() {
 		MessageBoxW(NULL, L"MulNXDLL 注入成功！", L"MulNX", MB_OK | MB_ICONINFORMATION);
 		}).detach();
@@ -220,7 +195,7 @@ void MulNX::Core::Init() {
 }
 
 // 主窗口
-void MulNX::Core::MulNXiMainWindow() {
+void Core::MulNXiMainWindow() {
 	ImGui::Begin(MulNXiGlobalVarsOnlyRead::FullName);//窗口标题
 
 	// Tab Bar
@@ -265,7 +240,7 @@ void MulNX::Core::MulNXiMainWindow() {
 }
 
 // 主逻辑
-void MulNX::Core::VirtualMain() {
+void Core::VirtualMain() {
 	this->pImpl->GlobalVars.EntryVirtualMain();
 	this->pImpl->AL3D.EntryVirtualMain();
 	this->pImpl->VirtualUser.EntryVirtualMain();

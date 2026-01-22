@@ -5,10 +5,10 @@
 #include <functional>
 
 class HookManager final :public MulNX::ModuleBase {
-    friend MulNX::Core;
+    friend MulNX::Core::Core;
     friend class MulNXiCoreImpl;
 public:
-    HookManager(MulNX::Core* MulNXi) :ModuleBase(MulNXi) {}
+    HookManager() : ModuleBase() {}
 private:
     std::atomic<bool>GuardPleaseAction = false;
     
@@ -28,6 +28,24 @@ private:
 
     std::atomic<bool>ReHook = false;
     std::atomic<bool>NeedReHook = false;
+
+    //D3D11指针组
+public:
+    ID3D11Device* pd3dDevice = nullptr;
+    IDXGISwapChain* pSwapChain = nullptr;
+    ID3D11DeviceContext* pd3dContext = nullptr;
+    ID3D11RenderTargetView* view = nullptr;
+    bool d3dInited = false;
+    HWND CS2hWnd = nullptr;//CS2窗口句柄
+
+    bool UIInited = false;
+    bool ImGuiInited = false;
+    std::filesystem::path imguiIniPath;
+    bool InitUIStyle();
+    bool UIStyleInited()const { return this->UIInited; }
+private:
+    void d3dInit(IDXGISwapChain* _this);
+public:
 
     
     bool Init()override;

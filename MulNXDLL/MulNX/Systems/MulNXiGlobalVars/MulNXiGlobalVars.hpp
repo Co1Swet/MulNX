@@ -17,7 +17,7 @@ namespace MulNX {
 		void PublishTickAll();
 		void Tick();
 	public:
-		GlobalVars(MulNX::Core* MulNXi) :ModuleBase(MulNXi) {
+		GlobalVars() : ModuleBase() {
 			this->Type = ModuleType::MulNXiGlobalVars;
 		}
 

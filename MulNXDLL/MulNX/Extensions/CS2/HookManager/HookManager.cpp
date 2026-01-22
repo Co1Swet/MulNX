@@ -11,6 +11,7 @@
 #include "../../../../ThirdParty/imgui_d11/imgui.h"
 
 #include <chrono>
+#include "../../../../ThirdParty/All_ImGui.hpp"
 
 static bool AllowReHook = false;//允许重hook
 bool HookManager::Init() {
@@ -29,7 +30,7 @@ void HookManager::ThreadMain() {
 	}
 	//检查是否超时：正在等待CheckBack且超过2秒未收到回复
 	if (AllowReHook) {
-		if (this->MulNXi->KT().CheckComboClick(VK_INSERT, 2)) {
+		if (this->Core->KT().CheckComboClick(VK_INSERT, 2)) {
 			ReHook = true;
 			AllowReHook = false;
 		}
@@ -43,7 +44,7 @@ void HookManager::ThreadMain() {
 		
 
 		//重置状态
-		this->MulNXi->IUISystem().d3dInited = false;
+		this->d3dInited = false;
 		this->NeedReHook = true;
 
 		//延迟重新创建Hook
@@ -55,7 +56,7 @@ void HookManager::ThreadMain() {
 		this->IPublish(std::move(Msg));
 
 		ReHook = false;
-		this->MulNXi->GlobalVars().CoreReady = true;
+		this->Core->GlobalVars().CoreReady = true;
 	}
 }
 
@@ -67,8 +68,8 @@ void HookManager::ProcessMsg(MulNX::Messaging::Message* Msg) {
 }
 
 DWORD HookManager::CreateHook() {
-	this->MulNXi->IUISystem().pSwapChain = nullptr;
-	this->MulNXi->IUISystem().pd3dDevice = nullptr;
+	this->pSwapChain = nullptr;
+	this->pd3dDevice = nullptr;
 	while (this->NeedReHook) {
 		const unsigned level_count = 2;
 		D3D_FEATURE_LEVEL levels[level_count] = { D3D_FEATURE_LEVEL_11_0, D3D_FEATURE_LEVEL_10_0 };
@@ -89,13 +90,13 @@ DWORD HookManager::CreateHook() {
 			level_count,
 			D3D11_SDK_VERSION,
 			&sd,
-			&this->MulNXi->IUISystem().pSwapChain,
-			&this->MulNXi->IUISystem().pd3dDevice,
+			&this->pSwapChain,
+			&this->pd3dDevice,
 			nullptr,
 			nullptr);
 
-		if (this->MulNXi->IUISystem().pSwapChain) {
-			auto pVtable = (void***)(this->MulNXi->IUISystem().pSwapChain);
+		if (this->pSwapChain) {
+			auto pVtable = (void***)(this->pSwapChain);
 			auto Vtable = *pVtable;
 
 			this->hkRelease.SetTarget(Vtable[2]);
@@ -108,8 +109,26 @@ DWORD HookManager::CreateHook() {
 				return this->MyPresent(std::forward<decltype(args)>(args)...); });
 			this->hkPresent.CreateAndEnable();
 
-			this->MulNXi->IUISystem().pd3dDevice->Release();
-			this->MulNXi->IUISystem().pSwapChain->Release();
+			this->pd3dDevice->Release();
+			this->pSwapChain->Release();
+
+			this->Core->IUISystem().SetFrameBefore([this]()->void {
+
+				this->d3dInit(this->pSwapChain);
+				ImGui_ImplDX11_NewFrame();
+				ImGui_ImplWin32_NewFrame();
+				ImGui::NewFrame();
+
+				return;
+				});
+			this->Core->IUISystem().SetFrameBehind([this]()->void {
+
+				ImGui::EndFrame();
+				ImGui::Render();
+				this->pd3dContext->OMSetRenderTargets(1, &this->view, nullptr);
+				ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
+				return;
+				});
 
 			this->GuardPleaseAction = false;
 			this->NeedReHook = false;
@@ -117,12 +136,69 @@ DWORD HookManager::CreateHook() {
 	}
 	return 0;
 }
+bool HookManager::InitUIStyle() {
+	ImGuiStyle& style = ImGui::GetStyle();
+
+	return true;
+}
+void HookManager::d3dInit(IDXGISwapChain* _this) {
+	if (!this->d3dInited) {
+		_this->GetDevice(__uuidof(ID3D11Device), (void**)&this->pd3dDevice);
+		this->pd3dDevice->GetImmediateContext(&this->pd3dContext);
+
+		DXGI_SWAP_CHAIN_DESC sd;
+		_this->GetDesc(&sd);
+		this->CS2hWnd = sd.OutputWindow;
+
+		ID3D11Texture2D* buf = nullptr;
+		_this->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&buf);
+		if (buf == nullptr)return;
+		this->pd3dDevice->CreateRenderTargetView(buf, nullptr, &this->view);
+		buf->Release();
+
+
+
+		if (!this->ImGuiInited) {
+
+
+			ImGui::CreateContext();
+			//设置ini文件路径
+			ImGuiIO& io = ImGui::GetIO();
+
+
+			ImGui_ImplWin32_Init(this->CS2hWnd);
+			ImGui_ImplDX11_Init(this->pd3dDevice, this->pd3dContext);
+
+			ImFont* font = io.Fonts->AddFontFromFileTTF(
+				"C:/Windows/Fonts/msyh.ttc",  // 微软雅黑字体路径
+				16.0f,                        // 字体大小
+				nullptr,                      // 使用默认配置
+				io.Fonts->GetGlyphRangesChineseFull() // 加载所有中文字符
+			);
+			ImGui_ImplDX11_CreateDeviceObjects();
+
+			// 转换为GBK（供ImGui使用）
+
+			this->imguiIniPath = this->Core->IPCer().PathGet_Core() / "MulNXUIConfig.ini";
+			std::u8string u8path = this->imguiIniPath.u8string();
+			static std::string utf8Path(u8path.begin(), u8path.end());
+			std::replace(utf8Path.begin(), utf8Path.end(), '\\', '/');
+			io.IniFilename = utf8Path.c_str();
+
+			this->InitUIStyle();
+			this->ImGuiInited = true;
+		}
+
+
+		this->Core->HookManager().d3dInited = true;
+	}
+}
 
 LRESULT __stdcall HookManager::EntryMyWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	if (MulNX::Core::GetInstance().HookManager().MyWndProc(hwnd, uMsg, wParam, lParam)) {
+	if (MulNX::Core::Core::GetInstance().HookManager().MyWndProc(hwnd, uMsg, wParam, lParam)) {
 		return true;
 	}	
-	return CallWindowProcW(MulNX::Core::GetInstance().HookManager().OriginWndProc, hwnd, uMsg, wParam, lParam);
+	return CallWindowProcW(MulNX::Core::Core::GetInstance().HookManager().OriginWndProc, hwnd, uMsg, wParam, lParam);
 }
 
 
@@ -130,7 +206,7 @@ LRESULT __stdcall HookManager::EntryMyWndProc(HWND hwnd, UINT uMsg, WPARAM wPara
 //ImGui窗口处理函数导入
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 LRESULT __stdcall HookManager::MyWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	std::unique_lock lock(this->MulNXi->IUISystem().UIMtx);
+	std::unique_lock lock(this->Core->IUISystem().UIMtx);
 	if (ImGui_ImplWin32_WndProcHandler(hwnd, uMsg, wParam, lParam)) {
 		return true;
 	}
@@ -149,9 +225,10 @@ LRESULT __stdcall HookManager::MyWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LP
 }
 HRESULT __stdcall HookManager::MyPresent(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags) {
 	if(!this->OriginWndProc)
-		this->OriginWndProc = (WNDPROC)SetWindowLongPtrW(this->MulNXi->IUISystem().CS2hWnd, GWLP_WNDPROC, (LONG_PTR)MulNX::Core::GetInstance().HookManager().EntryMyWndProc);
-	if (this->MulNXi->GlobalVars().SystemReady) {
-		this->MulNXi->IUISystem().Render(swapChain, syncInterval, flags);
+		this->OriginWndProc = (WNDPROC)SetWindowLongPtrW(this->CS2hWnd, GWLP_WNDPROC, (LONG_PTR)MulNX::Core::Core::GetInstance().HookManager().EntryMyWndProc);
+	if (this->Core->GlobalVars().SystemReady) {
+		this->pSwapChain = swapChain;
+		this->Core->IUISystem().Render();
 	}
 	return 0;
 }

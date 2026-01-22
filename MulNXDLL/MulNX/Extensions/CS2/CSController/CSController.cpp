@@ -39,7 +39,7 @@ void CSController::InitInterface() {
 	this->CmdInterface = pFunc(InterfaceName, nullptr);
 }
 bool CSController::Init() {
-	this->AL3D = &this->MulNXi->IAbstractLayer3D();
+	this->AL3D = &this->Core->IAbstractLayer3D();
 	this->GetModules();
 	this->Catch();
 
@@ -92,7 +92,7 @@ int CSController::BasicUpdate() {
 		return result;
 	}
 	this->CSGlobalVars.Update();
-	//this->MulNXi->IAbstractLayer3D().PushTime(this->Local.GlobalVars.CurrentTime);
+	//this->Core->IAbstractLayer3D().PushTime(this->Local.GlobalVars.CurrentTime);
 
 	static int OldRoundStartCount = this->CSGameRules.m_nRoundStartCount;
 	if (OldRoundStartCount != this->CSGameRules.m_nRoundStartCount) {

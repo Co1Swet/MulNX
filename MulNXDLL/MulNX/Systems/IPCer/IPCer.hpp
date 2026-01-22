@@ -94,7 +94,7 @@ namespace MulNX {
     class IPCer final :public MulNX::ModuleBase {
         Paths Paths{};
     public:
-        IPCer(MulNX::Core* MulNXi) :ModuleBase(MulNXi) {
+        IPCer() : ModuleBase() {
             this->Type = MulNX::ModuleType::IPCer;
         }
 

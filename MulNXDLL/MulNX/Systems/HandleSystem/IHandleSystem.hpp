@@ -5,7 +5,7 @@
 namespace MulNX {
 	class IHandleSystem :public ModuleBase {
 	public:
-		IHandleSystem(MulNX::Core* Core) :ModuleBase(Core) {
+		IHandleSystem() : ModuleBase() {
 			this->Type = ModuleType::HandleSystem;
 		}
 		

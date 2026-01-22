@@ -9,7 +9,7 @@ typedef unsigned int ImU32;
 
 class ICameraSystem :public MulNX::ModuleBase {
 public:
-	ICameraSystem(MulNX::Core* MulNXi) : ModuleBase(MulNXi) {
+	ICameraSystem() : ModuleBase() {
 		this->Type = MulNX::ModuleType::CameraSystem;
 	}
 

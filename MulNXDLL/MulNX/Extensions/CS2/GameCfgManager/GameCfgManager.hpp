@@ -20,7 +20,7 @@ private:
 	std::vector<std::string>ToolCfgs{};
 	std::vector<std::string>GameCfgs{};
 public:
-	GameCfgManager(MulNX::Core* MulNXi) :ModuleBase(MulNXi) {
+	GameCfgManager() : ModuleBase() {
 		this->Type = MulNX::ModuleType::GameCfgManager;
 	}
 	~GameCfgManager() = default;

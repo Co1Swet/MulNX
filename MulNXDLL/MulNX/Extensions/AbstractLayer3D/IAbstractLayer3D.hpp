@@ -30,7 +30,7 @@ public:
 		return this->Mtx;
 	}
 
-	IAbstractLayer3D(MulNX::Core* MulNXi) :ModuleBase(MulNXi) {
+	IAbstractLayer3D() :ModuleBase() {
 		this->Type = MulNX::ModuleType::AbstractLayer3D;
 	}
 	virtual ~IAbstractLayer3D() = default;

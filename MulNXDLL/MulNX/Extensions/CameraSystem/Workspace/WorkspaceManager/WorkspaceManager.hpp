@@ -2,21 +2,14 @@
 
 #include "../Workspace/Workspace.hpp"
 
-#include <memory>
-#include <filesystem>
-
-namespace MulNX {
-	class Core;
-}
+#include "../../../../Core/ModuleBase/ModuleBase.hpp"
 
 class ElementManager;
 class SolutionManager;
 class ProjectManager;
 
-class WorkspaceManager {
+class WorkspaceManager final:public MulNX::ModuleBase {
 private:
-	MulNX::Core* MulNXi{};
-
 	ElementManager* EManager = nullptr;
 	SolutionManager* SManager = nullptr;
 	ProjectManager* PManager = nullptr;
@@ -28,9 +21,11 @@ public:
 	//工作区管理器基本函数
 	
 	//初始化
-	void Init(MulNX::Core* MulNXi, ElementManager* EManager, SolutionManager* SManager, ProjectManager* PManager);
+	bool Init()override;
+	//依赖注入
+	void InjectDependence(ElementManager* EManager, SolutionManager* SManager, ProjectManager* PManager);
 	//逻辑主函数
-	void VirtualMain();
+	void VirtualMain()override;
 
 
 	//工作区

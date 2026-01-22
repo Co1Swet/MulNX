@@ -11,7 +11,7 @@ private:
 	std::atomic<MulNX::Base::any_unique_ptr*>* ppUpdateData = nullptr;
 	MulNXHandle hContext{};
 public:
-	DemoHelper(MulNX::Core* MulNXi) :ModuleBase(MulNXi) {};
+	DemoHelper() : ModuleBase() {};
 
 	bool Init()override;
 

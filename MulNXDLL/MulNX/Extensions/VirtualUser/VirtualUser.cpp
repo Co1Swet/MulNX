@@ -12,7 +12,7 @@
 
 
 bool VirtualUser::Init() {
-	this->CameraSystem = &this->MulNXi->ICameraSystem();
+	this->CameraSystem = &this->Core->ICameraSystem();
 	this->Running = true;
 
 	//this->ISubscribe(MsgType::Core_Tick1);
@@ -54,7 +54,7 @@ void VirtualUser::Menu() {
 	ImGui::SameLine();
 	if (ImGui::Button("执行")) {
 		if (!StrText.empty()) {
-			this->MulNXi->IAbstractLayer3D().ExecuteCommand(StrText);
+			this->Core->IAbstractLayer3D().ExecuteCommand(StrText);
 			StrText.clear();
 		}
 	}
@@ -63,10 +63,10 @@ void VirtualUser::Menu() {
 }
 void VirtualUser::VirtualMain() {
 	this->EntryProcessMsg();
-	if (this->MulNXi->KT().CheckWithPack(MulNX::KeyCheckPack{ true,false,false,true,'P',1 })) {
+	if (this->Core->KT().CheckWithPack(MulNX::KeyCheckPack{ true,false,false,true,'P',1 })) {
 		this->CameraSystem->ShutDown();
 	}
-	if (this->MulNXi->KT().CheckWithPack(MulNX::KeyCheckPack{ true,false,false,true,'T',1 })) {
+	if (this->Core->KT().CheckWithPack(MulNX::KeyCheckPack{ true,false,false,true,'T',1 })) {
 		bool AutoRunning = this->Running.load();
 		if (AutoRunning) {
 			this->Running.store(false);

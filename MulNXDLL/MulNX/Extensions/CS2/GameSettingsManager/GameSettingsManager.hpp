@@ -72,7 +72,7 @@ private:
 
 	MulNXHandle hContext{};
 public:
-	GameSettingsManager(MulNX::Core* MulNXi) :MulNX::ModuleBase(MulNXi) {
+	GameSettingsManager() : ModuleBase() {
 		this->Type = MulNX::ModuleType::GameSettingsManager;
 	}
 

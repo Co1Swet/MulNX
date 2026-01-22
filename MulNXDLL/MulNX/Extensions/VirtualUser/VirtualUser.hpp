@@ -8,7 +8,7 @@ class VirtualUser final :public MulNX::ModuleBase {
 private:
 	ICameraSystem* CameraSystem = nullptr;
 public:
-	VirtualUser(MulNX::Core* MulNXi) : ModuleBase(MulNXi) {
+	VirtualUser() : ModuleBase() {
 		this->Type = MulNX::ModuleType::VirtualUser;
 	}
 
