@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include<Windows.h>
 #include<filesystem>
@@ -61,6 +61,8 @@ public:
     bool HadCS2Path = false;
 
     bool NeedToTryInject = false;
+	bool Injected = false;
+
     bool HasCS2hProcess = false;
 
     long long CS2OpenTime = 0;
@@ -75,6 +77,8 @@ public:
     bool TryCatchCS2();
     //执行注入
     bool Inject();
+
+
 
     //CS2相关资源
 

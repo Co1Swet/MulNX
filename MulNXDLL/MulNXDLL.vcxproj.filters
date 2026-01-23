@@ -76,9 +76,6 @@
     <Filter Include="MulNX\Systems\MulNXUISystem\MulNXUIContext\MulNXSingleUIContext">
       <UniqueIdentifier>{2019cecd-6ad6-435b-86d2-4578041b9bfd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MulNX\Base\Buffer">
-      <UniqueIdentifier>{2810b342-9455-42b2-8930-0579c6ad3ba4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MulNX\Systems\IPCer">
       <UniqueIdentifier>{59f47b58-4423-4a80-b2dc-70c58c51c89d}</UniqueIdentifier>
     </Filter>
@@ -234,6 +231,9 @@
     </Filter>
     <Filter Include="MulNX\Core\ModuleManager">
       <UniqueIdentifier>{3e2c71ed-121b-448e-8ca2-184a201934a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\Base\Buffer">
+      <UniqueIdentifier>{2810b342-9455-42b2-8930-0579c6ad3ba4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

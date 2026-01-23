@@ -2,4 +2,4 @@
 
 typedef unsigned long DWORD;
 
-static DWORD Main(void*);
+DWORD MulNX_CS2_Start(void*);

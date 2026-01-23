@@ -15,7 +15,7 @@ void publish_callback(void** state, struct mqtt_response_publish* published) {
     std::cout << ", 内容: ";
     std::cout.write(static_cast<const char*>(published->application_message), published->application_message_size);
     std::cout << std::endl;*/
-    MulNX::Core::Core::GetInstance().IDebugger().AddInfo(
+    MulNX::Core::Core::pCore()->IDebugger().AddInfo(
         "收到消息 - 主题: " +
         std::string(static_cast<const char*>(published->topic_name), published->topic_name_size) +
         ", 内容: " +

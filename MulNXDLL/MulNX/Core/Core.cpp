@@ -33,7 +33,7 @@ enum class Page :int {
 class CoreImpl {	
 public:
 	// 初始化页面
-	Page Page;
+	Page Page = Page::Control;
 
     // 地基模块
     MulNX::KeyTracker KT;
@@ -93,30 +93,27 @@ HookManager&						Core::HookManager() { return this->pImpl->HookManager; }
 MiniMap&							Core::MiniMap() { return this->pImpl->MiniMap; }
 GameCfgManager&						Core::GameCfgManager() { return this->pImpl->GameCfgManager; }
 
-Core& Core::GetInstance() {
-	static Core CoreInstance;
-	return CoreInstance;
-}
-
 // 专用初始化函数
 void Core::Init() {
+	MulNX::Core::Core::pInstance = this;
+
 	std::thread([]() {
 		MessageBoxW(NULL, L"MulNXDLL 注入成功！", L"MulNX", MB_OK | MB_ICONINFORMATION);
 		}).detach();
 
 	// 无依赖核心基础模块初始化
-	this->pImpl->MessageManager.EntryInit();
+	this->pImpl->MessageManager.EntryInit(this);
 	this->pImpl->MessageManager.EntryCreateThread();// 包含线程创建
 	this->pImpl->MessageManager.SetMyThreadDelta(10);// 注意，此模块内部动态调整频率
 	this->pImpl->KT.EntryCreateThread();// 包含线程创建
 	this->pImpl->KT.SetMyThreadDelta(3);
-	this->pImpl->IPCer.EntryInit();
-	this->pImpl->Debugger.EntryInit();
-	this->pImpl->GlobalVars.EntryInit();
+	this->pImpl->IPCer.EntryInit(this);
+	this->pImpl->Debugger.EntryInit(this);
+	this->pImpl->GlobalVars.EntryInit(this);
 
 	// 钩子层初始化
 	this->pImpl->HookManager.ReHook = true;
-	this->pImpl->HookManager.EntryInit();
+	this->pImpl->HookManager.EntryInit(this);
 	this->pImpl->HookManager.EntryCreateThread();
 	this->pImpl->HookManager.SetMyThreadDelta(250);
 
@@ -125,25 +122,25 @@ void Core::Init() {
 	}
 
 	// UI模块初始化
-	this->pImpl->UISystem.EntryInit();
+	this->pImpl->UISystem.EntryInit(this);
 
 	// 逆向层初始化
 	this->pImpl->CS.InitInterface();
-	this->pImpl->CS.EntryInit();
+	this->pImpl->CS.EntryInit(this);
 	this->pImpl->CS.EntryCreateThread();// 包含线程创建
 	this->pImpl->CS.SetMyThreadDelta(3);
-	this->pImpl->AL3D.EntryInit();
+	this->pImpl->AL3D.EntryInit(this);
 
 	// 功能模块初始化
-	this->pImpl->ConsoleManager.EntryInit();
-	this->pImpl->GameSettingsManager.EntryInit();
-	this->pImpl->CameraSystem.EntryInit();
-	this->pImpl->GameCfgManager.EntryInit();
-	this->pImpl->DemoHelper.EntryInit();
+	this->pImpl->ConsoleManager.EntryInit(this);
+	this->pImpl->GameSettingsManager.EntryInit(this);
+	this->pImpl->CameraSystem.EntryInit(this);
+	this->pImpl->GameCfgManager.EntryInit(this);
+	this->pImpl->DemoHelper.EntryInit(this);
 	// 虚拟用户层初始化（用于自动化任务）
-	this->pImpl->VirtualUser.EntryInit();
+	this->pImpl->VirtualUser.EntryInit(this);
 	// 小地图模块初始化
-	this->pImpl->MiniMap.EntryInit();
+	this->pImpl->MiniMap.EntryInit(this);
 
 	// 初始化额外任务（对系统无影响）
 	this->pImpl->Debugger.AddSucc("注入成功！");
@@ -191,7 +188,12 @@ void Core::Init() {
 
 
 	this->pImpl->GlobalVars.SystemReady = true;
+
 	return;
+}
+
+MulNX::Core::Core* Core::pCore() {
+	return Core::pInstance;
 }
 
 // 主窗口

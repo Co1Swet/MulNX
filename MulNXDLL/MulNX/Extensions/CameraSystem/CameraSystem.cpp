@@ -15,16 +15,16 @@ bool CameraSystem::Init() {
     //注意，本模块所有级别的管理器相互显示注入，其它服务借助Core隐式注入
     //高频服务隐式注入，指针直调提升性能
     this->CamDrawer.Init(20.0, 30.0, 15.0, 10.0, IM_COL32(255, 0, 255, 255));
-    this->EManager.EntryInit();
+    this->EManager.EntryInit(this->Core);
 	this->EManager.InjectDependence(&this->CamDrawer, &this->SManager, &this->PManager);
 
-    this->SManager.EntryInit();
+    this->SManager.EntryInit(this->Core);
 	this->SManager.InjectDependence(&this->CamDrawer, &this->EManager, &this->PManager);
 
-    this->PManager.EntryInit();
+    this->PManager.EntryInit(this->Core);
 	this->PManager.InjectDependence(&this->EManager, &this->SManager);
 
-    this->WManager.EntryInit();
+    this->WManager.EntryInit(this->Core);
 	this->WManager.InjectDependence(&this->EManager, &this->SManager, &this->PManager);
     
     return true;

@@ -10,17 +10,15 @@ namespace MulNX {
     namespace Core {
         class Core {
         private:
+            inline static Core* pInstance = nullptr;
             // 数据存储：
 
             // Impl的指针
             std::unique_ptr<CoreImpl> pImpl;
         public:
-            // 获取核心实例
-            static Core& GetInstance();
-        private:
+            static Core* pCore();
             // 构造函数
             Core();
-        public:
             // 析构函数
             ~Core();
             // 删除拷贝构造

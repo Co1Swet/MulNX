@@ -8,7 +8,7 @@
 
 //构造与析构函数，线程自动析构
 MulNX::ModuleBase::ModuleBase() {
-	this->Core = &MulNX::Core::Core::GetInstance();
+	
 }
 MulNX::ModuleBase::~ModuleBase() {
     this->CloseMyThread();
@@ -60,17 +60,22 @@ bool MulNX::ModuleBase::IsWindowOpen()const {
 
 //基本函数
 bool MulNX::ModuleBase::BaseInit() {
-	this->IMsgManager = &this->Core->IMessageManager();
-	this->IDebugger = &this->Core->IDebugger();
-    this->GlobalVars = &this->Core->GlobalVars();
-    this->AL3D = &this->Core->IAbstractLayer3D();
-	this->KT = &this->Core->KT();
+    try {
+        this->IMsgManager = &this->Core->IMessageManager();
+        this->IDebugger = &this->Core->IDebugger();
+        this->GlobalVars = &this->Core->GlobalVars();
+        this->AL3D = &this->Core->IAbstractLayer3D();
+        this->KT = &this->Core->KT();
 
-    static uint32_t Begin = 1;
-    this->HModule.Value = Begin;
-    ++Begin;
+        static uint32_t Begin = 1;
+        this->HModule.Value = Begin;
+        ++Begin;
 
-    this->IRegiste();
+        this->IRegiste();
+    }
+	catch (...) {
+        return false;
+	}
 
     return true;
 }
@@ -96,7 +101,8 @@ void MulNX::ModuleBase::BaseWindows() {
 
 
 //各类入口点函数
-bool MulNX::ModuleBase::EntryInit() {
+bool MulNX::ModuleBase::EntryInit(MulNX::Core::Core* Core) {
+    this->Core = Core;
     if (!this->BaseInit()) {
         return false;
     }

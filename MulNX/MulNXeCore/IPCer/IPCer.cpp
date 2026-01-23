@@ -1,4 +1,4 @@
-﻿#include"IPCer.hpp"
+#include"IPCer.hpp"
 
 #include"../MulNXeCore.hpp"
 #include"../ConfigManager/ConfigManager.hpp"
@@ -98,6 +98,7 @@ void IPCer::VirtualMain() {
             if (Countdown <= 0) {
                 if (this->Inject()) {
                     this->NeedToTryInject = false;
+					this->Injected = true;
                 }
             }
         }
@@ -105,6 +106,11 @@ void IPCer::VirtualMain() {
             this->TryCatchCS2();
         }
     }
+    /*if (this->Injected && this->DLLStarted == false) {
+		if (this->StartDLL()) {
+            this->DLLStarted = true;
+        }
+    }*/
 }
 
 
@@ -253,8 +259,6 @@ bool IPCer::Inject() {
         return false;
     }
 
-    bool InjectResult;
-
     //在目标进程分配内存
     LPVOID pRemoteMem = VirtualAllocEx(
         this->CS2hProcess,
@@ -323,7 +327,34 @@ bool IPCer::Inject() {
     if (exitCode) {
         return true;
     }
-    else {
-        return false;
-    }
 }
+
+//bool IPCer::StartDLL() {
+//    //获取MulNXDLL地址
+//    HMODULE hMulNXDLL = GetModuleHandleW(L"MulNXDLL.dll");
+//    if (!hMulNXDLL) {
+//        return false;
+//    }
+//    // 获取MulNX_CS2_Start函数地址
+//    FARPROC pMulNX_CS2_Start = GetProcAddress(hMulNXDLL, "MulNX_CS2_Start");
+//    if (!pMulNX_CS2_Start) {
+//        return false;
+//    }
+//    // 创建线程执行MulNX_CS2_Start函数
+//    HANDLE hStartThread = CreateRemoteThread(
+//        this->CS2hProcess,
+//        NULL,
+//        0,
+//        (LPTHREAD_START_ROUTINE)pMulNX_CS2_Start,
+//        NULL,
+//        0,
+//        NULL
+//    );
+//    if (!hStartThread) {
+//        return false;
+//    }
+//    //等待线程执行完成
+//    WaitForSingleObject(hStartThread, INFINITE);
+//    CloseHandle(hStartThread);
+//    return true;
+//}

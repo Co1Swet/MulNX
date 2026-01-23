@@ -195,10 +195,10 @@ void HookManager::d3dInit(IDXGISwapChain* _this) {
 }
 
 LRESULT __stdcall HookManager::EntryMyWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	if (MulNX::Core::Core::GetInstance().HookManager().MyWndProc(hwnd, uMsg, wParam, lParam)) {
+	if (MulNX::Core::Core::pCore()->HookManager().MyWndProc(hwnd, uMsg, wParam, lParam)) {
 		return true;
 	}	
-	return CallWindowProcW(MulNX::Core::Core::GetInstance().HookManager().OriginWndProc, hwnd, uMsg, wParam, lParam);
+	return CallWindowProcW(MulNX::Core::Core::pCore()->HookManager().OriginWndProc, hwnd, uMsg, wParam, lParam);
 }
 
 
@@ -225,7 +225,7 @@ LRESULT __stdcall HookManager::MyWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LP
 }
 HRESULT __stdcall HookManager::MyPresent(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags) {
 	if(!this->OriginWndProc)
-		this->OriginWndProc = (WNDPROC)SetWindowLongPtrW(this->CS2hWnd, GWLP_WNDPROC, (LONG_PTR)MulNX::Core::Core::GetInstance().HookManager().EntryMyWndProc);
+		this->OriginWndProc = (WNDPROC)SetWindowLongPtrW(this->CS2hWnd, GWLP_WNDPROC, (LONG_PTR)MulNX::Core::Core::pCore()->HookManager().EntryMyWndProc);
 	if (this->Core->GlobalVars().SystemReady) {
 		this->pSwapChain = swapChain;
 		this->Core->IUISystem().Render();

@@ -19,14 +19,9 @@ class ElementManager final : public MulNX::ModuleBase {
 	//对于元素，我们只给出三个通用接口：创建、获取、删除，具体的各个元素的功能由各个元素类自己实现
 private:
 	//Core指针，用于其它服务
-
-	IAbstractLayer3D* AL3D = nullptr;
-
 	CameraDrawer* CamDrawer = nullptr;
-
 	SolutionManager* SManager = nullptr;
 	ProjectManager* PManager = nullptr;
-
 	ElementDebugger* ElementDebugger = nullptr;
 
 	//是否需要更新当前操作的元素

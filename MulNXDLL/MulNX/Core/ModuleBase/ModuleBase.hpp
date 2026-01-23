@@ -103,7 +103,7 @@ namespace MulNX {
 		//入口点
 	public:
 		//初始化入口
-		bool EntryInit();
+		bool EntryInit(MulNX::Core::Core* Core);
 		//主循环入口
 		void EntryVirtualMain();
 	protected:
