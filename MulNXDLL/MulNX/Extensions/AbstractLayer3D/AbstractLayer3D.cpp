@@ -18,18 +18,12 @@ bool AbstractLayer3D::Init() {
 	while (this->CurrentWindowWidth == 0)this->CheckWin();
 	while (this->CurrentWindowHeight == 0)this->CheckWin();
 
-    std::thread t([this]() {while (true) {
-        this->UpdateTime(); 
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
-    } });
-    t.detach();
-
 	return true;
 }
 void AbstractLayer3D::CheckWin() {
 	//获取客户区大小
 	RECT ClientRect;
-	GetClientRect(this->Core->HookManager().CS2hWnd, &ClientRect);
+	GetClientRect(HookManager::pInstance->CS2hWnd, &ClientRect);
 	this->CurrentWindowWidth = ClientRect.right - ClientRect.left;   // 宽度
 	this->CurrentWindowHeight = ClientRect.bottom - ClientRect.top;  // 高度
 
@@ -40,7 +34,7 @@ void AbstractLayer3D::VirtualMain() {
 	if (!this->GlobalVars->CampathPlaying) {
 		*this->CS->GetLocalPlayer().pGlobalFOV = 0.0f;
 	}
-	//this->UpdateTime();
+	this->UpdateTime();
 	return;
 }
 void AbstractLayer3D::ProcessMsg(MulNX::Messaging::Message* Msg) {

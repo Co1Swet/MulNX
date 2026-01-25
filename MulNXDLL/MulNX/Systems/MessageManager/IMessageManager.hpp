@@ -12,7 +12,7 @@ namespace MulNX {
 			friend class MessageChannel;
 		public:
 			IMessageManager() : ModuleBase() {
-				this->Type = ModuleType::MessageManager;
+				//this->Type = ModuleType::MessageManager;
 			}
 
 			//注册，获取消息指针

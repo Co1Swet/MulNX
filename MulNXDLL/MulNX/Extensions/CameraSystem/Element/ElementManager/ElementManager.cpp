@@ -14,9 +14,8 @@
 #include "../../../../Systems/IPCer/IPCer.hpp"
 #include "../../../../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
 
-ElementManager::ElementManager() 
-    : ElementDebugger(new class ElementDebugger){
-
+ElementManager::ElementManager() {
+    this->ElementDebugger = new class ElementDebugger();
 }
 ElementManager::~ElementManager() {
     delete this->ElementDebugger;
@@ -24,7 +23,8 @@ ElementManager::~ElementManager() {
 
 //元素管理器基本函数
 bool ElementManager::Init() {
-    
+    this->ElementDebugger->EntryInit(this->Core);
+
     return true;
 }
 void ElementManager::InjectDependence(CameraDrawer* CamDrawer, SolutionManager* SManager, ProjectManager* PManager) {
@@ -33,7 +33,7 @@ void ElementManager::InjectDependence(CameraDrawer* CamDrawer, SolutionManager* 
     this->SManager = SManager;
     this->PManager = PManager;
 
-    this->ElementDebugger->Init(Core, CamDrawer, this);
+    this->ElementDebugger->InjectDependence(this->CamDrawer, this);
 }
 void ElementManager::UpdateCurrentElement() {
     if (this->NeedUpdateCurrentElement) {

@@ -40,7 +40,7 @@ bool GameSettingsManager::Init() {
 	SContextPtr->name = "GameSettings";
 	//->pBuffer = MulNX::Base::make_any_unique<TripleBuffer<DemoHelperPrivateData>>();
 	SContextPtr->MyFunc = [this](MulNXSingleUIContext* This)->void {
-		MulNX::AutoChild Child(this);
+		MulNX::AutoChild Child(this, "GameSettingsManager");
 		if (ImGui::Button("一键修复数字切人bug")) {
 			this->AL3D->ExecuteCommand("unbind 1");
 			this->AL3D->ExecuteCommand("unbind 2");
@@ -204,14 +204,14 @@ void GameSettingsManager::VirtualMain() {
 
 void GameSettingsManager::ESPDraw() {
 	for (int i = 1;  i <= 10; ++i) {
-		const DirectX::XMFLOAT3 EyePos3D = this->Core->IAbstractLayer3D().GetPlayerMsg(i).EyePosition;
-		const DirectX::XMFLOAT3 OriginPos3D = this->Core->IAbstractLayer3D().GetPlayerMsg(i).Position;
+		const DirectX::XMFLOAT3 EyePos3D = this->AL3D->GetPlayerMsg(i).EyePosition;
+		const DirectX::XMFLOAT3 OriginPos3D = this->AL3D->GetPlayerMsg(i).Position;
 
 		DirectX::XMFLOAT2 EyePos2D{};
 		DirectX::XMFLOAT2 OriginPos2D{};
 
-		MulNX::Base::Math::XMWorldToScreen(EyePos3D, EyePos2D, this->Core->IAbstractLayer3D().GetViewMatrix(), this->Core->IAbstractLayer3D().GetWinWidth(), this->Core->IAbstractLayer3D().GetWinHeight());
-		MulNX::Base::Math::XMWorldToScreen(OriginPos3D, OriginPos2D, this->Core->IAbstractLayer3D().GetViewMatrix(), this->Core->IAbstractLayer3D().GetWinWidth(), this->Core->IAbstractLayer3D().GetWinHeight());
+		MulNX::Base::Math::XMWorldToScreen(EyePos3D, EyePos2D, this->AL3D->GetViewMatrix(), this->AL3D->GetWinWidth(), this->AL3D->GetWinHeight());
+		MulNX::Base::Math::XMWorldToScreen(OriginPos3D, OriginPos2D, this->AL3D->GetViewMatrix(), this->AL3D->GetWinWidth(), this->AL3D->GetWinHeight());
 
 		const float hight{ ::abs(EyePos2D.y - OriginPos2D.y) * 1.25f };
 		const float width{ hight / 2.f };

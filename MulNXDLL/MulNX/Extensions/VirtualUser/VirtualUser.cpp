@@ -29,7 +29,7 @@ bool VirtualUser::Init() {
 	return true;
 }
 void VirtualUser::Menu() {
-	MulNX::AutoChild Child(this);
+	MulNX::AutoChild Child(this,"VirtualUser");
 
 	bool temp = this->Running.load();
 	if (ImGui::Checkbox("启动自动化控制", &temp)) {
@@ -54,7 +54,7 @@ void VirtualUser::Menu() {
 	ImGui::SameLine();
 	if (ImGui::Button("执行")) {
 		if (!StrText.empty()) {
-			this->Core->IAbstractLayer3D().ExecuteCommand(StrText);
+			this->AL3D->ExecuteCommand(StrText);
 			StrText.clear();
 		}
 	}
@@ -63,10 +63,10 @@ void VirtualUser::Menu() {
 }
 void VirtualUser::VirtualMain() {
 	this->EntryProcessMsg();
-	if (this->Core->KT().CheckWithPack(MulNX::KeyCheckPack{ true,false,false,true,'P',1 })) {
+	if (this->KT->CheckWithPack(MulNX::KeyCheckPack{ true,false,false,true,'P',1 })) {
 		this->CameraSystem->ShutDown();
 	}
-	if (this->Core->KT().CheckWithPack(MulNX::KeyCheckPack{ true,false,false,true,'T',1 })) {
+	if (this->KT->CheckWithPack(MulNX::KeyCheckPack{ true,false,false,true,'T',1 })) {
 		bool AutoRunning = this->Running.load();
 		if (AutoRunning) {
 			this->Running.store(false);

@@ -58,7 +58,7 @@ private:
     WorkspaceManager WManager{};
 public:
     CameraSystem() : ICameraSystem() {
-        this->Type = MulNX::ModuleType::CameraSystem;
+        //this->Type = MulNX::ModuleType::CameraSystem;
     }
 
     //初始化

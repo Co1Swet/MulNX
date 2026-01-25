@@ -34,7 +34,7 @@ bool MulNX::Debugger::Init() {
 
 
 void MulNX::Debugger::Menu() {
-	AutoChild Child(this);
+	AutoChild Child(this,"Debugger");
 
     if (!this->GlobalVars->DebugMode) {
 		ImGui::Text("调试模式未启用，无法使用该功能，请前往控制台打开");
@@ -369,7 +369,7 @@ void MulNX::Debugger::MenuMonitor() {
 
     float C4BlowTime = this->Core->CS().PlantedC4.m_flC4Blow;
 	ImGui::Text("炸弹爆炸时间： %f", C4BlowTime);
-	ImGui::Text("倒计时: %f", this->Core->IAbstractLayer3D().GetPhaseRemainingTime());
+	ImGui::Text("倒计时: %f", this->AL3D->GetPhaseRemainingTime());
 
     ImGui::Separator();
     ImGui::Separator();

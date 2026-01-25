@@ -15,7 +15,7 @@ private:
 	bool FollowWindow = true;
 public:
 	MiniMap() : ModuleBase() {
-		this->Type = MulNX::ModuleType::MiniMap;
+		//this->Type = MulNX::ModuleType::MiniMap;
 	}
 	bool Init()override;
 	void VirtualMain()override;

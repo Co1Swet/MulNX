@@ -235,6 +235,12 @@
     <Filter Include="MulNX\Base\Buffer">
       <UniqueIdentifier>{2810b342-9455-42b2-8930-0579c6ad3ba4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MulNX\Core\CoreStarterBase">
+      <UniqueIdentifier>{835c8e9d-a8d6-4899-aa01-f4537af5a2cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\Base\CharUtility">
+      <UniqueIdentifier>{73cc66ca-9679-4287-834a-1748e999ae79}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThirdParty\All_cs2_dumper.hpp">
@@ -576,6 +582,15 @@
     <ClInclude Include="MulNX\Core\ModuleManager\ModuleManager.hpp">
       <Filter>MulNX\Core\ModuleManager</Filter>
     </ClInclude>
+    <ClInclude Include="MulNX\Core\CoreStarterBase\CoreStarterBase.hpp">
+      <Filter>MulNX\Core\CoreStarterBase</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNX\Core\CoreImpl.hpp">
+      <Filter>MulNX\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNX\Base\CharUtility\CharUtility.hpp">
+      <Filter>MulNX\Base\CharUtility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\imgui_d11\imgui.cpp">
@@ -787,6 +802,12 @@
     </ClCompile>
     <ClCompile Include="MulNX\Core\ModuleManager\ModuleManager.cpp">
       <Filter>MulNX\Core\ModuleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNX\Core\CoreStarterBase\CoreStarterBase.cpp">
+      <Filter>MulNX\Core\CoreStarterBase</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNX\Base\CharUtility\CharUtility.cpp">
+      <Filter>MulNX\Base\CharUtility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

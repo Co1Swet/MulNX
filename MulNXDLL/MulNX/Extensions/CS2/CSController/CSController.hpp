@@ -25,7 +25,6 @@ class CSController final :public MulNX::ModuleBase {
 	friend MulNX::Debugger;
 private:
 	//逆向层关键接口
-	IAbstractLayer3D* AL3D = nullptr;
 	void* CmdInterface = nullptr;
 	//逆向层数据备份
 	C_ConVarSystem CvarSystem{};
@@ -44,7 +43,7 @@ private:
 public:
 	//继承构造
 	CSController() : ModuleBase() {
-		this->Type = MulNX::ModuleType::CSController;
+		//this->Type = MulNX::ModuleType::CSController;
 	}
 	//必要覆写
 	bool Init()override;

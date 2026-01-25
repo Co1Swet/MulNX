@@ -138,12 +138,15 @@
   <ItemGroup>
     <ClInclude Include="MulNX\Base\any_smart_ptr\any_smart_ptr.hpp" />
     <ClInclude Include="MulNX\Base\Buffer\Buffer.hpp" />
+    <ClInclude Include="MulNX\Base\CharUtility\CharUtility.hpp" />
     <ClInclude Include="MulNX\Base\HookUtility\HookUtility.hpp" />
     <ClInclude Include="MulNX\Base\Math\Math.hpp" />
     <ClInclude Include="MulNX\Base\Memory\Memory.hpp" />
     <ClInclude Include="MulNX\Base\Base.hpp" />
     <ClInclude Include="MulNX\Base\vmt\vmt.hpp" />
     <ClInclude Include="MulNX\Base\WIN32Msg\WIN32Msg.hpp" />
+    <ClInclude Include="MulNX\Core\CoreImpl.hpp" />
+    <ClInclude Include="MulNX\Core\CoreStarterBase\CoreStarterBase.hpp" />
     <ClInclude Include="MulNX\Core\ModuleBase\ModuleBase.hpp" />
     <ClInclude Include="MulNX\Core\Core.hpp" />
     <ClInclude Include="MulNX\Core\ModuleManager\ModuleManager.hpp" />
@@ -252,11 +255,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MulNX\Base\Buffer\Buffer.cpp" />
+    <ClCompile Include="MulNX\Base\CharUtility\CharUtility.cpp" />
     <ClCompile Include="MulNX\Base\HookUtility\HookUtility.cpp" />
     <ClCompile Include="MulNX\Base\Math\Math.cpp" />
     <ClCompile Include="MulNX\Base\Memory\Memory.cpp" />
     <ClCompile Include="MulNX\Base\Base.cpp" />
     <ClCompile Include="MulNX\Base\WIN32Msg\WIN32Msg.cpp" />
+    <ClCompile Include="MulNX\Core\CoreStarterBase\CoreStarterBase.cpp" />
     <ClCompile Include="MulNX\Core\ModuleBase\ModuleBase.cpp" />
     <ClCompile Include="MulNX\Core\Core.cpp" />
     <ClCompile Include="MulNX\Core\ModuleManager\ModuleManager.cpp" />

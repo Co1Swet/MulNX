@@ -46,11 +46,8 @@ MulNX::Base::any_unique_ptr MulNXSingleUIContext::Create(const MulNX::ModuleBase
 	MulNXSingleUIContext* SContextPtr = SContext.get<MulNXSingleUIContext>();
 	SContextPtr->HModule = MB->HModule;
 	SContextPtr->OwnerMsgChannel = MB->MainMsgChannel;
-	SContextPtr->MyMsgChannel = MulNX::Core::Core::pCore()->IMessageManager()
-		.GetMessageChannel(
-			(*MulNX::Core::Core::pCore())
-			.IMessageManager()
-			.CreateMessageChannel()
-		);
+	MulNX::Core::Core* pCore = MB->GetCore();
+	SContextPtr->MyMsgChannel = pCore->IMessageManager()
+		.GetMessageChannel(pCore->IMessageManager().CreateMessageChannel());
 	return SContext;
 }

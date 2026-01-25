@@ -7,7 +7,7 @@ private:
 	int TargetTick = 0;
 public:
 	ConsoleManager() : ModuleBase() {
-		this->Type = MulNX::ModuleType::ConsoleManager;
+		//this->Type = MulNX::ModuleType::ConsoleManager;
 	}
 
 	bool Init()override;

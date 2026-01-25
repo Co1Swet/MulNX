@@ -95,7 +95,7 @@ namespace MulNX {
         Paths Paths{};
     public:
         IPCer() : ModuleBase() {
-            this->Type = MulNX::ModuleType::IPCer;
+            //this->Type = MulNX::ModuleType::IPCer;
         }
 
         bool Inited = false;

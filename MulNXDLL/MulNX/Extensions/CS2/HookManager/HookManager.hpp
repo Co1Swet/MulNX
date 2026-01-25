@@ -1,15 +1,17 @@
 #pragma once
 
-#include "../../../Core/ModuleBase/ModuleBase.hpp"
+#include "../../../Core/CoreStarterBase/CoreStarterBase.hpp"
 #include <d3d11.h>
 #include <functional>
 
-class HookManager final :public MulNX::ModuleBase {
+class HookManager final :public MulNX::Core::CoreStarterBase {
     friend MulNX::Core::Core;
     friend class MulNXiCoreImpl;
 public:
-    HookManager() : ModuleBase() {}
+    inline static HookManager* pInstance = nullptr;
 private:
+	
+
     std::atomic<bool>GuardPleaseAction = false;
     
 
@@ -41,25 +43,16 @@ public:
     bool UIInited = false;
     bool ImGuiInited = false;
     std::filesystem::path imguiIniPath;
+    std::string imguiIniPathString;
     bool InitUIStyle();
     bool UIStyleInited()const { return this->UIInited; }
 private:
     void d3dInit(IDXGISwapChain* _this);
 public:
-
-    
     bool Init()override;
+	void StartAll()override;
     void ThreadMain()override;
     void ProcessMsg(MulNX::Messaging::Message* Msg)override;
 
-   
-
-    DWORD CreateHook();//创建Hook
-
-    //保护对 ImGui API 调用（NewFrame/Render/WndProcHandler 等）的互斥量，避免跨线程并发访问导致的数据竞争
-    //使用递归互斥以允许在同一线程通过 Win32 消息回调重入时再次上锁（避免 resource_deadlock 异常）
-    
-
-    //持久化保存 imgui.ini 路径字符串，保证 io.IniFilename 指向有效内存
-    
+    DWORD CreateHook();//创建Hook   
 };

@@ -39,7 +39,6 @@ void CSController::InitInterface() {
 	this->CmdInterface = pFunc(InterfaceName, nullptr);
 }
 bool CSController::Init() {
-	this->AL3D = &this->Core->IAbstractLayer3D();
 	this->GetModules();
 	this->Catch();
 

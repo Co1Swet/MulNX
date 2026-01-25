@@ -6,7 +6,7 @@ namespace MulNX {
 	class IDebugger :public MulNX::ModuleBase {
 	public:
 		IDebugger() :ModuleBase() {
-			this->Type = ModuleType::Debugger;
+			//this->Type = ModuleType::Debugger;
 		}
 
 		virtual void AddInfo(const std::string& NewMsg) = 0;

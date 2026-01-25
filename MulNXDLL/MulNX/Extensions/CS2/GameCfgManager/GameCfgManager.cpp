@@ -55,7 +55,7 @@ bool GameCfgManager::LoadCfg(const std::string& CfgName) {
 		this->IDebugger->AddError("指定的配置文件不存在，无法加载配置文件！  路径：" + CfgPath.string());
 		return false;
 	}
-	this->Core->IAbstractLayer3D().ExecuteCommand("exec " + CfgName);
+	this->AL3D->ExecuteCommand("exec " + CfgName);
 	this->IDebugger->AddSucc("成功加载配置文件，路径：" + CfgPath.string());
 	return true;
 }

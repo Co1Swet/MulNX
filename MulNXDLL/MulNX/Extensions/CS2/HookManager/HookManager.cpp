@@ -15,9 +15,15 @@
 
 static bool AllowReHook = false;//允许重hook
 bool HookManager::Init() {
-	MH_Initialize();
-	this->MainMsgChannel = this->ICreateAndGetMessageChannel();
+	this->pInstance = this;
 	return true;
+}
+void HookManager::StartAll() {
+	this->MainMsgChannel = this->ICreateAndGetMessageChannel();
+	this->ReHook = true;
+	MH_Initialize();
+	this->EntryCreateThread();
+	this->SetMyThreadDelta(250);
 }
 
 void HookManager::ThreadMain() {
@@ -30,7 +36,7 @@ void HookManager::ThreadMain() {
 	}
 	//检查是否超时：正在等待CheckBack且超过2秒未收到回复
 	if (AllowReHook) {
-		if (this->Core->KT().CheckComboClick(VK_INSERT, 2)) {
+		if (this->KT->CheckComboClick(VK_INSERT, 2)) {
 			ReHook = true;
 			AllowReHook = false;
 		}
@@ -56,7 +62,13 @@ void HookManager::ThreadMain() {
 		this->IPublish(std::move(Msg));
 
 		ReHook = false;
-		this->Core->GlobalVars().CoreReady = true;
+
+		// UI系统主界面初始化
+		auto StartString = MulNX::Base::make_any_unique<std::string>("MainDraw");
+		MulNXHandle hStr = this->Core->IHandleSystem().RegisteHandle(std::move(StartString));
+		MulNX::Messaging::Message StartMsg(MulNX::Messaging::MsgType::UISystem_Start);
+		StartMsg.Handle = hStr;
+		this->IPublish(std::move(StartMsg));
 	}
 }
 
@@ -170,35 +182,33 @@ void HookManager::d3dInit(IDXGISwapChain* _this) {
 			ImGui_ImplDX11_Init(this->pd3dDevice, this->pd3dContext);
 
 			ImFont* font = io.Fonts->AddFontFromFileTTF(
-				"C:/Windows/Fonts/msyh.ttc",  // 微软雅黑字体路径
-				16.0f,                        // 字体大小
-				nullptr,                      // 使用默认配置
-				io.Fonts->GetGlyphRangesChineseFull() // 加载所有中文字符
+				"C:/Windows/Fonts/msyh.ttc",				// 微软雅黑字体路径
+				16.0f,										// 字体大小
+				nullptr,									// 使用默认配置
+				io.Fonts->GetGlyphRangesChineseFull()		// 加载所有中文字符
 			);
 			ImGui_ImplDX11_CreateDeviceObjects();
 
 			// 转换为GBK（供ImGui使用）
 
 			this->imguiIniPath = this->Core->IPCer().PathGet_Core() / "MulNXUIConfig.ini";
-			std::u8string u8path = this->imguiIniPath.u8string();
-			static std::string utf8Path(u8path.begin(), u8path.end());
-			std::replace(utf8Path.begin(), utf8Path.end(), '\\', '/');
-			io.IniFilename = utf8Path.c_str();
+			this->imguiIniPathString = MulNX::Base::CharUtility::FilePathToString(this->imguiIniPath);
+			io.IniFilename = this->imguiIniPathString.c_str();
 
 			this->InitUIStyle();
 			this->ImGuiInited = true;
 		}
 
 
-		this->Core->HookManager().d3dInited = true;
+		this->d3dInited = true;
 	}
 }
 
 LRESULT __stdcall HookManager::EntryMyWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
-	if (MulNX::Core::Core::pCore()->HookManager().MyWndProc(hwnd, uMsg, wParam, lParam)) {
+	if (HookManager::pInstance->MyWndProc(hwnd, uMsg, wParam, lParam)) {
 		return true;
 	}	
-	return CallWindowProcW(MulNX::Core::Core::pCore()->HookManager().OriginWndProc, hwnd, uMsg, wParam, lParam);
+	return CallWindowProcW(HookManager::pInstance->OriginWndProc, hwnd, uMsg, wParam, lParam);
 }
 
 
@@ -225,8 +235,8 @@ LRESULT __stdcall HookManager::MyWndProc(HWND hwnd, UINT uMsg, WPARAM wParam, LP
 }
 HRESULT __stdcall HookManager::MyPresent(IDXGISwapChain* swapChain, UINT syncInterval, UINT flags) {
 	if(!this->OriginWndProc)
-		this->OriginWndProc = (WNDPROC)SetWindowLongPtrW(this->CS2hWnd, GWLP_WNDPROC, (LONG_PTR)MulNX::Core::Core::pCore()->HookManager().EntryMyWndProc);
-	if (this->Core->GlobalVars().SystemReady) {
+		this->OriginWndProc = (WNDPROC)SetWindowLongPtrW(this->CS2hWnd, GWLP_WNDPROC, (LONG_PTR)HookManager::pInstance->EntryMyWndProc);
+	if (this->GlobalVars->SystemReady) {
 		this->pSwapChain = swapChain;
 		this->Core->IUISystem().Render();
 	}

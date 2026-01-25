@@ -7,15 +7,9 @@ bool MulNX::HandleSystem::Init(){
 	return true; 
 }
 
-MulNXHandle MulNX::HandleSystem::CreateHandle() {
-	MulNXHandle handle{};
-	handle.Value = this->CurrentHandleValue.fetch_add(1);
-	return handle;
-}
 MulNXHandle MulNX::HandleSystem::RegisteHandle(MulNX::Base::any_unique_ptr Resource) {
 	std::unique_lock lock(this->MapMutex);
-	MulNXHandle handle{};
-	handle.Value = this->CurrentHandleValue.fetch_add(1);
+	MulNXHandle handle = MulNXHandle::CreateHandle();
 	this->Resources[handle] = std::move(Resource);
 	return handle;
 }

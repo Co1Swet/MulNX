@@ -9,14 +9,16 @@ class CoreImpl;
 namespace MulNX {
     namespace Core {
         class Core {
+            friend class MulNX::ModuleBase;
         private:
-            inline static Core* pInstance = nullptr;
             // 数据存储：
 
             // Impl的指针
             std::unique_ptr<CoreImpl> pImpl;
+
+			// 核心启动器指针
+            std::unique_ptr<MulNX::Core::CoreStarterBase> pCoreStarter = nullptr;
         public:
-            static Core* pCore();
             // 构造函数
             Core();
             // 析构函数
@@ -36,21 +38,28 @@ namespace MulNX {
             // 获取子模块的接口
             MulNX::Messaging::IMessageManager& IMessageManager();
             MulNX::IUISystem& IUISystem();
-            MulNX::GlobalVars& GlobalVars();
             MulNX::IPCer& IPCer();
-            MulNX::KeyTracker& KT();
             MulNX::IHandleSystem& IHandleSystem();
-            MulNX::IDebugger& IDebugger();
 
             CSController& CS();
             ConsoleManager& ConsoleManager();
             GameSettingsManager& GameSettingsManager();
             ICameraSystem& ICameraSystem();
             VirtualUser& VirtualUser();
-            HookManager& HookManager();
-            IAbstractLayer3D& IAbstractLayer3D();
-            MiniMap& MiniMap();
             GameCfgManager& GameCfgManager();
+
+            // 获取实现
+			CoreImpl* GetImpl() { return this->pImpl.get(); }
+
+            // 设置启动器
+			bool SetCoreStarter(std::unique_ptr<CoreStarterBase> Starter);
+
+            // 模块相关
+
+			// 注册模块
+            bool RegisteModule(std::unique_ptr<ModuleBase>Module, std::string&& Name);
+			// 查找模块
+            ModuleBase* FindModule(const std::string& Name);
         };
     }
 }

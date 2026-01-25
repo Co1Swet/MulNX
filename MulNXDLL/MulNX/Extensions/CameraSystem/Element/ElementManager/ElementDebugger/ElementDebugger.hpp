@@ -2,28 +2,26 @@
 
 #include"../../Elements.hpp"
 
+#include "../../../../../Core/ModuleBase/ModuleBase.hpp"
+
 class ElementManager;
 class IAbstractLayer3D;
 class CameraDrawer;
 
-class ElementDebugger {
+class ElementDebugger final :public MulNX::ModuleBase {
 	friend ElementManager;
 private:
-	//Core指针，用于其它服务
-	MulNX::Core::Core* Core = nullptr;
-
-	IAbstractLayer3D* AL3D = nullptr;
 	CameraDrawer* CamDrawer = nullptr;
-
 	ElementManager* EManager = nullptr;
 
 	//初始化
-	void Init(MulNX::Core::Core* Core, CameraDrawer* CamDrawer, ElementManager* EManager);
+	bool Init()override;
+	// 依赖注入
+	void InjectDependence(CameraDrawer* CamDrawer, ElementManager* EManager);
+
 
 	//调试菜单入口点
 	void DebugMenus(ElementBase* const pElement);
-
-
 
 	//自由摄像机轨道调试菜单
 	void DebugMenu_FreeCameraPath(FreeCameraPath* const FreeCamPath);

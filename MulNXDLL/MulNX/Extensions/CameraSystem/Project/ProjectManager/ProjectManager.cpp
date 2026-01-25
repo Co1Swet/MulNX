@@ -85,7 +85,7 @@ bool ProjectManager::Project_Create(const std::string& Name) {
 	if (!this->Core->IPCer().PathCreate_Project(Name))return false;
 	//添加进项目组
 	this->Projects.push_back(std::move(CreateProject));
-	this->Core->IDebugger().AddSucc("成功创建项目：" + Name);
+	this->IDebugger->AddSucc("成功创建项目：" + Name);
 	return true;
 }
 bool ProjectManager::Project_Refresh() {

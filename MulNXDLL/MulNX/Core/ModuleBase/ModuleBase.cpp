@@ -1,8 +1,10 @@
 #include "ModuleBase.hpp"
 
 #include "../Core.hpp"
+#include "../CoreImpl.hpp"
 
 #include "../../Systems/MessageManager/IMessageManager.hpp"
+#include "../../Systems/HandleSystem/IHandleSystem.hpp"
 
 #include "../../../ThirdParty/All_ImGui.hpp"
 
@@ -61,16 +63,15 @@ bool MulNX::ModuleBase::IsWindowOpen()const {
 //基本函数
 bool MulNX::ModuleBase::BaseInit() {
     try {
-        this->IMsgManager = &this->Core->IMessageManager();
-        this->IDebugger = &this->Core->IDebugger();
-        this->GlobalVars = &this->Core->GlobalVars();
-        this->AL3D = &this->Core->IAbstractLayer3D();
-        this->KT = &this->Core->KT();
+        this->IMsgManager = &this->Core->pImpl->MessageManager;
+        this->IDebugger = &this->Core->pImpl->Debugger;
+		this->GlobalVars = &this->Core->pImpl->GlobalVars;
+		this->AL3D = &this->Core->pImpl->AL3D;
+		this->KT = &this->Core->pImpl->KT;
 
-        static uint32_t Begin = 1;
-        this->HModule.Value = Begin;
-        ++Begin;
-
+        if (!this->HModule.IsValid()) {
+            this->HModule = MulNXHandle::CreateHandle();
+        }
         this->IRegiste();
     }
 	catch (...) {
@@ -178,10 +179,10 @@ MulNX::Messaging::IMessageChannel* MulNX::ModuleBase::ICreateAndGetMessageChanne
     return this->IMsgManager->GetMessageChannel(this->IMsgManager->CreateMessageChannel());
 }
 
-MulNX::AutoChild::AutoChild(ModuleBase* Module, const float HeightRatio, const float WidthRatio)
+MulNX::AutoChild::AutoChild(ModuleBase* Module, const std::string& Name, const float HeightRatio, const float WidthRatio)
     :Module(Module) {
     ImVec2 Available = ImGui::GetContentRegionAvail();
-    ImGui::BeginChild(Module->GetName().c_str(), ImVec2(Available.x * WidthRatio, Available.y * HeightRatio), true);
+    ImGui::BeginChild(Name.c_str(), ImVec2(Available.x * WidthRatio, Available.y * HeightRatio), true);
 }
 MulNX::AutoChild::~AutoChild() {
     ImGui::EndChild();

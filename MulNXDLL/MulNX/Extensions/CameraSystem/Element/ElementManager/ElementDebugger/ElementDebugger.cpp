@@ -10,13 +10,13 @@
 #include"../../../../../Systems/KeyTracker/KeyTracker.hpp"
 #include"../../../../../Systems/IPCer/IPCer.hpp"
 
-void ElementDebugger::Init(MulNX::Core::Core* Core, CameraDrawer* CamDrawer, ElementManager* EManager) {
-	this->Core = Core;
-    this->AL3D = &this->Core->IAbstractLayer3D();
-	this->CamDrawer = CamDrawer;
-    this->EManager = EManager;
+bool ElementDebugger::Init() {
 
-    return;
+    return true;
+}
+void ElementDebugger::InjectDependence(CameraDrawer* CamDrawer, ElementManager* EManager) {
+    this->CamDrawer = CamDrawer;
+    this->EManager = EManager;
 }
 
 void ElementDebugger::DebugMenus(ElementBase* const pElement) {
@@ -41,14 +41,14 @@ void ElementDebugger::DebugMenus(ElementBase* const pElement) {
 void ElementDebugger::DebugMenu_FreeCameraPath(FreeCameraPath* const FreeCamPath) {
     ImGui::Text(FreeCamPath->GetMsg().c_str());
 
-    if (ImGui::Button("添加关键帧") || this->Core->KT().CheckComboClick(VK_CAPITAL, 1)) {
+    if (ImGui::Button("添加关键帧") || this->KT->CheckComboClick(VK_CAPITAL, 1)) {
         MulNX::Base::Math::CameraKeyFrame Frame;
         Frame.KeyTime = this->AL3D->GetTime();
         Frame.SpatialState = this->AL3D->GetSpatialState();
         FreeCamPath->AddKeyframe(Frame);
     }
 
-    if (ImGui::Button("清空关键帧") || this->Core->KT().CheckComboClick(VK_DELETE, 2)) {
+    if (ImGui::Button("清空关键帧") || this->KT->CheckComboClick(VK_DELETE, 2)) {
         FreeCamPath->Clear();
     }
 

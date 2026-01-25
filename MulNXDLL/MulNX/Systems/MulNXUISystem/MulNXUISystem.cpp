@@ -11,20 +11,21 @@
 bool MulNX::UISystem::Init() {
 	this->MainMsgChannel = this->ICreateAndGetMessageChannel();
 	(*this->MainMsgChannel)
-		.Subscribe(MulNX::Messaging::MsgType::UISystem_Start)
-		.Subscribe(MulNX::Messaging::MsgType::UISystem_ModulePush);
+		.Subscribe(MulNX::MsgType::UISystem_Start)
+		.Subscribe(MulNX::MsgType::UISystem_ModulePush);
 	return true;
 }
 
-void MulNX::UISystem::ProcessMsg(MulNX::Messaging::Message* Msg) {
+void MulNX::UISystem::ProcessMsg(MulNX::Message* Msg) {
 	switch (Msg->Type) {
-	case MulNX::Messaging::MsgType::UISystem_Start: {
+	case MulNX::MsgType::UISystem_Start: {
 		MulNX::Base::any_unique_ptr pEntryStr = this->Core->IHandleSystem().ReleaseHandle(Msg->Handle);
 		std::string* pStr = pEntryStr.get<std::string>();
 		this->UIContext.EntryDraw = std::move(*pStr);
+		this->UISystemRunning = true;
 		break;
 	}
-	case MulNX::Messaging::MsgType::UISystem_ModulePush: {
+	case MulNX::MsgType::UISystem_ModulePush: {
 		MulNX::Base::any_unique_ptr pCtx = this->Core->IHandleSystem().ReleaseHandle(Msg->Handle);
 		this->UIContext.AddSingleContext(Msg->Handle, std::move(pCtx));
 		break;
@@ -32,32 +33,17 @@ void MulNX::UISystem::ProcessMsg(MulNX::Messaging::Message* Msg) {
 	}
 }
 
-std::string PathToGBKForwardSlash(const std::filesystem::path& path) {
-	// 方法1：通过wstring中转
-	std::wstring wpath = path.wstring();  // 系统原生宽字符（Windows上是UTF-16）
-
-	// 替换分隔符
-	std::replace(wpath.begin(), wpath.end(), L'\\', L'/');
-
-	// UTF-16 -> GBK
-	int len = WideCharToMultiByte(CP_ACP, 0, wpath.c_str(), (int)wpath.length(),
-		nullptr, 0, nullptr, nullptr);
-	std::string gbkStr(len, 0);
-	WideCharToMultiByte(CP_ACP, 0, wpath.c_str(), (int)wpath.length(),
-		&gbkStr[0], len, nullptr, nullptr);
-	return gbkStr;
-}
-
 int MulNX::UISystem::Render() {
 	std::unique_lock lock(this->UIMtx);
-	if (!this->Core->GlobalVars().SystemReady) {
-		return 0;
-	}
 	this->EntryProcessMsg();
 	
+	if (!this->UISystemRunning) {
+		return 0;
+	}
+
 	this->FrameBefore();
 
-	if (this->Core->KT().CheckComboClick(VK_INSERT, 1)) {
+	if (this->KT->CheckComboClick(VK_INSERT, 1)) {
 		this->UIContext.Active = !this->UIContext.Active;
 	}
 	if(this->UIContext.Active) {

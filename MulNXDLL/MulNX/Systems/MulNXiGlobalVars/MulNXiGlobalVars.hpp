@@ -18,10 +18,9 @@ namespace MulNX {
 		void Tick();
 	public:
 		GlobalVars() : ModuleBase() {
-			this->Type = ModuleType::MulNXiGlobalVars;
+			//this->Type = ModuleType::MulNXiGlobalVars;
 		}
 
-		std::atomic<bool>CoreReady = false;
 		std::atomic<bool>SystemReady = false;
 
 		std::atomic<bool>DebugMode = false;

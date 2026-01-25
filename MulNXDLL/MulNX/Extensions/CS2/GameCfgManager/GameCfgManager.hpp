@@ -21,7 +21,7 @@ private:
 	std::vector<std::string>GameCfgs{};
 public:
 	GameCfgManager() : ModuleBase() {
-		this->Type = MulNX::ModuleType::GameCfgManager;
+		//this->Type = MulNX::ModuleType::GameCfgManager;
 	}
 	~GameCfgManager() = default;
 	bool Init()override;

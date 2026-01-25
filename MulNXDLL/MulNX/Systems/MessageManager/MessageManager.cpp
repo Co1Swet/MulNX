@@ -23,7 +23,7 @@ bool MulNX::Messaging::MessageManager::Subscribe(const MsgType MsgType, ModuleBa
 MulNXHandle MulNX::Messaging::MessageManager::CreateMessageChannel() {
 	std::unique_lock lock(this->MyThreadMutex);
 	std::unique_ptr<MessageChannel> Channel = std::make_unique<MessageChannel>(this);
-	MulNXHandle hChannel = this->Core->IHandleSystem().CreateHandle();
+	MulNXHandle hChannel = MulNXHandle::CreateHandle();
 	Channel->hChannel = hChannel;
 	this->Channels[hChannel] = std::move(Channel);
 	return hChannel;

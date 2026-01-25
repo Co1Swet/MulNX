@@ -1,128 +1,49 @@
-#include "Core.hpp"
-
-#include "../Systems/Debugger/Debugger.hpp"
-#include "../Systems/HandleSystem/HandleSystem.hpp"
-#include "../Systems/IPCer/IPCer.hpp"
-#include "../Systems/KeyTracker/KeyTracker.hpp"
-#include "../Systems/MessageManager/MessageManager.hpp"
-#include "../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
-#include "../Systems/MulNXUISystem/MulNXUISystem.hpp"
-
-#include "../Extensions/AbstractLayer3D/AbstractLayer3D.hpp"
-#include "../Extensions/CameraSystem/CameraSystem.hpp"
-#include "../Extensions/MiniMap/MiniMap.hpp"
-#include "../Extensions/VirtualUser/VirtualUser.hpp"
-
-#include "../Extensions/CS2/CSController/CSController.hpp"
-#include "../Extensions/CS2/ConsoleManager/ConsoleManager.hpp"
-#include "../Extensions/CS2/DemoHelper/DemoHelper.hpp"
-#include "../Extensions/CS2/GameCfgManager/GameCfgManager.hpp"
-#include "../Extensions/CS2/GameSettingsManager/GameSettingsManager.hpp"
-#include "../Extensions/CS2/HookManager/HookManager.hpp"
-
-using namespace MulNX::Core;
-
-// 页面枚举
-enum class Page :int {
-	Control,
-	Debug,
-	CameraSystem
-};
-
-// 实现类，掌握所有的模块实例
-class CoreImpl {	
-public:
-	// 初始化页面
-	Page Page = Page::Control;
-
-    // 地基模块
-    MulNX::KeyTracker KT;
-	MulNX::HandleSystem HandleSystem;
-	MulNX::Messaging::MessageManager MessageManager;
-	MulNX::GlobalVars GlobalVars;
-	MulNX::UISystem UISystem;
-	MulNX::IPCer IPCer;
-	MulNX::Debugger Debugger;
-    // 基础服务模块
-
-    CSController CS;
-    AbstractLayer3D AL3D;
-    
-    HookManager HookManager;
-	
-    // 上层建筑
-    ConsoleManager ConsoleManager;
-    GameSettingsManager GameSettingsManager;
-    DemoHelper DemoHelper;
-    CameraSystem CameraSystem;
-    VirtualUser VirtualUser;
-    MiniMap MiniMap;
-    GameCfgManager GameCfgManager;
-    
-public:
-	// 构造函数
-	CoreImpl() = default;
-};
+#include "CoreImpl.hpp"
+#include "CoreStarterBase/CoreStarterBase.hpp"
 
 // 构造函数和析构函数需要管理pImpl的生命周期
 Core::Core() {
 	// 创建Impl实例
-	this->pImpl = std::make_unique<CoreImpl>();// 绑定指针
+	this->pImpl = std::make_unique<CoreImpl>();
 }
 
 Core::~Core() {
 	return;
 }
 
+bool Core::SetCoreStarter(std::unique_ptr<CoreStarterBase> Starter) {
+	if (!Starter) {
+		return false;
+	}
+	this->pCoreStarter = std::move(Starter);
+	return true;
+}
+
+bool Core::RegisteModule(std::unique_ptr<ModuleBase>Module, std::string&& Name) {
+	return this->pImpl->ModuleManager.RegisteModule(std::move(Module), std::move(Name));
+}
+MulNX::ModuleBase* Core::FindModule(const std::string& Name) {
+	return this->pImpl->ModuleManager.FindModule(Name);
+}
+
 //获取子模块的接口实现
 MulNX::IHandleSystem&				Core::IHandleSystem() { return this->pImpl->HandleSystem; }
-MulNX::IDebugger&					Core::IDebugger() { return this->pImpl->Debugger; }
 MulNX::IUISystem&					Core::IUISystem() { return this->pImpl->UISystem; }
 MulNX::IPCer&						Core::IPCer() { return this->pImpl->IPCer; }
-MulNX::KeyTracker&					Core::KT() { return this->pImpl->KT; }
 MulNX::Messaging::IMessageManager&	Core::IMessageManager() { return this->pImpl->MessageManager; }
-MulNX::GlobalVars&					Core::GlobalVars() { return this->pImpl->GlobalVars; }
 
 CSController&						Core::CS() { return this->pImpl->CS; }
-IAbstractLayer3D&					Core::IAbstractLayer3D() { return this->pImpl->AL3D; }
 ConsoleManager&						Core::ConsoleManager() { return this->pImpl->ConsoleManager; }
 GameSettingsManager&				Core::GameSettingsManager() { return this->pImpl->GameSettingsManager; }
 ICameraSystem&						Core::ICameraSystem() { return this->pImpl->CameraSystem; }
-VirtualUser&						Core::VirtualUser() { return this->pImpl->VirtualUser; }
-HookManager&						Core::HookManager() { return this->pImpl->HookManager; }
-MiniMap&							Core::MiniMap() { return this->pImpl->MiniMap; }
-GameCfgManager&						Core::GameCfgManager() { return this->pImpl->GameCfgManager; }
+VirtualUser&						Core::VirtualUser() { return this->pImpl->VirtualUser; }GameCfgManager&						Core::GameCfgManager() { return this->pImpl->GameCfgManager; }
 
 // 专用初始化函数
 void Core::Init() {
-	MulNX::Core::Core::pInstance = this;
-
-	std::thread([]() {
-		MessageBoxW(NULL, L"MulNXDLL 注入成功！", L"MulNX", MB_OK | MB_ICONINFORMATION);
-		}).detach();
-
-	// 无依赖核心基础模块初始化
-	this->pImpl->MessageManager.EntryInit(this);
-	this->pImpl->MessageManager.EntryCreateThread();// 包含线程创建
-	this->pImpl->MessageManager.SetMyThreadDelta(10);// 注意，此模块内部动态调整频率
-	this->pImpl->KT.EntryCreateThread();// 包含线程创建
-	this->pImpl->KT.SetMyThreadDelta(3);
-	this->pImpl->IPCer.EntryInit(this);
-	this->pImpl->Debugger.EntryInit(this);
-	this->pImpl->GlobalVars.EntryInit(this);
-
-	// 钩子层初始化
-	this->pImpl->HookManager.ReHook = true;
-	this->pImpl->HookManager.EntryInit(this);
-	this->pImpl->HookManager.EntryCreateThread();
-	this->pImpl->HookManager.SetMyThreadDelta(250);
-
-	while (!this->GlobalVars().CoreReady) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(1));
-	}
-
-	// UI模块初始化
-	this->pImpl->UISystem.EntryInit(this);
+	// 核心启动器初始化
+	this->pCoreStarter->EntryInit(this);
+	// 通过核心启动器进行系统初始化
+	this->pCoreStarter->SystemInit(this->pImpl.get(), this);
 
 	// 逆向层初始化
 	this->pImpl->CS.InitInterface();
@@ -139,29 +60,14 @@ void Core::Init() {
 	this->pImpl->DemoHelper.EntryInit(this);
 	// 虚拟用户层初始化（用于自动化任务）
 	this->pImpl->VirtualUser.EntryInit(this);
-	// 小地图模块初始化
-	this->pImpl->MiniMap.EntryInit(this);
-
-	// 初始化额外任务（对系统无影响）
-	this->pImpl->Debugger.AddSucc("注入成功！");
-	this->pImpl->Debugger.AddSucc("各模块初始化完成！");
-	this->pImpl->Debugger.AddWarning("您正在使用测试版本！！");
-	this->pImpl->AL3D.ExecuteCommand("playdemo 111");
-
-	
-	// UI系统主界面初始化
-	auto StartString = MulNX::Base::make_any_unique<std::string>("MainDraw");
-	MulNXHandle hStr = this->IHandleSystem().RegisteHandle(std::move(StartString));
-	MulNX::Messaging::Message StartMsg(MulNX::Messaging::MsgType::UISystem_Start);
-	StartMsg.Handle = hStr;
-	this->pImpl->MessageManager.Publish(std::move(StartMsg));
-
 
 	// 注册主窗口UI上下文
 	auto SContext = MulNX::Base::make_any_unique<MulNXSingleUIContext>();
 	MulNXSingleUIContext* SContextPtr = SContext.get<MulNXSingleUIContext>();
 	SContextPtr->name = "MainDraw";
 	SContextPtr->MyMsgChannel = this->pImpl->UISystem.ICreateAndGetMessageChannel();
+
+
 	SContextPtr->MyFunc = [](MulNXSingleUIContext* This)->void {
 		ImGui::Begin("主窗口");
 		if (ImGui::BeginTabBar("主标签页集")) {
@@ -189,11 +95,14 @@ void Core::Init() {
 
 	this->pImpl->GlobalVars.SystemReady = true;
 
-	return;
-}
+	// 初始化注册模块
+	this->pImpl->ModuleManager.PackedInit();
 
-MulNX::Core::Core* Core::pCore() {
-	return Core::pInstance;
+	this->pCoreStarter->StartAll();
+
+	this->pCoreStarter->InitEndCall();
+
+	return;
 }
 
 // 主窗口
@@ -249,16 +158,18 @@ void Core::VirtualMain() {
 	this->pImpl->CameraSystem.EntryVirtualMain();
 	this->pImpl->ConsoleManager.EntryVirtualMain();
 	this->pImpl->GameSettingsManager.EntryVirtualMain();
-	this->pImpl->MiniMap.EntryVirtualMain();
 	
 	this->pImpl->DemoHelper.EntryVirtualMain();
 
+	// 包装的，所有的模块的VirtualMain
+	this->pImpl->ModuleManager.EntryVirtualMain();
 
 	this->MulNXiMainWindow();
 	this->pImpl->Debugger.EntryWindows();
 	this->pImpl->CameraSystem.EntryWindows();
 	this->pImpl->GameCfgManager.EntryWindows();
-	this->pImpl->MiniMap.EntryWindows();
+	
+	this->pImpl->ModuleManager.EntryWindows();
 
 	return;
 }

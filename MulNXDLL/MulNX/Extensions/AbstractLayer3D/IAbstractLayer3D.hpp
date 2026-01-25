@@ -31,7 +31,7 @@ public:
 	}
 
 	IAbstractLayer3D() :ModuleBase() {
-		this->Type = MulNX::ModuleType::AbstractLayer3D;
+		//this->Type = MulNX::ModuleType::AbstractLayer3D;
 	}
 	virtual ~IAbstractLayer3D() = default;
 

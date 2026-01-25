@@ -51,14 +51,15 @@ bool DemoHelper::Init() {
 	(*this->MainMsgChannel)
 		.Subscribe(MulNX::MsgType::UISystem_UICommand);
 
-	MulNX::Message Msg(MulNX::MsgType::UISystem_ModulePush);
-
-	MulNX::Base::any_unique_ptr SingleContext = MulNXSingleUIContext::Create(this);
-	MulNXSingleUIContext* SContextPtr = SingleContext.get<MulNXSingleUIContext>();	
+	auto SingleContext = MulNXSingleUIContext::Create(this);
+	auto* SContextPtr = SingleContext.get<MulNXSingleUIContext>();	
 	SContextPtr->name = "DemoHelper";
 	SContextPtr->pBuffer = MulNX::Base::make_any_unique<MulNX::Base::TripleBuffer<DemoHelperPrivateData>>();
 	SContextPtr->MyFunc = MyDraw;
+
 	this->hContext = this->Core->IHandleSystem().RegisteHandle(std::move(SingleContext));
+
+	MulNX::Message Msg(MulNX::MsgType::UISystem_ModulePush);
 	Msg.Handle = this->hContext;
 	this->IPublish(std::move(Msg));
 

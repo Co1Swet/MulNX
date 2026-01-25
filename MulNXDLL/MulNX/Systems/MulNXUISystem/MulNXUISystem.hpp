@@ -7,15 +7,16 @@ namespace MulNX {
 	private:
 		std::shared_mutex UIMutex{};
 		MulNXUIContext UIContext{};
+		bool UISystemRunning = false;
 		std::function<void(void)>FrameBefore = nullptr;
 		std::function<void(void)>FrameBehind = nullptr;
 	public:
 		UISystem() :IUISystem() {
-			this->Type = ModuleType::MulNXUISystem;
+			//this->Type = ModuleType::MulNXUISystem;
 		}
 		bool Init()override;
 
-		void ProcessMsg(MulNX::Messaging::Message* Msg)override;
+		void ProcessMsg(MulNX::Message* Msg)override;
 
 		std::shared_mutex& GetMutex()override { return this->UIMutex; }
 		

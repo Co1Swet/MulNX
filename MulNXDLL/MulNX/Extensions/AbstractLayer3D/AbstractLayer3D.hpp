@@ -25,7 +25,7 @@ private:
 	int CurrentWindowHeight = 1080;
 public:
 	AbstractLayer3D() : IAbstractLayer3D() {
-		this->Type = MulNX::ModuleType::AbstractLayer3D;
+		//this->Type = MulNX::ModuleType::AbstractLayer3D;
 	}
 	bool Init()override;
 	void CheckWin();

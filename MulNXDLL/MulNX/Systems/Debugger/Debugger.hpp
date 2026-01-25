@@ -20,7 +20,7 @@ namespace MulNX {
 		const std::string Error = "[错误]";
 	public:
 		Debugger() :IDebugger() {
-			this->Type = ModuleType::Debugger;
+			//this->Type = ModuleType::Debugger;
 		};
 
 		bool NeedAutoScroll = false;

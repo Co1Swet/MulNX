@@ -19,7 +19,7 @@ bool ConsoleManager::Init() {
 }
 
 void ConsoleManager::Menu() {
-	MulNX::AutoChild Child(this, 0.5f);//占据半个窗口高度，另一半给VirtualUser
+	MulNX::AutoChild Child(this,"ConsoleManager", 0.5f);//占据半个窗口高度，另一半给VirtualUser
 
 	if (ImGui::CollapsingHeader("调试器控制")) {
 		//调试功能设置
@@ -96,11 +96,11 @@ void ConsoleManager::Menu() {
 
 	if (ImGui::CollapsingHeader("小地图控制")) {
 		if (ImGui::Button("打开小地图")) {
-			this->Core->MiniMap().OpenWindow();
+			this->Core->FindModule("MiniMap")->OpenWindow();
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("关闭小地图")) {
-			this->Core->MiniMap().CloseWindow();
+			this->Core->FindModule("MiniMap")->CloseWindow();
 		}
 	}
 

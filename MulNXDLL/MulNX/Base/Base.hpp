@@ -10,6 +10,7 @@
 #include "any_smart_ptr/any_smart_ptr.hpp"
 #include "vmt/vmt.hpp"
 #include "Buffer/Buffer.hpp"
+#include "CharUtility/CharUtility.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -31,29 +32,7 @@ typedef float GameTime_t;
 // 句柄内容
 
 // MulNX资源句柄
-class MulNXHandle {
-public:
-	constexpr inline static uint64_t Invalid = 0xFFFFFFFFFFFFFFFF;
-	uint64_t Value;
-
-	MulNXHandle() {
-		this->Value = MulNXHandle::Invalid;
-	}
-	bool IsValid()const {
-		return this->Value != MulNXHandle::Invalid;
-	}
-	bool operator == (const MulNXHandle & Other)const {
-		return this->Value == Other.Value;
-	}
-};
-namespace std {
-	template<>
-	struct hash<MulNXHandle> {
-		size_t operator()(const MulNXHandle& Handle)const noexcept {
-			return std::hash<uint64_t>{}(Handle.Value);
-		}
-	};
-}
+class MulNXHandle;
 
 // 摄像机系统输入输出前置声明
 class CameraSystemIO;
@@ -64,34 +43,18 @@ namespace MulNX {
 	namespace Core {
 		// 核心管理器
 		class Core;
-		// 模块基类
+		// 模块管理器
+		class ModuleManager;
+		// 核心启动器基类
+		class CoreStarterBase;
 	}
+	// 模块基类
 	class ModuleBase;
-	// 模块类型枚举
-	enum class ModuleType :unsigned int {
-		ModuleBase,
-		AbstractLayer3D,
-		CameraSystem,
-		ConsoleManager,
-		MulNXUISystem,
-		CSController,
-		Debugger,
-		DemoHelper,
-		GameSettingsManager,
-		MulNXiGlobalVars,
-		HookManager,
-		IPCer,
-		KeyTracker,
-		MessageManager,
-		MiniMap,
-		VirtualUser,
-		GameCfgManager,
-		HandleSystem
-	};
 	// 调试器接口
 	class IDebugger;
 	// MulNX句柄系统
 	class IHandleSystem;
+	class HandleSystem;
 	// 跨进程信息接口
 	class IPCer;
 	// 按键追踪器
@@ -114,6 +77,41 @@ namespace MulNX {
 	using Message = Messaging::Message;
 	using MsgType = Messaging::MsgType;
 }
+// MulNX资源句柄
+class MulNXHandle {
+private:
+	constexpr inline static uint64_t Invalid = 0xFFFFFFFFFFFFFFFF;
+	inline static std::atomic<uint64_t> CurrentHandleValue = 16;
+	uint64_t Value;
+public:
+	// 默认构造函数，创建无效句柄
+	MulNXHandle() {
+		this->Value = MulNXHandle::Invalid;
+	}
+	static MulNXHandle CreateHandle() {
+		MulNXHandle handle{};
+		handle.Value = MulNXHandle::CurrentHandleValue.fetch_add(1);
+		return handle;
+	}
+	bool IsValid()const {
+		return this->Value != MulNXHandle::Invalid;
+	}
+	uint64_t GetValue()const {
+		return this->Value;
+	}
+	bool operator == (const MulNXHandle& Other)const {
+		return this->Value == Other.Value;
+	}
+};
+namespace std {
+	template<>
+	struct hash<MulNXHandle> {
+		size_t operator()(const MulNXHandle& Handle)const noexcept {
+			return std::hash<uint64_t>{}(Handle.GetValue());
+		}
+	};
+}
+
 //3D抽象层
 class IAbstractLayer3D;
 //Hook管理器
@@ -130,9 +128,5 @@ class GameSettingsManager;
 class IAbstractLayer3D;
 //摄像机系统接口
 class ICameraSystem;
-//小地图
-class MiniMap;
 //虚拟用户，用于执行自动化功能
 class VirtualUser;
-
-std::string Module_EnumToName(MulNX::ModuleType Type);

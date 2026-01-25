@@ -8,15 +8,13 @@ namespace MulNX {
 	private:
 		std::shared_mutex MapMutex{};
 		std::unordered_map<MulNXHandle, MulNX::Base::any_unique_ptr>Resources{};
-		inline static std::atomic<uint64_t> CurrentHandleValue = 16;
 	public:
 		HandleSystem() :IHandleSystem() {
-			this->Type = ModuleType::HandleSystem;
+			//this->Type = ModuleType::HandleSystem;
 		}
 
 		bool Init()override;
 
-		MulNXHandle CreateHandle();
 		MulNXHandle RegisteHandle(MulNX::Base::any_unique_ptr Resource);
 		MulNX::Base::any_unique_ptr ReleaseHandle(MulNXHandle Handle);
 	};

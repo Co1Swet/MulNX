@@ -9,7 +9,7 @@ private:
 	ICameraSystem* CameraSystem = nullptr;
 public:
 	VirtualUser() : ModuleBase() {
-		this->Type = MulNX::ModuleType::VirtualUser;
+		//this->Type = MulNX::ModuleType::VirtualUser;
 	}
 
 	bool Init()override final;
