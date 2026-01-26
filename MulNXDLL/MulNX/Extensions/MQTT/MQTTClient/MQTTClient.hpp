@@ -32,6 +32,8 @@ namespace MulNX {
 				std::string ServerIP = "127.0.0.1";
 				// 端口号，默认1883
 				uint16_t ServerPort = 1883;
+				// 客户端名称
+				std::string ClientName = "MulNXClient";
 
 				// 包装回调函数，提供给C风格的接口使用
 				static void CStylePublishCallback(void** state, struct mqtt_response_publish* published);
@@ -48,6 +50,8 @@ namespace MulNX {
 			public:
 				bool Init()override;
 				void VirtualMain()override;
+				void ProcessMsg(MulNX::Message* Msg)override;
+				void HandleUICommand(MulNX::Message* Msg);
 
 				std::string GetCurrentError()const;
 				
@@ -56,6 +60,10 @@ namespace MulNX {
 
 				void SetServerIP(const std::string& ip);
 				void SetServerPort(uint16_t port);
+				void SetClientName(const std::string& name);
+
+				// 尝试连接到MQTT服务器
+				bool CreateMQTTConnect();
 
 				// 发布消息到指定主题
 				bool MQTTPublish(const std::string& topic, const std::string& message, uint8_t publish_flags);

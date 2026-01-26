@@ -10,7 +10,7 @@ private:
 	bool CallSingleContext(const std::string& Name);
 public:
 	bool Active = true;
-
+	MulNX::Core::Core* Core = nullptr;
 	bool EnableErrorHandle = false;
 
 	//入口点字符串

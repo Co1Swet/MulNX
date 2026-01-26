@@ -32,8 +32,6 @@ namespace MulNX {
             void Init();
             // 主循环
             void VirtualMain();
-            // 窗口逻辑
-            void MulNXiMainWindow();
 
             // 获取子模块的接口
             MulNX::Messaging::IMessageManager& IMessageManager();
@@ -41,25 +39,15 @@ namespace MulNX {
             MulNX::IPCer& IPCer();
             MulNX::IHandleSystem& IHandleSystem();
 
-            CSController& CS();
-            ConsoleManager& ConsoleManager();
-            GameSettingsManager& GameSettingsManager();
-            ICameraSystem& ICameraSystem();
-            VirtualUser& VirtualUser();
-            GameCfgManager& GameCfgManager();
-
             // 获取实现
-			CoreImpl* GetImpl() { return this->pImpl.get(); }
+            MulNX::Core::CoreStarterBase* GetStarter() { return this->pCoreStarter.get(); }
 
             // 设置启动器
 			bool SetCoreStarter(std::unique_ptr<CoreStarterBase> Starter);
 
             // 模块相关
 
-			// 注册模块
-            bool RegisteModule(std::unique_ptr<ModuleBase>Module, std::string&& Name);
-			// 查找模块
-            ModuleBase* FindModule(const std::string& Name);
+            ModuleManager* ModuleManager();
         };
     }
 }

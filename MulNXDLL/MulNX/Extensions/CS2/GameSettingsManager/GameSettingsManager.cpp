@@ -4,7 +4,7 @@
 
 #include "../../AbstractLayer3D/IAbstractLayer3D.hpp"
 
-#include "../../../Core/Core.hpp"
+#include "../../../Core/Cores.hpp"
 
 #include "../../../Systems/MessageManager/IMessageManager.hpp"
 #include "../../../Systems/MulNXUISystem/IMulNXUISystem.hpp"
@@ -12,7 +12,7 @@
 #include "../../../../ThirdParty/All_ImGui.hpp"
 
 bool GameSettingsManager::Init() {
-	this->CS = &this->Core->CS();
+	this->CS = this->Core->ModuleManager()->FindModule<CSController>("CSController");
 	C_ConVarSystem& CVarSystem = this->CS->GetCvarSystem();
 
 	this->dof.r_dof_override = CVarSystem.GetCvar("r_dof_override")->GetPtr<bool>();

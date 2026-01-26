@@ -1,54 +1,55 @@
-#include"ConsoleManager.hpp"
+#include "ConsoleManager.hpp"
 
-#include"../GameSettingsManager/GameSettingsManager.hpp"
-#include"../GameCfgManager/GameCfgManager.hpp"
+#include "../GameSettingsManager/GameSettingsManager.hpp"
+#include "../GameCfgManager/GameCfgManager.hpp"
 
-#include"../../../Core/Core.hpp"
+#include "../../../Core/Core.hpp"
+#include "../../../Core/ModuleManager/ModuleManager.hpp"
 
-#include"../../../Systems/Debugger/IDebugger.hpp"
-#include"../../../Systems/IPCer/IPCer.hpp"
-#include"../../../Systems/KeyTracker/KeyTracker.hpp"
-#include"../../../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
+#include "../../../Systems/Debugger/IDebugger.hpp"
+#include "../../../Systems/IPCer/IPCer.hpp"
+#include "../../../Systems/KeyTracker/KeyTracker.hpp"
+#include "../../../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
 
-#include"../../../Extensions/MiniMap/MiniMap.hpp"
+#include "../../../Extensions/MiniMap/MiniMap.hpp"
 
-#include"../../../../ThirdParty/All_ImGui.hpp"
+#include "../../../../ThirdParty/All_ImGui.hpp"
 
 bool ConsoleManager::Init() {
 	return true;
 }
 
 void ConsoleManager::Menu() {
-	MulNX::AutoChild Child(this,"ConsoleManager", 0.5f);//占据半个窗口高度，另一半给VirtualUser
+	MulNX::AutoChild Child(this,"ConsoleManager", 0.5f);// 占据半个窗口高度，另一半给VirtualUser
 
 	if (ImGui::CollapsingHeader("调试器控制")) {
-		//调试功能设置
-		//调试模式下提供更多功能，但可能影响性能和稳定性
+		// 调试功能设置
+		// 调试模式下提供更多功能，但可能影响性能和稳定性
 		static bool debugMode = this->GlobalVars->DebugMode;
 		if (ImGui::Checkbox("调试模式（Debug Mode），提供更多功能，但可能影响性能和稳定性", &debugMode)) {
 			this->GlobalVars->DebugMode = debugMode;
 		}
 		if (ImGui::Button("解限所有CS2控制台变量")) {
 			int Count = 0;
-			this->Core->CS().GetCvarSystem().UnlockHiddenCVars(Count);
+			this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetCvarSystem().UnlockHiddenCVars(Count);
 			this->IDebugger->AddSucc("成功解限" + std::to_string(Count) + "个控制台命令！");
 		}
 		if (ImGui::Button("限住所有CS2控制台变量")) {
 			int Count = 0;
-			this->Core->CS().GetCvarSystem().LockAllCvars(Count);
+			this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetCvarSystem().LockAllCvars(Count);
 			this->IDebugger->AddSucc("成功限住" + std::to_string(Count) + "个控制台命令！");
 		}
 		if(ImGui::Button("列出所有CS2控制台变量")) {
 			this->IDebugger->AddInfo("---------------------------------------------------------------------------------");
 			uint64_t idx = 0;
-			this->Core->CS().GetCvarSystem().GetFirstCvarIterator(idx);
+			this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetCvarSystem().GetFirstCvarIterator(idx);
 			while (idx!=0xFFFFFFFF) {
-				C_ConVar* var = this->Core->CS().GetCvarSystem().GetCVarByIndex(idx);
+				C_ConVar* var = this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetCvarSystem().GetCVarByIndex(idx);
 				if (var) {
 					std::string Name = var->szName ? var->szName : "未知";
 					this->IDebugger->AddInfo("控制台命令：" + Name);
 				}
-				this->Core->CS().GetCvarSystem().GetNextCvarIterator(idx);
+				this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetCvarSystem().GetNextCvarIterator(idx);
 			}
 			this->IDebugger->AddInfo("---------------------------------------------------------------------------------");
 		}
@@ -86,21 +87,21 @@ void ConsoleManager::Menu() {
 
 	if (ImGui::CollapsingHeader("游戏配置管理器控制")) {
 		if (ImGui::Button("打开游戏配置管理器")) {
-			this->Core->GameCfgManager().OpenWindow();
+			this->Core->ModuleManager()->FindModule("GameCfgManager")->OpenWindow();
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("关闭游戏配置管理器")) {
-			this->Core->GameCfgManager().CloseWindow();
+			this->Core->ModuleManager()->FindModule("GameCfgManager")->CloseWindow();
 		}
 	}
 
 	if (ImGui::CollapsingHeader("小地图控制")) {
 		if (ImGui::Button("打开小地图")) {
-			this->Core->FindModule("MiniMap")->OpenWindow();
+			this->Core->ModuleManager()->FindModule("MiniMap")->OpenWindow();
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("关闭小地图")) {
-			this->Core->FindModule("MiniMap")->CloseWindow();
+			this->Core->ModuleManager()->FindModule("MiniMap")->CloseWindow();
 		}
 	}
 

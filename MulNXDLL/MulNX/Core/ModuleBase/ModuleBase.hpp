@@ -11,8 +11,6 @@ namespace MulNX {
 		MulNX::Core::Core* Core;
 		// 全局变量指针
 		MulNX::GlobalVars* GlobalVars = nullptr;
-		// 3D抽象层指针
-		IAbstractLayer3D* AL3D = nullptr;
 		// 按键追踪器指针
 		MulNX::KeyTracker* KT = nullptr;
 	public:
@@ -24,12 +22,14 @@ namespace MulNX {
 	public:
 		// 组件句柄
 		MulNXHandle HModule;
+		// 调试器指针
+		IDebugger* IDebugger = nullptr;
+		// 3D抽象层指针
+		IAbstractLayer3D* AL3D = nullptr;
 	private:
 		// 消息管理器指针
 		MulNX::Messaging::IMessageManager* IMsgManager = nullptr;
 	protected:
-		// 调试器指针
-		IDebugger* IDebugger = nullptr;
 		// 窗口显示标志
 		bool ShowWindow = false;
 		// 运行标志

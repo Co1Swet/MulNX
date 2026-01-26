@@ -42,7 +42,8 @@ public:
 
 	void Draw();
 	bool SendToOwner(MulNX::Messaging::Message&& Msg);
-	MulNX::Messaging::Message CreateMsg(uint32_t SubType);
+	MulNX::Message CreateMsg(uint32_t SubType);
+	MulNXHandle CreateStringHandle(std::string&& Str);
 
 	bool CallSingleUIContext(std::string&& Name);
 	bool SetNextSingleUIContext(std::string&& Name);

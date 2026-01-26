@@ -2,11 +2,17 @@
 
 #include "../ModuleBase/ModuleBase.hpp"
 
+#include <map>
+
 namespace MulNX {
 	namespace Core {
 		// 模块管理器类，负责加载、卸载和管理各个模块
 		class ModuleManager final :public MulNX::ModuleBase {
 		private:
+			// 存储初始化优先级与模块句柄的映射
+			std::map<int, MulNXHandle>InitPriority;
+			
+			std::atomic<size_t> Index = 0;
 			// 存储已加载模块的映射
 			std::unordered_map<MulNXHandle, std::unique_ptr<MulNX::ModuleBase>> Modules;
 			// 存储从字符串到模块句柄的映射，便于按名称查找
@@ -18,10 +24,15 @@ namespace MulNX {
 			void VirtualMain()override;
 			void Windows()override;
 
-			// 注册模块
-			bool RegisteModule(std::unique_ptr<MulNX::ModuleBase>&& Module, std::string&& Name);
+			// 注册模块，需要传入模块指针和名称，以及优先级，从1开始，数字越小优先级越高
+			bool RegisteModule(std::unique_ptr<MulNX::ModuleBase>&& Module, std::string&& Name, int Priority = 0);
 			// 根据名称获取模块指针
 			MulNX::ModuleBase* FindModule(const std::string& Name);
+			// 按类型查找模块
+			template<typename T>
+			T* FindModule(const std::string& Name) {
+				return dynamic_cast<T*>(this->FindModule(Name));
+			}
 
 			// 初始化最后部分使用
 			bool PackedInit();

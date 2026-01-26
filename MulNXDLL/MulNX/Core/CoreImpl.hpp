@@ -15,13 +15,6 @@
 #include "../Extensions/MiniMap/MiniMap.hpp"
 #include "../Extensions/VirtualUser/VirtualUser.hpp"
 
-#include "../Extensions/CS2/CSController/CSController.hpp"
-#include "../Extensions/CS2/ConsoleManager/ConsoleManager.hpp"
-#include "../Extensions/CS2/DemoHelper/DemoHelper.hpp"
-#include "../Extensions/CS2/GameCfgManager/GameCfgManager.hpp"
-#include "../Extensions/CS2/GameSettingsManager/GameSettingsManager.hpp"
-#include "../Extensions/CS2/HookManager/HookManager.hpp"
-
 using namespace MulNX::Core;
 
 // 页面枚举
@@ -47,17 +40,7 @@ public:
     MulNX::IPCer IPCer;
     MulNX::Debugger Debugger;
     // 基础服务模块
-
-    CSController CS;
     AbstractLayer3D AL3D;
-
-    // 上层建筑
-    ConsoleManager ConsoleManager;
-    GameSettingsManager GameSettingsManager;
-    DemoHelper DemoHelper;
-    CameraSystem CameraSystem;
-    VirtualUser VirtualUser;
-    GameCfgManager GameCfgManager;
 
 public:
     // 构造函数

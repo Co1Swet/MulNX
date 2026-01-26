@@ -4,6 +4,7 @@
 #include "../MulNXiGlobalVars/MulNXiGlobalVars.hpp"
 
 #include "../../Core/Core.hpp"
+#include "../../Core/ModuleManager/ModuleManager.hpp"
 #include "../../Extensions/CS2/CSController/CSController.hpp"
 #include "../../Extensions/CameraSystem/ICameraSystem.hpp"
 #include "../../Extensions/AbstractLayer3D/IAbstractLayer3D.hpp"
@@ -42,21 +43,21 @@ void MulNX::Debugger::Menu() {
     }
     // 显示当前位置和旋转
     ImGui::Text("本地位置: X: %.6f, Y: %.6f, Z: %.6f",
-        this->Core->CS().GetLocalPlayer().GetPosition().x,
-        this->Core->CS().GetLocalPlayer().GetPosition().y,
-        this->Core->CS().GetLocalPlayer().GetPosition().z);
+        this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetLocalPlayer().GetPosition().x,
+        this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetLocalPlayer().GetPosition().y,
+        this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetLocalPlayer().GetPosition().z);
     ImGui::Text("本地欧拉角: Pitch: %.6f, Yaw: %.6f, Roll: %.6f",
-        this->Core->CS().GetLocalPlayer().GetRotationEuler().x,
-        this->Core->CS().GetLocalPlayer().GetRotationEuler().y,
-        this->Core->CS().GetLocalPlayer().GetRotationEuler().z);
+        this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetLocalPlayer().GetRotationEuler().x,
+        this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetLocalPlayer().GetRotationEuler().y,
+        this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetLocalPlayer().GetRotationEuler().z);
 
-    int FOV = this->Core->CS().LocalPlayer.Entity.Pawn.CameraServices.iFOV;
+    int FOV = this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.Entity.Pawn.CameraServices.iFOV;
     ImGui::Text("FOV:%d", FOV);
-    int FOVStart = this->Core->CS().LocalPlayer.Entity.Pawn.CameraServices.FOVStart;
+    int FOVStart = this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.Entity.Pawn.CameraServices.FOVStart;
     ImGui::Text("FOVStart:%d", FOVStart);
-    float FOVRate = this->Core->CS().LocalPlayer.Entity.Pawn.CameraServices.FOVRate;
+    float FOVRate = this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.Entity.Pawn.CameraServices.FOVRate;
     ImGui::Text("FOVRate:%.4f", FOVRate);
-    float FOVTime = this->Core->CS().LocalPlayer.Entity.Pawn.CameraServices.FOVTime;
+    float FOVTime = this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.Entity.Pawn.CameraServices.FOVTime;
     ImGui::Text("FOVTime:%.4f", FOVTime);
     static bool F1 = false, F2 = false;
     ImGui::Checkbox("F1", &F1);
@@ -66,8 +67,8 @@ void MulNX::Debugger::Menu() {
     ImGui::Separator();
 
     
-    if (this->Core->CS().LocalPlayer.pGlobalFOV) {
-        int GlobalFOV = *this->Core->CS().LocalPlayer.pGlobalFOV;
+    if (this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.pGlobalFOV) {
+        int GlobalFOV = *this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.pGlobalFOV;
         static bool GlobalFOVControl = false;
         ImGui::Checkbox("GlobalFOVControl", &GlobalFOVControl);
 
@@ -75,7 +76,7 @@ void MulNX::Debugger::Menu() {
         ImGui::SliderFloat("全局FOV", &inputGFOV, 0, 360);
 
         if (GlobalFOVControl) {
-            *this->Core->CS().LocalPlayer.pGlobalFOV = inputGFOV;
+            *this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.pGlobalFOV = inputGFOV;
         }
     }
     
@@ -88,8 +89,8 @@ void MulNX::Debugger::Menu() {
 
     // 检测K键按下
     if (ImGui::IsKeyPressed(ImGuiKey_K)) {
-        TestPosition = this->Core->CS().GetLocalPlayer().GetPosition();
-        TestRotationEuler = this->Core->CS().GetLocalPlayer().GetRotationEuler();
+        TestPosition = this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetLocalPlayer().GetPosition();
+        TestRotationEuler = this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetLocalPlayer().GetRotationEuler();
         MulNX::Base::Math::CSEulerToQuat(TestRotationEuler, TestRotation4);
     }
 
@@ -145,20 +146,20 @@ void MulNX::Debugger::Menu() {
     //this->Core->CameraSystem().CameraDrawer.Init(CameraHigh, CameraX, CameraY, AxisLenth, cameraColour);
     //this->Core->CameraSystem().CameraDrawer.Update(this->Core->CS().CSGetMatrix(), this->Core->CS().CSGetScreenWide(), this->Core->CS().CSGetScreenHigh());
     //this->Core->CameraSystem().CameraDrawer.DrawCamera(TestPosition, TestRotationEuler, "旧测试");
-    this->Core->ICameraSystem().ResetCameraModule(CameraHigh, CameraX, CameraY, AxisLenth, cameraColour);
-    this->Core->ICameraSystem().DrawCameraByPAR(TestPosition, TestRotationEuler, "测试摄像机");
+    this->Core->ModuleManager()->FindModule<ICameraSystem>("CameraSystem")->ResetCameraModule(CameraHigh, CameraX, CameraY, AxisLenth, cameraColour);
+    this->Core->ModuleManager()->FindModule<ICameraSystem>("CameraSystem")->DrawCameraByPAR(TestPosition, TestRotationEuler, "测试摄像机");
 
     ImGui::Separator();
     ImGui::Separator();
     ImGui::Separator();
     
     
-    ImGui::Text(("OB模式：" + std::to_string(this->Core->CS().LocalPlayer.Entity.Pawn.m_pObserverServices.m_iObserverMode)).c_str());
-    ImGui::Text(("m_hObserverTarget：" + std::to_string(this->Core->CS().LocalPlayer.Entity.Pawn.m_pObserverServices.m_hObserverTarget)).c_str());
-    ImGui::Text(("m_iObserverLastMode：" + std::to_string(this->Core->CS().LocalPlayer.Entity.Pawn.m_pObserverServices.m_iObserverLastMode)).c_str());
-    ImGui::Text(("m_bForcedObserverMode：" + std::to_string(this->Core->CS().LocalPlayer.Entity.Pawn.m_pObserverServices.m_bForcedObserverMode)).c_str());
-    ImGui::Text(("m_flObserverChaseDistance：" + std::to_string(this->Core->CS().LocalPlayer.Entity.Pawn.m_pObserverServices.m_flObserverChaseDistance)).c_str());
-    ImGui::Text(("m_flObserverChaseDistanceCalcTime：" + std::to_string(this->Core->CS().LocalPlayer.Entity.Pawn.m_pObserverServices.m_flObserverChaseDistanceCalcTime)).c_str());
+    ImGui::Text(("OB模式：" + std::to_string(this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.Entity.Pawn.m_pObserverServices.m_iObserverMode)).c_str());
+    ImGui::Text(("m_hObserverTarget：" + std::to_string(this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.Entity.Pawn.m_pObserverServices.m_hObserverTarget)).c_str());
+    ImGui::Text(("m_iObserverLastMode：" + std::to_string(this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.Entity.Pawn.m_pObserverServices.m_iObserverLastMode)).c_str());
+    ImGui::Text(("m_bForcedObserverMode：" + std::to_string(this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.Entity.Pawn.m_pObserverServices.m_bForcedObserverMode)).c_str());
+    ImGui::Text(("m_flObserverChaseDistance：" + std::to_string(this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.Entity.Pawn.m_pObserverServices.m_flObserverChaseDistance)).c_str());
+    ImGui::Text(("m_flObserverChaseDistanceCalcTime：" + std::to_string(this->Core->ModuleManager()->FindModule<CSController>("CSController")->LocalPlayer.Entity.Pawn.m_pObserverServices.m_flObserverChaseDistanceCalcTime)).c_str());
     
     return;
 }
@@ -344,7 +345,9 @@ void MulNX::Debugger::MenuMonitor() {
     std::shared_lock lock(this->MyThreadMutex);
 	ImGui::Text("调试监控");
     static int Result = 0;
-    Result = this->Core->CS().GetMsgResult;
+    auto* pCS = this->Core->ModuleManager()->FindModule<CSController>("CSController");
+    if (!pCS)return;
+    Result = pCS->GetMsgResult;
     ImGui::Text("CSController信息获取返回值: %d", Result);
     if (Result < 0) {
         this->AddError("成功捕获一次内核错误！");
@@ -357,24 +360,24 @@ void MulNX::Debugger::MenuMonitor() {
     ImGui::Separator();
 
     ImGui::Text("本地测试");
-    std::ostringstream Msg = this->Core->CS().GetLocalPlayer().GetMsg();
+    std::ostringstream Msg = this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetLocalPlayer().GetMsg();
     ImGui::Text(Msg.str().c_str());
 
     ImGui::Separator();
     ImGui::Separator();
 
-    ImGui::Text("当前时间： %f", this->Core->CS().CSGetCurrentTime());
+    ImGui::Text("当前时间： %f", this->Core->ModuleManager()->FindModule<CSController>("CSController")->CSGetCurrentTime());
 
     ImGui::Separator();
 
-    float C4BlowTime = this->Core->CS().PlantedC4.m_flC4Blow;
+    float C4BlowTime = this->Core->ModuleManager()->FindModule<CSController>("CSController")->PlantedC4.m_flC4Blow;
 	ImGui::Text("炸弹爆炸时间： %f", C4BlowTime);
 	ImGui::Text("倒计时: %f", this->AL3D->GetPhaseRemainingTime());
 
     ImGui::Separator();
     ImGui::Separator();
     // 基本游戏状态
-	C_CSGameRules CSGameRules = this->Core->CS().GetCSGameRules();
+	C_CSGameRules CSGameRules = this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetCSGameRules();
 
     ImGui::Text("冻结期： %s", CSGameRules.m_bFreezePeriod ? "是" : "否");
     ImGui::Text("热身期： %s", CSGameRules.m_bWarmupPeriod ? "是" : "否");
@@ -386,7 +389,7 @@ void MulNX::Debugger::MenuMonitor() {
     if(ImGui::Button("应用TargetSkipTickForRenderTick")){
         static int TickSchemaed = 0;
         TickSchemaed = TargetSkipTickForRenderTick - CSGameRules.m_fWarmupPeriodEnd * 64;
-		this->Core->CS().Execute(("demo_gototick " + std::to_string(TickSchemaed)).c_str());
+        this->Core->ModuleManager()->FindModule<CSController>("CSController")->Execute(("demo_gototick " + std::to_string(TickSchemaed)).c_str());
 	}
     ImGui::Separator();
 
@@ -482,7 +485,7 @@ void MulNX::Debugger::MenuMonitor() {
     
     for (size_t i = 0; i < 64; ++i) {
         try {
-            C_Entity Entity = this->Core->CS().GetEntityList().GetEntity(i);
+            C_Entity Entity = this->Core->ModuleManager()->FindModule<CSController>("CSController")->GetEntityList().GetEntity(i);
             ImGui::Text("编号(位于游戏EntityList)：%d", Entity.IndexInEntityList);
             ImGui::SameLine();
             ImGui::Text(Entity.GetMsg().str().c_str());

@@ -39,15 +39,30 @@ void CSController::InitInterface() {
 	this->CmdInterface = pFunc(InterfaceName, nullptr);
 }
 bool CSController::Init() {
+	this->InitInterface();
 	this->GetModules();
 	this->Catch();
-
+	this->EntryCreateThread();// 包含线程创建
+	this->SetMyThreadDelta(3);
 	//获取全局变量
 	if (!MulNX::Base::Memory::Read(this->Modules.client + cs2_dumper::offsets::client_dll::dwGlobalVars, this->CSGlobalVars.Address)) {
 		throw(111);
 	}
 	this->CSGlobalVars.Update();
 	this->AL3D->SetCurrentTimePointer(this->CSGlobalVars.GetCurrentTimePointer());
+	this->AL3D->SetCmdInterface([this](const char* command) {
+		this->Execute(command);
+		return true;
+		});
+	this->AL3D->SetCameraSystemIOOverrideFunc([this](const CameraSystemIO* const IO) {
+		return this->CameraSystemIOOverride(IO);
+		});
+	this->AL3D->SetGetViewMatrixFunc([this]() {
+		return this->LocalPlayer.ViewMatrix;
+		});
+	this->AL3D->SetGetSpatialStateFunc([this]() {
+		return this->LocalPlayer.GetSpatialState();
+		});
 	return true;
 }
 

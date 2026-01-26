@@ -8,12 +8,11 @@
 #include "../../../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
 #include "../../../Systems/MulNXUISystem/IMulNXUISystem.hpp"
 
-#include "../../../../ThirdParty/imgui_d11/imgui.h"
-
-#include <chrono>
 #include "../../../../ThirdParty/All_ImGui.hpp"
 
-static bool AllowReHook = false;//允许重hook
+#include <chrono>
+
+static bool AllowReHook = false;// 允许重hook
 bool HookManager::Init() {
 	this->pInstance = this;
 	return true;
@@ -34,7 +33,7 @@ void HookManager::ThreadMain() {
 		this->GuardPleaseAction = false;
 		this->IDebugger->AddInfo("检测到D3D11波动，等待用户手动ReHook");
 	}
-	//检查是否超时：正在等待CheckBack且超过2秒未收到回复
+	// 检查是否超时：正在等待CheckBack且超过2秒未收到回复
 	if (AllowReHook) {
 		if (this->KT->CheckComboClick(VK_INSERT, 2)) {
 			ReHook = true;
@@ -42,37 +41,33 @@ void HookManager::ThreadMain() {
 		}
 	}
 	if (ReHook) {
-		//std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		//执行重新Hook逻辑
-		//先清理Hook
+		// std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		// 执行重新Hook逻辑
+		// 先清理Hook
 		this->hkPresent.Clear();
 		this->hkRelease.Clear();
 		
 
-		//重置状态
+		// 重置状态
 		this->d3dInited = false;
 		this->NeedReHook = true;
 
-		//延迟重新创建Hook
+		// 延迟重新创建Hook
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 		this->CreateHook();
 
 		//发送重新Hook消息
-		MulNX::Messaging::Message Msg(MulNX::Messaging::MsgType::Core_ReHook);
+		MulNX::Message Msg(MulNX::MsgType::Core_ReHook);
 		this->IPublish(std::move(Msg));
 
 		ReHook = false;
 
 		// UI系统主界面初始化
-		auto StartString = MulNX::Base::make_any_unique<std::string>("MainDraw");
-		MulNXHandle hStr = this->Core->IHandleSystem().RegisteHandle(std::move(StartString));
-		MulNX::Messaging::Message StartMsg(MulNX::Messaging::MsgType::UISystem_Start);
-		StartMsg.Handle = hStr;
-		this->IPublish(std::move(StartMsg));
+		this->StartUIWith("MainDraw");
 	}
 }
 
-void HookManager::ProcessMsg(MulNX::Messaging::Message* Msg) {
+void HookManager::ProcessMsg(MulNX::Message* Msg) {
 	switch (Msg->Type) {
 
 	}

@@ -1,46 +1,27 @@
 #include "AbstractLayer3D.hpp"
 
-#include "../../Core/Core.hpp"
+#include "../../Core/Cores.hpp"
 
 #include "../../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
 #include "../../Systems/MessageManager/IMessageManager.hpp"
 #include "../../Systems/Debugger/IDebugger.hpp"
 #include "../../Systems/MulNXUISystem/IMulNXUISystem.hpp"
 
-#include "../../Extensions/CS2/CSController/CSController.hpp"
-#include "../../Extensions/CS2/HookManager/HookManager.hpp"
-
 bool AbstractLayer3D::Init() {
-	this->CS = &this->Core->CS();
-
 	this->ISubscribe(MulNX::Messaging::MsgType::Core_ReHook);
-
-	while (this->CurrentWindowWidth == 0)this->CheckWin();
-	while (this->CurrentWindowHeight == 0)this->CheckWin();
-
 	return true;
-}
-void AbstractLayer3D::CheckWin() {
-	//获取客户区大小
-	RECT ClientRect;
-	GetClientRect(HookManager::pInstance->CS2hWnd, &ClientRect);
-	this->CurrentWindowWidth = ClientRect.right - ClientRect.left;   // 宽度
-	this->CurrentWindowHeight = ClientRect.bottom - ClientRect.top;  // 高度
-
-	return;
 }
 void AbstractLayer3D::VirtualMain() {
 	this->EntryProcessMsg();
 	if (!this->GlobalVars->CampathPlaying) {
-		*this->CS->GetLocalPlayer().pGlobalFOV = 0.0f;
+		//*this->CS->GetLocalPlayer().pGlobalFOV = 0.0f;
 	}
 	this->UpdateTime();
 	return;
 }
 void AbstractLayer3D::ProcessMsg(MulNX::Messaging::Message* Msg) {
 	switch (Msg->Type) {
-	case MulNX::Messaging::MsgType::Core_ReHook: {
-		this->CheckWin();
+	case MulNX::MsgType::Core_ReHook: {
 		this->IDebugger->AddSucc("已完成Hook重载！");
 		break;
 	}
@@ -58,12 +39,12 @@ uintptr_t AbstractLayer3D::GetCurrentTimePointer() {
 }
 void AbstractLayer3D::UpdateTime() {
     float rawTime;
-    MulNX::Base::Memory::Read(this->pCurrentTime, rawTime);
-    if (rawTime < 0)return;
+    //MulNX::Base::Memory::Read(this->pCurrentTime, rawTime);
+    /*if (rawTime < 0)return;
     if (rawTime > 1000000.0f)return;
     if (rawTime < this->CurrentTime && this->CurrentTime - rawTime < 0.5f)return;
 	
-    this->CurrentTime = rawTime;
+    this->CurrentTime = rawTime;*/
     
     return;
 }
@@ -95,15 +76,11 @@ void AbstractLayer3D::SetPhaseDuration(float duration) {
 }
 
 
-
-
-
-
 MulNX::Base::Math::SpatialState AbstractLayer3D::GetSpatialState()const {
-    return this->CS->GetLocalPlayer().GetSpatialState();
+	return this->GetSpatialStateFunc();
 }
 float* AbstractLayer3D::GetViewMatrix()const {
-    return this->CS->GetLocalPlayer().GetMatrix();
+	return this->GetViewMatrixFunc();
 }
 float AbstractLayer3D::GetWinWidth()const {
 	return this->CurrentWindowWidth;
@@ -112,10 +89,10 @@ float AbstractLayer3D::GetWinHeight()const {
 	return this->CurrentWindowHeight;
 }
 bool AbstractLayer3D::CameraSystemIOOverride(const CameraSystemIO* const IO) {
-    return this->CS->CameraSystemIOOverride(IO);
+	return this->CameraSystemIOOverrideFunc(IO);
 }
 bool AbstractLayer3D::ExecuteCommand(const char* command) {
-	this->CS->Execute(command);
+	this->CmdInterface(command);
 	return true;
 }
 bool AbstractLayer3D::ExecuteCommand(const std::string& command) {

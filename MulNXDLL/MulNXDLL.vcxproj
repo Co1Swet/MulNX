@@ -41,13 +41,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -73,6 +73,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>..\dist\MulNX\MulNX\DLLToCS</OutDir>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>..\dist\MulNX\MulNX\DLLToCS</OutDir>
@@ -113,7 +114,7 @@
       <AdditionalOptions>/utf-8</AdditionalOptions>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -131,7 +132,7 @@
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
@@ -146,6 +147,7 @@
     <ClInclude Include="MulNX\Base\vmt\vmt.hpp" />
     <ClInclude Include="MulNX\Base\WIN32Msg\WIN32Msg.hpp" />
     <ClInclude Include="MulNX\Core\CoreImpl.hpp" />
+    <ClInclude Include="MulNX\Core\Cores.hpp" />
     <ClInclude Include="MulNX\Core\CoreStarterBase\CoreStarterBase.hpp" />
     <ClInclude Include="MulNX\Core\ModuleBase\ModuleBase.hpp" />
     <ClInclude Include="MulNX\Core\Core.hpp" />
@@ -190,11 +192,13 @@
     <ClInclude Include="MulNX\Extensions\CS2\GameCfgManager\GameCfgManager.hpp" />
     <ClInclude Include="MulNX\Extensions\CS2\GameSettingsManager\GameSettingsManager.hpp" />
     <ClInclude Include="MulNX\Extensions\CS2\HookManager\HookManager.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\MulNXCS2Ext.hpp" />
     <ClInclude Include="MulNX\Extensions\MiniMap\MiniMap.hpp" />
     <ClInclude Include="MulNX\Extensions\MQTT\MQTTClient\MQTTClient.hpp" />
     <ClInclude Include="MulNX\Extensions\MQTT\ThirdParty\mqtt.h" />
     <ClInclude Include="MulNX\Extensions\MQTT\ThirdParty\mqtt_pal.h" />
     <ClInclude Include="MulNX\Extensions\VirtualUser\VirtualUser.hpp" />
+    <ClInclude Include="MulNX\Extensions\Win32Starter\Win32Starter.hpp" />
     <ClInclude Include="MulNX\MulNX.hpp" />
     <ClInclude Include="MulNX\Systems\Debugger\Debugger.hpp" />
     <ClInclude Include="MulNX\Systems\Debugger\IDebugger.hpp" />
@@ -215,6 +219,7 @@
     <ClInclude Include="MulNX\Systems\MulNXUISystem\MulNXUISystem.hpp" />
     <ClInclude Include="MulNX\Systems\Systems.hpp" />
     <ClInclude Include="Projects\MulNX_CS2\DllMain\DllMain.hpp" />
+    <ClInclude Include="Projects\MulNX_RMClient\WinMain\WinMain.hpp" />
     <ClInclude Include="ThirdParty\All_cs2_dumper.hpp" />
     <ClInclude Include="ThirdParty\All_ImGui.hpp" />
     <ClInclude Include="ThirdParty\All_MinHook.hpp" />
@@ -250,6 +255,8 @@
     <ClInclude Include="ThirdParty\imgui_d11\imstb_textedit.h" />
     <ClInclude Include="ThirdParty\imgui_d11\imstb_truetype.h" />
     <ClInclude Include="ThirdParty\minhook_debug_x64\include\MinHook.h" />
+    <ClInclude Include="ThirdParty\protobuf\messages_down.pb.h" />
+    <ClInclude Include="ThirdParty\protobuf\messages_up.pb.h" />
     <ClInclude Include="ThirdParty\pugixml\pugiconfig.hpp" />
     <ClInclude Include="ThirdParty\pugixml\pugixml.hpp" />
   </ItemGroup>
@@ -304,6 +311,7 @@
     <ClCompile Include="MulNX\Extensions\MQTT\ThirdParty\mqtt.c" />
     <ClCompile Include="MulNX\Extensions\MQTT\ThirdParty\mqtt_pal.c" />
     <ClCompile Include="MulNX\Extensions\VirtualUser\VirtualUser.cpp" />
+    <ClCompile Include="MulNX\Extensions\Win32Starter\Win32Starter.cpp" />
     <ClCompile Include="MulNX\MulNX.cpp" />
     <ClCompile Include="MulNX\Systems\Debugger\Debugger.cpp" />
     <ClCompile Include="MulNX\Systems\HandleSystem\HandleSystem.cpp" />
@@ -318,6 +326,7 @@
     <ClCompile Include="MulNX\Systems\MulNXUISystem\MulNXUISystem.cpp" />
     <ClCompile Include="MulNX\Systems\Systems.cpp" />
     <ClCompile Include="Projects\MulNX_CS2\DllMain\DllMain.cpp" />
+    <ClCompile Include="Projects\MulNX_RMClient\WinMain\WinMain.cpp" />
     <ClCompile Include="ThirdParty\imgui_d11\imgui.cpp" />
     <ClCompile Include="ThirdParty\imgui_d11\imgui_draw.cpp" />
     <ClCompile Include="ThirdParty\imgui_d11\imgui_impl_dx11.cpp" />
@@ -325,6 +334,8 @@
     <ClCompile Include="ThirdParty\imgui_d11\imgui_stdlib.cpp" />
     <ClCompile Include="ThirdParty\imgui_d11\imgui_tables.cpp" />
     <ClCompile Include="ThirdParty\imgui_d11\imgui_widgets.cpp" />
+    <ClCompile Include="ThirdParty\protobuf\messages_down.pb.cc" />
+    <ClCompile Include="ThirdParty\protobuf\messages_up.pb.cc" />
     <ClCompile Include="ThirdParty\pugixml\pugixml.cpp" />
   </ItemGroup>
   <ItemGroup>

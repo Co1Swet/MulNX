@@ -9,7 +9,7 @@
 
 #include "../../../../ThirdParty/All_ImGui.hpp"
 
-//具体数据类型都隐藏在CPP文件
+// 具体数据类型都隐藏在CPP文件
 struct DemoHelperPrivateData {
 	std::vector<float> TimeMarks{};
 };

@@ -44,7 +44,7 @@ bool MulNX::IPCer::GetWindowPathByName(const LPCWSTR& WindowName, std::filesyste
 bool MulNX::IPCer::Init() {
     //设置MulNX.exe路径
     if (!this->GetWindowPathByName(L"Multiple Next Extension", this->Paths.MulNX.MulNX_exe.Path)) {
-        throw std::string("错误，找不到Multiple Next Extension窗口！");
+        //throw std::string("错误，找不到Multiple Next Extension窗口！");
         //return false;
     }
     //获取MulNX目录

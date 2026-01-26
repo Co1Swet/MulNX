@@ -4,6 +4,7 @@
 #include "../CameraSystem/ICameraSystem.hpp"
 
 #include "../../Core/Core.hpp"
+#include "../../Core/ModuleManager/ModuleManager.hpp"
 
 #include "../../Systems/Debugger/IDebugger.hpp"
 #include "../../Systems/MessageManager/IMessageManager.hpp"
@@ -12,10 +13,10 @@
 
 
 bool VirtualUser::Init() {
-	this->CameraSystem = &this->Core->ICameraSystem();
+	this->CameraSystem = this->Core->ModuleManager()->FindModule<ICameraSystem>("CameraSystem");
 	this->Running = true;
 
-	//this->ISubscribe(MsgType::Core_Tick1);
+	// this->ISubscribe(MsgType::Core_Tick1);
 	this->ISubscribe(MulNX::MsgType::Core_Tick60);
 #ifdef _DEBUG
 	this->ISubscribe(MulNX::MsgType::Core_Tick30min);
@@ -89,13 +90,13 @@ void VirtualUser::ProcessMsg(MulNX::Message* Msg) {
 		break;
 	}
 	case MulNX::MsgType::CameraSystem_PlayingShutdown: {
-		//处理播放停止消息
+		// 处理播放停止消息
 		this->IDebugger->AddInfo("接收到摄像机系统播放停止信息");
 		this->CameraSystem->ShutDown();
 		break;
 	}
 	case MulNX::MsgType::Core_Tick1: {
-		//this->Debugger->AddInfo("一秒");
+		// this->Debugger->AddInfo("一秒");
 		break;
 	}
 	case MulNX::MsgType::Core_Tick60: {

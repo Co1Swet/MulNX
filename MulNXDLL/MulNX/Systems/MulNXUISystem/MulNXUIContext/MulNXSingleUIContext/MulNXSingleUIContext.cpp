@@ -8,9 +8,9 @@
 
 void MulNXSingleUIContext::Draw() {
 	if (this->MyMsgChannel->HasMessage()) {
-		MulNX::Messaging::Message Msg(MulNX::Messaging::MsgType::Null);
+		MulNX::Message Msg(MulNX::MsgType::Null);
 		while(this->MyMsgChannel->PullMessage(Msg)){
-			if(Msg.Type == MulNX::Messaging::MsgType::UISystem_ModuleRespose){
+			if(Msg.Type == MulNX::MsgType::UISystem_ModuleRespose){
 				this->WaitingResponse = false;
 			}
 		}
@@ -34,11 +34,16 @@ bool MulNXSingleUIContext::SendToOwner(MulNX::Messaging::Message&& Msg) {
 	this->WaitingResponse = true;
 	return true;
 }
-MulNX::Messaging::Message MulNXSingleUIContext::CreateMsg(uint32_t SubType) {
-	MulNX::Messaging::Message Msg(MulNX::Messaging::MsgType::UISystem_UICommand);
+MulNX::Message MulNXSingleUIContext::CreateMsg(uint32_t SubType) {
+	MulNX::Message Msg(MulNX::MsgType::UISystem_UICommand);
 	Msg.SubType = SubType;
 	Msg.pMsgChannel = this->MyMsgChannel;
 	return Msg;
+}
+MulNXHandle MulNXSingleUIContext::CreateStringHandle(std::string&& Str) {
+	MulNX::Core::Core* pCore = this->MainContext->Core;
+	auto pStr = MulNX::Base::make_any_unique<std::string>(std::move(Str));
+	return pCore->IHandleSystem().RegisteHandle(std::move(pStr));
 }
 
 MulNX::Base::any_unique_ptr MulNXSingleUIContext::Create(const MulNX::ModuleBase* const MB) {

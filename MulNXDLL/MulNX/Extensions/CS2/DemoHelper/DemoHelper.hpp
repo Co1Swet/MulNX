@@ -1,6 +1,8 @@
-#include"../../../Core/ModuleBase/ModuleBase.hpp"
+#pragma once
 
-#include"../../../Systems/HandleSystem/HandleSystem.hpp"
+#include "../../../Core/ModuleBase/ModuleBase.hpp"
+
+#include "../../../Systems/HandleSystem/HandleSystem.hpp"
 
 class MulNXSingleUIContext;
 class TripleBufferBase;

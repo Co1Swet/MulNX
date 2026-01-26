@@ -241,6 +241,18 @@
     <Filter Include="MulNX\Base\CharUtility">
       <UniqueIdentifier>{73cc66ca-9679-4287-834a-1748e999ae79}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Projects\MulNX_RMClient">
+      <UniqueIdentifier>{172c5905-1de2-4b02-9df5-0f0ec365ca5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Projects\MulNX_RMClient\WinMain">
+      <UniqueIdentifier>{5aaf8fc4-c82c-47ec-9530-85e483984c48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\Extensions\Win32Starter">
+      <UniqueIdentifier>{35230d5b-422d-4898-87d9-14b3ea3e369c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ThirdParty\protobuf">
+      <UniqueIdentifier>{7c427dde-3e08-4ed8-b9f8-331a6e71238a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThirdParty\All_cs2_dumper.hpp">
@@ -591,6 +603,24 @@
     <ClInclude Include="MulNX\Base\CharUtility\CharUtility.hpp">
       <Filter>MulNX\Base\CharUtility</Filter>
     </ClInclude>
+    <ClInclude Include="MulNX\Extensions\CS2\MulNXCS2Ext.hpp">
+      <Filter>MulNX\Extensions\CS2</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNX\Core\Cores.hpp">
+      <Filter>MulNX\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Projects\MulNX_RMClient\WinMain\WinMain.hpp">
+      <Filter>Projects\MulNX_RMClient\WinMain</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNX\Extensions\Win32Starter\Win32Starter.hpp">
+      <Filter>MulNX\Extensions\Win32Starter</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\protobuf\messages_down.pb.h">
+      <Filter>ThirdParty\protobuf</Filter>
+    </ClInclude>
+    <ClInclude Include="ThirdParty\protobuf\messages_up.pb.h">
+      <Filter>ThirdParty\protobuf</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\imgui_d11\imgui.cpp">
@@ -808,6 +838,18 @@
     </ClCompile>
     <ClCompile Include="MulNX\Base\CharUtility\CharUtility.cpp">
       <Filter>MulNX\Base\CharUtility</Filter>
+    </ClCompile>
+    <ClCompile Include="Projects\MulNX_RMClient\WinMain\WinMain.cpp">
+      <Filter>Projects\MulNX_RMClient\WinMain</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNX\Extensions\Win32Starter\Win32Starter.cpp">
+      <Filter>MulNX\Extensions\Win32Starter</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\protobuf\messages_down.pb.cc">
+      <Filter>ThirdParty\protobuf</Filter>
+    </ClCompile>
+    <ClCompile Include="ThirdParty\protobuf\messages_up.pb.cc">
+      <Filter>ThirdParty\protobuf</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

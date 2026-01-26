@@ -8,9 +8,24 @@ class CSController;
 
 class AbstractLayer3D final : public IAbstractLayer3D {
 	friend CSController;
+public:
+	std::function<bool(const char* command)> CmdInterface = nullptr;
+	void SetCmdInterface(std::function<bool(const char* command)> Func)override {
+		this->CmdInterface = Func;
+	}
+	std::function<bool(const CameraSystemIO* const IO)> CameraSystemIOOverrideFunc = nullptr;
+	void SetCameraSystemIOOverrideFunc(std::function<bool(const CameraSystemIO* const IO)> Func)override {
+		this->CameraSystemIOOverrideFunc = Func;
+	}
+	std::function<MulNX::Base::Math::SpatialState()> GetSpatialStateFunc = nullptr;
+	void SetGetSpatialStateFunc(std::function<MulNX::Base::Math::SpatialState()> Func)override {
+		this->GetSpatialStateFunc = Func;
+	}
+	std::function<float* ()> GetViewMatrixFunc = nullptr;
+	void SetGetViewMatrixFunc(std::function<float* ()> Func)override {
+		this->GetViewMatrixFunc = Func;
+	}
 private:
-	CSController* CS = nullptr;
-
 	std::atomic<float> CurrentTime = 0.0f;
 
 	//阶段时间基准
@@ -28,7 +43,6 @@ public:
 		//this->Type = MulNX::ModuleType::AbstractLayer3D;
 	}
 	bool Init()override;
-	void CheckWin();
 	void VirtualMain()override;
 	void ProcessMsg(MulNX::Messaging::Message* Msg)override;
 

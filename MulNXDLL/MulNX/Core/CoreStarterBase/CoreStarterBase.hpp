@@ -3,6 +3,7 @@
 #include "../ModuleBase/ModuleBase.hpp"
 
 class CoreImpl;
+class MulNXSingleUIContext;
 
 namespace MulNX {
 	namespace Core {
@@ -15,15 +16,15 @@ namespace MulNX {
 
 			bool SystemInit(CoreImpl* pImpl, MulNX::Core::Core* pCore);
 
+			// UI系统启动辅助函数
+			void StartUIWith(std::string&& EntryName);
+			// 注册主绘制函数
+			void RegisteMainDrawWith(std::function<void(MulNXSingleUIContext*)>&& MainDrawFunc);
+
 			std::function<void()>InitEndCall = nullptr;
 
 			// 所有系统全部启动启动启动！！！
 			virtual void StartAll(){}
-
-			// 必须提供一个入口点，供渲染线程调用UI渲染
-			virtual void EntryRender() {}
-			// 必须提供一个入口点，供核心初始化完成后循环调用
-			virtual void EntryLogic() {}
 		};
 	}
 }

@@ -29,7 +29,10 @@ public:
 	std::shared_mutex& GetMtx() {
 		return this->Mtx;
 	}
-
+	virtual void SetCmdInterface(std::function<bool(const char* command)> Func) = 0;
+	virtual void SetCameraSystemIOOverrideFunc(std::function<bool(const CameraSystemIO* const IO)> Func) = 0;
+	virtual void SetGetSpatialStateFunc(std::function<MulNX::Base::Math::SpatialState()> Func) = 0;
+	virtual void SetGetViewMatrixFunc(std::function<float* ()> Func) = 0;
 	IAbstractLayer3D() :ModuleBase() {
 		//this->Type = MulNX::ModuleType::AbstractLayer3D;
 	}
