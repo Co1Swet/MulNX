@@ -7,19 +7,33 @@ bool MulNX::HandleSystem::Init(){
 	return true; 
 }
 
-MulNXHandle MulNX::HandleSystem::RegisteHandle(MulNX::Base::any_unique_ptr Resource) {
+MulNXHandle MulNX::HandleSystem::RegisteUnique(MulNX::Base::any_unique_ptr Resource) {
 	std::unique_lock lock(this->MapMutex);
 	MulNXHandle handle = MulNXHandle::CreateHandle();
-	this->Resources[handle] = std::move(Resource);
+	this->UniqueResources[handle] = std::move(Resource);
 	return handle;
 }
-MulNX::Base::any_unique_ptr MulNX::HandleSystem::ReleaseHandle(MulNXHandle Handle) {
+MulNX::Base::any_unique_ptr MulNX::HandleSystem::ReleaseUnique(MulNXHandle Handle) {
 	std::unique_lock lock(this->MapMutex);
-	auto it = this->Resources.find(Handle);
-	if (it == this->Resources.end()) {
+	auto it = this->UniqueResources.find(Handle);
+	if (it == this->UniqueResources.end()) {
 		return nullptr;
 	}
 	MulNX::Base::any_unique_ptr temp = std::move(it->second);
-	this->Resources.erase(it);
+	this->UniqueResources.erase(it);
 	return temp;
+}
+MulNXHandle MulNX::HandleSystem::RegisteShared(MulNX::Base::any_shared_ptr Resource) {
+	std::unique_lock lock(this->MapMutex);
+	MulNXHandle handle = MulNXHandle::CreateHandle();
+	this->SharedResources[handle] = std::move(Resource);
+	return handle;
+}
+MulNX::Base::any_shared_ptr MulNX::HandleSystem::GetShared(MulNXHandle Handle) {
+	std::shared_lock lock(this->MapMutex);
+	auto it = this->SharedResources.find(Handle);
+	if (it == this->SharedResources.end()) {
+		return nullptr;
+	}
+	return it->second;
 }

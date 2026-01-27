@@ -10,7 +10,7 @@ void MulNXSingleUIContext::Draw() {
 	if (this->MyMsgChannel->HasMessage()) {
 		MulNX::Message Msg(MulNX::MsgType::Null);
 		while(this->MyMsgChannel->PullMessage(Msg)){
-			if(Msg.Type == MulNX::MsgType::UISystem_ModuleRespose){
+			if(Msg.Type == MulNX::MsgType::UISystem_ModuleResponse){
 				this->WaitingResponse = false;
 			}
 		}
@@ -43,7 +43,7 @@ MulNX::Message MulNXSingleUIContext::CreateMsg(uint32_t SubType) {
 MulNXHandle MulNXSingleUIContext::CreateStringHandle(std::string&& Str) {
 	MulNX::Core::Core* pCore = this->MainContext->Core;
 	auto pStr = MulNX::Base::make_any_unique<std::string>(std::move(Str));
-	return pCore->IHandleSystem().RegisteHandle(std::move(pStr));
+	return pCore->IHandleSystem().RegisteUnique(std::move(pStr));
 }
 
 MulNX::Base::any_unique_ptr MulNXSingleUIContext::Create(const MulNX::ModuleBase* const MB) {

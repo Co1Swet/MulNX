@@ -149,7 +149,7 @@ bool GameSettingsManager::Init() {
 
 		return;
 		};
-	this->hContext = this->Core->IHandleSystem().RegisteHandle(std::move(SingleContext));
+	this->hContext = this->Core->IHandleSystem().RegisteUnique(std::move(SingleContext));
 	Msg.Handle = this->hContext;
 	this->IPublish(std::move(Msg));
 

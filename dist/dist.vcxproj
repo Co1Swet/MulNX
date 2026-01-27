@@ -123,17 +123,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <Text Include="..\MulNX架构设计.txt" />
-    <Text Include="..\当前文件夹树.txt" />
-    <Text Include="..\打开更新依赖项.bat" />
-    <Text Include="..\版本文档.txt" />
     <Text Include="MulNX\Licenses\ThirdParty\cs2_dumper_LICENSE.txt" />
     <Text Include="MulNX\Licenses\ThirdParty\imgui_LICENSE.txt" />
     <Text Include="MulNX\Licenses\ThirdParty\minhook_LICENSE.txt" />
     <Text Include="MulNX\Licenses\ThirdParty\pugixml_LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\README.md" />
     <None Include="CalculateLines.py" />
     <None Include="MulNX.zip" />
     <None Include="MulNX\MulNX\MulNX.exe" />

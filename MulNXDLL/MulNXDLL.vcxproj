@@ -146,6 +146,7 @@
     <ClInclude Include="MulNX\Base\Base.hpp" />
     <ClInclude Include="MulNX\Base\vmt\vmt.hpp" />
     <ClInclude Include="MulNX\Base\WIN32Msg\WIN32Msg.hpp" />
+    <ClInclude Include="MulNX\Base\WinException\WinException.hpp" />
     <ClInclude Include="MulNX\Core\CoreImpl.hpp" />
     <ClInclude Include="MulNX\Core\Cores.hpp" />
     <ClInclude Include="MulNX\Core\CoreStarterBase\CoreStarterBase.hpp" />
@@ -197,6 +198,7 @@
     <ClInclude Include="MulNX\Extensions\MQTT\MQTTClient\MQTTClient.hpp" />
     <ClInclude Include="MulNX\Extensions\MQTT\ThirdParty\mqtt.h" />
     <ClInclude Include="MulNX\Extensions\MQTT\ThirdParty\mqtt_pal.h" />
+    <ClInclude Include="MulNX\Extensions\RMClient\RMClient.hpp" />
     <ClInclude Include="MulNX\Extensions\VirtualUser\VirtualUser.hpp" />
     <ClInclude Include="MulNX\Extensions\Win32Starter\Win32Starter.hpp" />
     <ClInclude Include="MulNX\MulNX.hpp" />
@@ -268,6 +270,7 @@
     <ClCompile Include="MulNX\Base\Memory\Memory.cpp" />
     <ClCompile Include="MulNX\Base\Base.cpp" />
     <ClCompile Include="MulNX\Base\WIN32Msg\WIN32Msg.cpp" />
+    <ClCompile Include="MulNX\Base\WinException\WinException.cpp" />
     <ClCompile Include="MulNX\Core\CoreStarterBase\CoreStarterBase.cpp" />
     <ClCompile Include="MulNX\Core\ModuleBase\ModuleBase.cpp" />
     <ClCompile Include="MulNX\Core\Core.cpp" />
@@ -310,6 +313,7 @@
     <ClCompile Include="MulNX\Extensions\MQTT\MQTTClient\MQTTClient.cpp" />
     <ClCompile Include="MulNX\Extensions\MQTT\ThirdParty\mqtt.c" />
     <ClCompile Include="MulNX\Extensions\MQTT\ThirdParty\mqtt_pal.c" />
+    <ClCompile Include="MulNX\Extensions\RMClient\RMClient.cpp" />
     <ClCompile Include="MulNX\Extensions\VirtualUser\VirtualUser.cpp" />
     <ClCompile Include="MulNX\Extensions\Win32Starter\Win32Starter.cpp" />
     <ClCompile Include="MulNX\MulNX.cpp" />

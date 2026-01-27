@@ -253,6 +253,12 @@
     <Filter Include="ThirdParty\protobuf">
       <UniqueIdentifier>{7c427dde-3e08-4ed8-b9f8-331a6e71238a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MulNX\Extensions\RMClient">
+      <UniqueIdentifier>{5d6f7520-a108-470d-98db-bf3ddcbff126}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\Base\WinException">
+      <UniqueIdentifier>{cac24aa6-d144-479c-b948-b546c6c36920}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ThirdParty\All_cs2_dumper.hpp">
@@ -621,6 +627,12 @@
     <ClInclude Include="ThirdParty\protobuf\messages_up.pb.h">
       <Filter>ThirdParty\protobuf</Filter>
     </ClInclude>
+    <ClInclude Include="MulNX\Extensions\RMClient\RMClient.hpp">
+      <Filter>MulNX\Extensions\RMClient</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNX\Base\WinException\WinException.hpp">
+      <Filter>MulNX\Base\WinException</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\imgui_d11\imgui.cpp">
@@ -850,6 +862,12 @@
     </ClCompile>
     <ClCompile Include="ThirdParty\protobuf\messages_up.pb.cc">
       <Filter>ThirdParty\protobuf</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNX\Extensions\RMClient\RMClient.cpp">
+      <Filter>MulNX\Extensions\RMClient</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNX\Base\WinException\WinException.cpp">
+      <Filter>MulNX\Base\WinException</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

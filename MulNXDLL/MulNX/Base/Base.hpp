@@ -11,6 +11,7 @@
 #include "vmt/vmt.hpp"
 #include "Buffer/Buffer.hpp"
 #include "CharUtility/CharUtility.hpp"
+#include "WinException/WinException.hpp"
 
 #include <algorithm>
 #include <cmath>

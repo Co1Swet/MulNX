@@ -11,17 +11,22 @@
 
 using namespace MulNX::Extensions::MQTT;
 
-bool MQTTClient::MQTTPublish(const std::string& topic, const std::string& message, uint8_t publish_flags) {
-	std::unique_lock lock(this->MyThreadMutex);
-    this->err = mqtt_publish(&this->client, topic.c_str(), message.c_str(), message.length(), publish_flags);
+bool MQTTClient::MQTTPublish(const ::MQTT::Message& Message, uint8_t publish_flags) {
+    std::unique_lock lock(this->MyThreadMutex);
+    if (!this->Inited) {
+        return false;
+    }
+    this->err = mqtt_publish(&this->client, 
+        Message.Topic.c_str(), Message.Body.c_str(), 
+        Message.Body.length(), publish_flags);
     if (this->err != MQTT_OK) {
         this->IDebugger->AddError("发布消息失败: " + this->GetCurrentError());
         return false;
     }
-    this->IDebugger->AddInfo("已发布消息到主题 " + topic + ": " + message);
+    this->IDebugger->AddInfo("已发布消息到主题 " + Message.Topic + ": " + Message.Body);
     return true;
 }
-bool MQTTClient::MQTTSubscribe(const std::string& topic, std::function<void(const std::string& message)> callback, int qos) {
+bool MQTTClient::MQTTSubscribe(const std::string& topic, std::function<void(const ::MQTT::Message& Message)>&& callback, int qos) {
     std::unique_lock lock(this->MyThreadMutex);
     // 订阅主题
     this->err = mqtt_subscribe(&this->client, topic.c_str(), qos);
@@ -42,21 +47,22 @@ void MQTTClient::CStylePublishCallback(void** state, struct mqtt_response_publis
 }
 void MQTTClient::PublishCallback(struct mqtt_response_publish* published) {
     std::unique_lock lock(this->MyThreadMutex);
-	// 转换主题和消息为std::string
-    std::string topic(static_cast<const char*>(published->topic_name), published->topic_name_size);
-    std::string message(static_cast<const char*>(published->application_message), published->application_message_size);
+    ::MQTT::Message Msg(
+        (char*)published->topic_name, published->topic_name_size,
+        (char*)published->application_message, published->application_message_size
+	);
     
 	// 记录收到的消息
-    this->IDebugger->AddInfo("收到消息 - 主题: " + topic + ", 消息: " + message);
+    this->IDebugger->AddInfo("收到消息 - 主题: " + Msg.Topic + ", 消息: " + Msg.Body);
 
 	// 查找主题对应的回调函数
-	auto it = this->TopicMessageMap.find(topic);
+	auto it = this->TopicMessageMap.find(Msg.Topic);
     if (it != this->TopicMessageMap.end()) {
         // 调用回调函数
-        it->second(message);
+        it->second(Msg);
     }
     else {
-        this->IDebugger->AddWarning("未找到主题的回调函数: " + topic);
+        this->IDebugger->AddWarning("未找到主题的回调函数: " + Msg.Topic);
 	}
 }
 
@@ -90,7 +96,7 @@ static void MyDraw(MulNXSingleUIContext* This) {
         auto Msg = This->CreateMsg(0x101);
 		This->SendToOwner(std::move(Msg));
     }
-    static std::string serverIP;
+    static std::string serverIP = "127.0.0.1";
 	ImGui::InputText("服务器IP", &serverIP);
     ImGui::SameLine();
     if (ImGui::Button("设置IP")) {
@@ -98,7 +104,7 @@ static void MyDraw(MulNXSingleUIContext* This) {
         Msg.Handle = This->CreateStringHandle(std::move(serverIP));
         This->SendToOwner(std::move(Msg));
     }
-	static int serverPort = 1883;
+    static int serverPort = 3333;
     ImGui::InputInt("服务器端口", &serverPort);
     ImGui::SameLine();
     if (ImGui::Button("设置端口")) {
@@ -112,7 +118,9 @@ bool MQTTClient::Init() {
 	std::unique_lock lock(this->MyThreadMutex);
     this->MainMsgChannel = this->ICreateAndGetMessageChannel();
     (*this->MainMsgChannel)
-        .Subscribe(MulNX::MsgType::UISystem_UICommand);
+        .Subscribe(MulNX::MsgType::UISystem_UICommand)
+        .Subscribe(MulNX::MsgType::MQTT_ModulePublish)
+		.Subscribe(MulNX::MsgType::MQTT_ModuleSubscribe);
 
     auto SingleContext = MulNXSingleUIContext::Create(this);
     auto* SContextPtr = SingleContext.get<MulNXSingleUIContext>();
@@ -123,7 +131,7 @@ bool MQTTClient::Init() {
     //this->hContext = this->Core->IHandleSystem().RegisteHandle(std::move(SingleContext));
 
     MulNX::Message Msg(MulNX::MsgType::UISystem_ModulePush);
-    Msg.Handle = this->Core->IHandleSystem().RegisteHandle(std::move(SingleContext));
+    Msg.Handle = this->Core->IHandleSystem().RegisteUnique(std::move(SingleContext));
     this->IPublish(std::move(Msg));
 
     return true;
@@ -132,6 +140,16 @@ bool MQTTClient::Init() {
 bool MQTTClient::CreateMQTTConnect() {
     std::unique_lock lock(this->MyThreadMutex);
     this->IDebugger->AddInfo("尝试创建MQTT-C 本地客户端");
+
+	// 初步检查IP和端口
+    if (this->ServerIP.empty()) {
+        this->IDebugger->AddError("服务器IP地址未设置");
+        return false;
+	}
+    if (this->ServerPort == 0) {
+        this->IDebugger->AddError("服务器端口未设置");
+        return false;
+	}
 
     // 初始化Winsock
     if (WSAStartup(MAKEWORD(2, 2), &this->wsaData) != 0) {
@@ -197,15 +215,15 @@ bool MQTTClient::CreateMQTTConnect() {
     lock.unlock();
 
     // 订阅主题
-    this->MQTTSubscribe("GameStatus", [this](const std::string& message) {
+    this->MQTTSubscribe("GameStatus", std::move([this](const ::MQTT::Message& Message) {
 		rm_client_down::GameStatus status;
-        if (status.ParseFromString(message)) {
+        if (status.ParseFromString(Message.Body)) {
             this->IDebugger->AddInfo("游戏状态更新 - 当前回合: " + std::to_string(status.current_round()) +
                 ", 总回合数: " + std::to_string(status.total_rounds()) +
                 ", 红队得分: " + std::to_string(status.red_score()) +
                 ", 蓝队得分: " + std::to_string(status.blue_score()));
         }
-        });
+        }));
 	return true;
 }
 
@@ -214,53 +232,31 @@ void MQTTClient::VirtualMain() {
     if (!this->Inited) {
         return;
     }
-    static int counter = 0;
     // 处理MQTT通信
     this->err = mqtt_sync(&this->client);
     if (this->err != MQTT_OK) {
         this->IDebugger->AddError("MQTT同步错误: " + this->GetCurrentError());
     }
-	rm_client_up::RemoteControl controlMsg;
-	controlMsg.set_mouse_x(100);
-	controlMsg.set_mouse_y(-100);
-	controlMsg.set_mouse_z(0);
-	controlMsg.set_left_button_down(true);
-	controlMsg.set_right_button_down(false);
-	controlMsg.set_keyboard_value(65); // 例如，按下'A'键
-	controlMsg.set_mid_button_down(false);
-	std::string serializedMsg;
-	controlMsg.SerializeToString(&serializedMsg);
-	this->MQTTPublish("RemoteControl", serializedMsg, MQTT_PUBLISH_QOS_0);
-    // 定期发布消息
-    if (++counter % 200 == 0) {
-        std::string message = "本地测试消息 #" + std::to_string(counter / 200);
-		//this->MQTTPublish("test/topic", message, MQTT_PUBLISH_QOS_0);
-    }
-}
-
-template<typename Func>
-auto WinExceptionWrapper(Func func) -> decltype(func()) {
-    __try {
-        return func();
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER) {
-        // 处理异常，返回默认值
-        using ReturnType = decltype(func());
-        if constexpr (!std::is_same_v<ReturnType, void>) {
-            return ReturnType{}; // 返回类型的默认值
-        }
-    }
 }
 
 void MQTTClient::ProcessMsg(MulNX::Messaging::Message* Msg) {
-    switch (Msg->Type) {
-    case MulNX::MsgType::UISystem_UICommand: {
-		this->HandleUICommand(Msg);
-        Msg->pMsgChannel->PushMessage(MulNX::Message(MulNX::MsgType::UISystem_ModuleRespose));
-        break;
+    if (Msg->Type == MulNX::MsgType::UISystem_UICommand) {
+        this->HandleUICommand(Msg);
+        Msg->pMsgChannel->PushMessage(MulNX::Message(MulNX::MsgType::UISystem_ModuleResponse));
     }
-    default:
-        break;
+    if (!this->Inited) {
+        return;
+    }
+    switch (Msg->Type) {
+    case MulNX::MsgType::MQTT_ModulePublish: {
+		MulNXHandle hMsg = Msg->Handle;
+		auto p = this->Core->IHandleSystem().ReleaseUnique(hMsg);
+		::MQTT::Message* pMsg = p.get<::MQTT::Message>();
+        if (pMsg) {
+            this->MQTTPublish(*pMsg, MQTT_PUBLISH_QOS_0);
+        }
+		break;
+    }
     }
 }
 
@@ -269,13 +265,13 @@ void MQTTClient::HandleUICommand(MulNX::Messaging::Message* Msg) {
     switch (Msg->SubType) {
     case 0x101: { // 连接到MQTT服务器命令
         if (!this->Inited) {
-            bool r = WinExceptionWrapper([this]() {
+            auto Connect = [this]()->bool {
                 if (this->CreateMQTTConnect()) {
                     return true;
                 }
                 return false;
-                });
-            if (r) {
+                };
+            if (MulNX::Base::UnsafeFunc(Connect)) {
                 this->Inited = true;
             }
         }
@@ -285,7 +281,7 @@ void MQTTClient::HandleUICommand(MulNX::Messaging::Message* Msg) {
         break;
     }
     case 0x102: { // 设置服务器IP命令
-        auto p = this->Core->IHandleSystem().ReleaseHandle(Msg->Handle);
+        auto p = this->Core->IHandleSystem().ReleaseUnique(Msg->Handle);
         std::string* ip = p.get<std::string>();
         if (ip) {
             this->SetServerIP(*ip);

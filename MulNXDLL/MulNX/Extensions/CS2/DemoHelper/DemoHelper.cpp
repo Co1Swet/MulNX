@@ -57,7 +57,7 @@ bool DemoHelper::Init() {
 	SContextPtr->pBuffer = MulNX::Base::make_any_unique<MulNX::Base::TripleBuffer<DemoHelperPrivateData>>();
 	SContextPtr->MyFunc = MyDraw;
 
-	this->hContext = this->Core->IHandleSystem().RegisteHandle(std::move(SingleContext));
+	this->hContext = this->Core->IHandleSystem().RegisteUnique(std::move(SingleContext));
 
 	MulNX::Message Msg(MulNX::MsgType::UISystem_ModulePush);
 	Msg.Handle = this->hContext;
@@ -71,7 +71,7 @@ void DemoHelper::ProcessMsg(MulNX::Message* Msg) {
 	case MulNX::MsgType::UISystem_UICommand: {
 		this->IDebugger->AddSucc("测试成功");
 		this->HandleUICommand(Msg);
-		Msg->pMsgChannel->PushMessage(MulNX::Message(MulNX::MsgType::UISystem_ModuleRespose));
+		Msg->pMsgChannel->PushMessage(MulNX::Message(MulNX::MsgType::UISystem_ModuleResponse));
 		break;
 	}
 	}

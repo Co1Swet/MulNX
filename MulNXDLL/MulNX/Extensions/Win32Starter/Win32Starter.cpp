@@ -82,10 +82,6 @@ bool Win32Starter::Init() {
     io.Fonts->Build();
     //IM_ASSERT(font != nullptr);
 
-    // Our state
-    bool show_demo_window = true;
-    bool show_another_window = false;
-
     this->done = false;
 
     this->Core->IUISystem().SetFrameBefore([this]() {
@@ -139,28 +135,12 @@ bool Win32Starter::Init() {
         ImGui_ImplDX11_RenderDrawData(ImGui::GetDrawData());
 
         // Present
-        HRESULT hr = this->pSwapChain->Present(1, 0);   // Present with vsync
-        //HRESULT hr = g_pSwapChain->Present(0, 0); // Present without vsync
+        //HRESULT hr = this->pSwapChain->Present(1, 0);   // Present with vsync
+        HRESULT hr = this->pSwapChain->Present(0, 0); // Present without vsync
         this->SwapChainOccluded = (hr == DXGI_STATUS_OCCLUDED);
         });
     
 }
-
-// Main code
-//int main(int, char**)
-//{
-//
-//    // Cleanup
-//    ImGui_ImplDX11_Shutdown();
-//    ImGui_ImplWin32_Shutdown();
-//    ImGui::DestroyContext();
-//
-//    this->CleanupDeviceD3D();
-//    ::DestroyWindow(hwnd);
-//    ::UnregisterClassW(wc.lpszClassName, wc.hInstance);
-//
-//    return 0;
-//}
 
 // Helper functions
 
@@ -230,6 +210,7 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 LRESULT WINAPI Win32Starter::WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	Win32Starter* pThis = Win32Starter::pInstance;
+    std::unique_lock lock(pThis->Core->IUISystem().UIMtx);
     if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
         return true;
 

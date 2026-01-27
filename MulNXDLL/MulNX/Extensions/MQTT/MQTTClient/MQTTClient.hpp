@@ -4,6 +4,19 @@
 
 #include "../ThirdParty/mqtt.h"
 
+namespace MQTT {
+	class Message {
+	public:
+		std::string Topic;
+		std::string Body;
+
+		Message() = default;
+		Message(char* Topic, size_t TopicSize, char* Body, size_t BodySize)
+			: Topic(Topic, TopicSize)
+			, Body(Body, BodySize) {}
+	};
+}
+
 namespace MulNX {
 	namespace Extensions {
 		namespace MQTT {
@@ -28,10 +41,10 @@ namespace MulNX {
 				// 接收缓冲区
 				uint8_t recvbuf[1024];
 
-				// IP地址，默认本地地址
-				std::string ServerIP = "127.0.0.1";
-				// 端口号，默认1883
-				uint16_t ServerPort = 1883;
+				// IP地址
+				std::string ServerIP;
+				// 端口号
+				uint16_t ServerPort;
 				// 客户端名称
 				std::string ClientName = "MulNXClient";
 
@@ -46,7 +59,7 @@ namespace MulNX {
 				bool Inited = false;
 
 				// 主题到回调函数的映射
-				std::unordered_map<std::string, std::function<void(const std::string& message)>> TopicMessageMap;
+				std::unordered_map<std::string, std::function<void(const ::MQTT::Message& Message)>> TopicMessageMap;
 			public:
 				bool Init()override;
 				void VirtualMain()override;
@@ -57,18 +70,23 @@ namespace MulNX {
 				
 				std::string GetServerIP()const;
 				std::string GetServerPort()const;
-
+			private:
+				// 设置服务器IP
 				void SetServerIP(const std::string& ip);
+				// 设置服务器端口
 				void SetServerPort(uint16_t port);
+				// 发布消息到指定主题
+				bool MQTTPublish(const ::MQTT::Message& Message, uint8_t publish_flags);
+				// 订阅消息
+				bool MQTTSubscribe(const std::string& topic, std::function<void(const ::MQTT::Message& Message)>&& callback, int qos = 0);
+			public:
+				// 设置客户端名称
 				void SetClientName(const std::string& name);
 
 				// 尝试连接到MQTT服务器
 				bool CreateMQTTConnect();
 
-				// 发布消息到指定主题
-				bool MQTTPublish(const std::string& topic, const std::string& message, uint8_t publish_flags);
-				// 订阅消息
-				bool MQTTSubscribe(const std::string& topic, std::function<void(const std::string& message)> callback, int qos = 0);
+				
 			};
 		}
 	}

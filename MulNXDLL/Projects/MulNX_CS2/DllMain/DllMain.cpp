@@ -75,6 +75,7 @@ DWORD MulNX_CS2_Start(void*) {
 			}).detach();
 		// 注册主窗口UI上下文
 		starter->RegisteMainDrawWith(MainDraw);
+		// UI系统的启动由HookManager在Hook完成后自主启动
 		};
 
 	// 设置核心启动器

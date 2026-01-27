@@ -22,14 +22,14 @@ bool MulNX::UISystem::Init() {
 void MulNX::UISystem::ProcessMsg(MulNX::Message* Msg) {
 	switch (Msg->Type) {
 	case MulNX::MsgType::UISystem_Start: {
-		MulNX::Base::any_unique_ptr pEntryStr = this->Core->IHandleSystem().ReleaseHandle(Msg->Handle);
+		MulNX::Base::any_unique_ptr pEntryStr = this->Core->IHandleSystem().ReleaseUnique(Msg->Handle);
 		std::string* pStr = pEntryStr.get<std::string>();
 		this->UIContext.EntryDraw = std::move(*pStr);
 		this->UISystemRunning = true;
 		break;
 	}
 	case MulNX::MsgType::UISystem_ModulePush: {
-		MulNX::Base::any_unique_ptr pCtx = this->Core->IHandleSystem().ReleaseHandle(Msg->Handle);
+		MulNX::Base::any_unique_ptr pCtx = this->Core->IHandleSystem().ReleaseUnique(Msg->Handle);
 		this->UIContext.AddSingleContext(Msg->Handle, std::move(pCtx));
 		break;
 	}
@@ -46,13 +46,13 @@ int MulNX::UISystem::Render() {
 
 	this->FrameBefore();
 
-	if (this->KT->CheckComboClick(VK_INSERT, 1)) {
+	if (this->KT->CheckComboClick(VK_INSERT, 3)) {
 		this->UIContext.Active = !this->UIContext.Active;
 	}
 	if(this->UIContext.Active) {
-		this->Core->VirtualMain();
 		this->UIContext.Draw();
 	}
+	this->Core->VirtualMain();
 	this->FrameBehind();
 
 	return 0;

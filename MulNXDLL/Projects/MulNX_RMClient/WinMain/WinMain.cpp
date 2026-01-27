@@ -3,6 +3,7 @@
 #include "../../../MulNX/MulNX.hpp"
 #include "../../../MulNX/Extensions/CS2/MulNXCS2Ext.hpp"
 #include "../../../MulNX/Extensions/MQTT/MQTTClient/MQTTClient.hpp"
+#include "../../../MulNX/Extensions/RMClient/RMClient.hpp"
 #include "../../../MulNX/Extensions/Win32Starter/Win32Starter.hpp"
 
 static void MainDraw(MulNXSingleUIContext* This) {
@@ -10,6 +11,15 @@ static void MainDraw(MulNXSingleUIContext* This) {
 	if (ImGui::BeginTabBar("主标签页集")) {
 		if (ImGui::BeginTabItem("MQTTClientCfg")) {
 			This->CallSingleUIContext("MQTTClientCfg");
+			// 实时帧率显示
+			ImGuiIO& io = ImGui::GetIO();
+			ImGui::Text("FPS: %.1f", io.Framerate);
+			ImGui::Text("Frame Time: %.3f ms", 1000.0f / io.Framerate);
+			ImGui::Text("Delta Time: %.6f s", io.DeltaTime);
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("RM客户端")) {
+			This->CallSingleUIContext("RMClient");
 			ImGui::EndTabItem();
 		}
 		ImGui::EndTabBar();
@@ -33,7 +43,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		std::thread([]() {
 			MessageBoxW(NULL, L"欢迎使用RM自定义客户端！", L"MulNX", MB_OK | MB_ICONINFORMATION);
 			}).detach();
+		// 注册主绘制函数
 		starter->RegisteMainDrawWith(MainDraw);
+		// 启动UI系统
 		starter->StartUIWith("MainDraw");
 		};
 
@@ -42,10 +54,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// MQTT模块
 	std::unique_ptr<MulNX::Extensions::MQTT::MQTTClient> mqttClient = std::make_unique<MulNX::Extensions::MQTT::MQTTClient>();
-	// 配置MQTT服务器地址和端口
-	mqttClient->SetServerIP("127.0.0.1");
-	mqttClient->SetServerPort(3333);
 	Core->ModuleManager()->RegisteModule(std::move(mqttClient), "MQTTClient", 102);
+
+	// RMClient模块
+	std::unique_ptr<RMClient> rmClient = std::make_unique<RMClient>();
+	Core->ModuleManager()->RegisteModule(std::move(rmClient), "RMClient", 103);
 
 	// 启动
 	Core->Init();
