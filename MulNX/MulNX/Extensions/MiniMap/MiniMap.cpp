@@ -1,13 +1,9 @@
 #include "MiniMap.hpp"
 
-#include "../AbstractLayer3D/IAbstractLayer3D.hpp"
-
 #include "../../Core/Core.hpp"
+#include "../../Systems/Systems.hpp"
+
 #include "../../Extensions/CS2/CSController/CSController.hpp"
-#include "../../Systems/KeyTracker/KeyTracker.hpp"
-#include "../../Systems/Debugger/IDebugger.hpp"
-#include "../../Systems/MessageManager/IMessageManager.hpp"
-#include "../../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
 
 #include "../../../ThirdParty/All_ImGui.hpp"
 
@@ -43,7 +39,10 @@ void MiniMap::Windows() {
 	style.Colors[ImGuiCol_ChildBg] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);  // 完全透明子窗口背景
 	style.Colors[ImGuiCol_Border] = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);   // 透明边框
 
-	ImGui::Begin("小地图窗口", &this->ShowWindow);
+	static bool op;
+	op = this->ShowWindow;
+	ImGui::Begin("小地图窗口", &op);
+	this->ShowWindow = op;
 
 	if (!this->GlobalVars->InGamePlaying) {
 		// 恢复样式

@@ -2,10 +2,12 @@
 
 #include "../../Core/Cores.hpp"
 
-#include "../../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
-#include "../../Systems/MessageManager/IMessageManager.hpp"
-#include "../../Systems/Debugger/IDebugger.hpp"
-#include "../../Systems/MulNXUISystem/IMulNXUISystem.hpp"
+#include "../MulNXiGlobalVars/MulNXiGlobalVars.hpp"
+#include "../MessageManager/IMessageManager.hpp"
+#include "../Debugger/IDebugger.hpp"
+#include "../MulNXUISystem/IMulNXUISystem.hpp"
+
+using namespace MulNX;
 
 bool AbstractLayer3D::Init() {
 	this->ISubscribe(MulNX::Messaging::MsgType::Core_ReHook);

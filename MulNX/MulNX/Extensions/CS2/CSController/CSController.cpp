@@ -1,14 +1,9 @@
 #include "CSController.hpp"
 
-#include "../../AbstractLayer3D/IAbstractLayer3D.hpp"
 #include "../../CameraSystem/CameraSystemIO/CameraSystemIO.hpp"
 
 #include "../../../Core/Core.hpp"
-
-#include "../../../Systems/MessageManager/IMessageManager.hpp"
-#include "../../../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
-#include "../../../Systems/KeyTracker/KeyTracker.hpp"
-#include "../../../Systems/Debugger/IDebugger.hpp"
+#include "../../../Systems/Systems.hpp"
 
 #include "../../../../ThirdParty/cs2_dumper/offsets.hpp"
 

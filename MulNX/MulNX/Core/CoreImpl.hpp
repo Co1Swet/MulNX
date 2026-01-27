@@ -9,29 +9,19 @@
 #include "../Systems/MessageManager/MessageManager.hpp"
 #include "../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
 #include "../Systems/MulNXUISystem/MulNXUISystem.hpp"
-
-#include "../Extensions/AbstractLayer3D/AbstractLayer3D.hpp"
-#include "../Extensions/CameraSystem/CameraSystem.hpp"
-#include "../Extensions/MiniMap/MiniMap.hpp"
-#include "../Extensions/VirtualUser/VirtualUser.hpp"
+#include "../Systems/AbstractLayer3D/AbstractLayer3D.hpp"
 
 using namespace MulNX::Core;
 
-// 页面枚举
-enum class Page :int {
-    Control,
-    Debug,
-    CameraSystem
-};
-
-// 实现类，掌握所有的模块实例
+// 实现类，掌握所有的核心和系统模块实例
 class CoreImpl {
 public:
-    // 初始化页面
-    Page Page = Page::Control;
+    // 核心模块
 
-    // 地基模块
     MulNX::Core::ModuleManager ModuleManager;
+
+    // 系统模块
+
     MulNX::KeyTracker KT;
     MulNX::HandleSystem HandleSystem;
     MulNX::Messaging::MessageManager MessageManager;
@@ -39,8 +29,7 @@ public:
     MulNX::UISystem UISystem;
     MulNX::IPCer IPCer;
     MulNX::Debugger Debugger;
-    // 基础服务模块
-    AbstractLayer3D AL3D;
+    MulNX::AbstractLayer3D AL3D;
 
 public:
     // 构造函数

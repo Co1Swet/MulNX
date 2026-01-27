@@ -55,6 +55,7 @@ void Core::Init() {
 void Core::VirtualMain() {
 	this->pImpl->GlobalVars.EntryVirtualMain();
 	this->pImpl->AL3D.EntryVirtualMain();
+	this->pImpl->Debugger.EntryVirtualMain();
 
 	// 包装的，所有的模块的VirtualMain
 	this->pImpl->ModuleManager.EntryVirtualMain();

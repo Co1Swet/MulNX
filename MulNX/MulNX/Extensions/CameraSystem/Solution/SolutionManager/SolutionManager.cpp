@@ -4,13 +4,9 @@
 #include "../../Element/ElementManager/ElementManager.hpp"
 #include "../../Project/ProjectManager/ProjectManager.hpp"
 
-#include "../../../AbstractLayer3D/AbstractLayer3D.hpp"
 
 #include "../../../../Core/Core.hpp"
-
-#include "../../../../Systems/Debugger/IDebugger.hpp"
-#include "../../../../Systems/IPCer/IPCer.hpp"
-#include "../../../../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
+#include "../../../../Systems/Systems.hpp"
 
 //解决方案管理器
 

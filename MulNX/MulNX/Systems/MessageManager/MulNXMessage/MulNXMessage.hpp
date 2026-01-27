@@ -23,8 +23,7 @@ namespace MulNX {
 			//Core_CheckBack,
 			Core_ReHook,
 
-			MQTT_ModulePublish,// 组件向MQTT组件发送发布消息请求，MQTT组件在合适时机对外发布消息
-			MQTT_ModuleSubscribe,// 组件向MQTT组件发送订阅消息请求，MQTT组件在合适时机进行订阅，并路由消息到组件
+			Debugger_SetMaxInfoCount,// 调试系统，设置记录的最多的信息数量
 
 			UISystem_Start,// 由核心向UI系统发送，启动UI系统
 
@@ -34,6 +33,9 @@ namespace MulNX {
 			UISystem_UIRequest,// 上下文级，UI请求组件提供某些数据
 			UISystem_UICommand,// 上下文级，UI通知组件处理UI命令
 			UISystem_ModuleResponse,// 上下文级，组件通知UI命令已处理完毕，可继续进行
+
+			MQTT_ModulePublish,// 组件向MQTT组件发送发布消息请求，MQTT组件在合适时机对外发布消息
+			MQTT_ModuleSubscribe,// 组件向MQTT组件发送订阅消息请求，MQTT组件在合适时机进行订阅，并路由消息到组件
 
 			Game_NewRound,
 			Game_RoundStart,
@@ -73,6 +75,8 @@ namespace MulNX {
 				, SubType(SubType) {
 			}
 			Message(const Message& Other) = default;
+
+			void Clear();
 		};
 	}
 }

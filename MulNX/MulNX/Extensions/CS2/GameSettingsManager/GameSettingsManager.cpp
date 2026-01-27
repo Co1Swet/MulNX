@@ -2,12 +2,8 @@
 
 #include "../CSController/CSController.hpp"
 
-#include "../../AbstractLayer3D/IAbstractLayer3D.hpp"
-
 #include "../../../Core/Cores.hpp"
-
-#include "../../../Systems/MessageManager/IMessageManager.hpp"
-#include "../../../Systems/MulNXUISystem/IMulNXUISystem.hpp"
+#include "../../../Systems/Systems.hpp"
 
 #include "../../../../ThirdParty/All_ImGui.hpp"
 

@@ -14,8 +14,6 @@ namespace MulNX {
 		virtual void AddWarning(const std::string& NewMsg) = 0;
 		virtual void AddError(const std::string& NewMsg) = 0;
 
-		virtual void ResetMaxMsgCount(const int Max) = 0;
-
 		bool ShowWhenError = true;
 		bool AutoScroll = true;
 	};

@@ -53,25 +53,6 @@ void ConsoleManager::Menu() {
 			}
 			this->IDebugger->AddInfo("---------------------------------------------------------------------------------");
 		}
-
-		if (ImGui::Button("打开调试器")) {
-			this->IDebugger->OpenWindow();
-		}
-		ImGui::SameLine();
-		if (ImGui::Button("关闭调试器")) {
-			this->IDebugger->CloseWindow();
-		}
-		ImGui::Checkbox("当有错误信息时弹出调试器", &this->IDebugger->ShowWhenError);
-		ImGui::Checkbox("自动滚动到最新消息", &this->IDebugger->AutoScroll);
-		static int MaxDebugMsgs = 1000;
-		ImGui::Text("设置最大消息数量（至少100）:");
-		ImGui::SameLine();
-		ImGui::InputInt("##最大消息数量", &MaxDebugMsgs);
-		ImGui::SameLine();
-		if (ImGui::Button("应用")) {
-			if (MaxDebugMsgs < 100)MaxDebugMsgs = 100;
-			this->IDebugger->ResetMaxMsgCount(MaxDebugMsgs);
-		}
 	}
 
 	if (ImGui::CollapsingHeader("初始化控制")) {

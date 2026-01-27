@@ -3,12 +3,8 @@
 #include"../../../CameraDrawer/CameraDrawer.hpp"
 #include"../ElementManager.hpp"
 
-#include"../../../../AbstractLayer3D/IAbstractLayer3D.hpp"
-
 #include"../../../../../Core/Core.hpp"
-#include"../../../../../Systems/Debugger/IDebugger.hpp"
-#include"../../../../../Systems/KeyTracker/KeyTracker.hpp"
-#include"../../../../../Systems/IPCer/IPCer.hpp"
+#include"../../../../../Systems/Systems.hpp"
 
 bool ElementDebugger::Init() {
 

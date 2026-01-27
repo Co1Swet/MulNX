@@ -2,6 +2,8 @@
 
 #include"../../Core/ModuleBase/ModuleBase.hpp"
 
+class ICameraSystem;
+
 class VirtualUser final :public MulNX::ModuleBase {
 private:
 	ICameraSystem* CameraSystem = nullptr;

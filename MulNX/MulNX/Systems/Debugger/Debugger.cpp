@@ -3,20 +3,32 @@
 #include "../KeyTracker/KeyTracker.hpp"
 #include "../MulNXiGlobalVars/MulNXiGlobalVars.hpp"
 
-#include "../../Core/Core.hpp"
-#include "../../Core/ModuleManager/ModuleManager.hpp"
+#include "../../Core/Cores.hpp"
+#include "../../Systems/Systems.hpp"
+
 #include "../../Extensions/CS2/CSController/CSController.hpp"
 #include "../../Extensions/CameraSystem/ICameraSystem.hpp"
-#include "../../Extensions/AbstractLayer3D/IAbstractLayer3D.hpp"
 
 #include "../../../ThirdParty/All_ImGui.hpp"
 
 #include <bitset>
 
 bool MulNX::Debugger::Init() {
+    this->MainMsgChannel = this->ICreateAndGetMessageChannel();
+    (*this->MainMsgChannel)
+        .Subscribe(MulNX::MsgType::Debugger_SetMaxInfoCount);
     return true;
 }
-
+void MulNX::Debugger::ProcessMsg(MulNX::Message* Msg) {
+    switch (Msg->Type) {
+    case MulNX::MsgType::Debugger_SetMaxInfoCount: {
+        this->ResetMaxMsgCount(Msg->ParamInt);
+    }
+    }
+}
+void MulNX::Debugger::VirtualMain() {
+    this->EntryProcessMsg();
+}
 
 
 //// 检查所有点是否都在屏幕内
@@ -167,6 +179,7 @@ void MulNX::Debugger::Menu() {
 
 
 void MulNX::Debugger::ResetMaxMsgCount(const int Max) {
+    std::unique_lock lock(this->MyThreadMutex);
     if (Max < 1) {
 		this->AddError("最大信息条数不能小于一1!");
         return;
@@ -175,6 +188,7 @@ void MulNX::Debugger::ResetMaxMsgCount(const int Max) {
         DebugMsg.erase(DebugMsg.begin(), DebugMsg.end() - Max);
     }
 	this->MaxMsgCount = Max;
+    lock.unlock();
 	this->AddInfo("已重置最大信息条数为 " + std::to_string(Max) + " 条");
 
     return;
@@ -233,22 +247,22 @@ void MulNX::Debugger::PushBack(const std::string& NewMsg, const std::string& pre
 }
 
 void MulNX::Debugger::AddInfo(const std::string& NewMsg) {
-    std::unique_lock<std::shared_mutex>lock(this->MyThreadMutex);
+    std::unique_lock lock(this->MyThreadMutex);
     this->PushBack(NewMsg, this->Info);
 }
 
 void MulNX::Debugger::AddSucc(const std::string& NewMsg) {
-    std::unique_lock<std::shared_mutex>lock(this->MyThreadMutex);
+    std::unique_lock lock(this->MyThreadMutex);
     this->PushBack(NewMsg, this->Succ);
 }
 
 void MulNX::Debugger::AddWarning(const std::string& NewMsg) {
-    std::unique_lock<std::shared_mutex>lock(this->MyThreadMutex);
+    std::unique_lock lock(this->MyThreadMutex);
     this->PushBack(NewMsg, this->Warning);
 }
 
 void MulNX::Debugger::AddError(const std::string& NewMsg) {
-    std::unique_lock<std::shared_mutex>lock(this->MyThreadMutex);
+    std::unique_lock lock(this->MyThreadMutex);
     this->PushBack(NewMsg, this->Error);
     if(this->ShowWhenError){
         this->ShowWindow = true;
@@ -262,7 +276,10 @@ void MulNX::Debugger::Windows() {
     // 设置窗口属性
     ImGui::SetNextWindowSize(ImVec2(600, 400), ImGuiCond_FirstUseEver);
     // 创建独立窗口
-    ImGui::Begin("调试器", &this->ShowWindow);
+    static bool op;
+    op = this->ShowWindow;
+    ImGui::Begin("调试器", &op);
+    this->ShowWindow = op;
 
     if (ImGui::BeginTabBar("Debuger")) {
         

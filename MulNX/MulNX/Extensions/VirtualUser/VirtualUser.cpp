@@ -1,16 +1,12 @@
 #include "VirtualUser.hpp"
 
-#include "../AbstractLayer3D/IAbstractLayer3D.hpp"
-#include "../CameraSystem/ICameraSystem.hpp"
-
 #include "../../Core/Core.hpp"
 #include "../../Core/ModuleManager/ModuleManager.hpp"
+#include "../../Systems/Systems.hpp"
 
-#include "../../Systems/Debugger/IDebugger.hpp"
-#include "../../Systems/MessageManager/IMessageManager.hpp"
-#include "../../Systems/KeyTracker/KeyTracker.hpp"
+#include "../CameraSystem/ICameraSystem.hpp"
+
 #include "../../../ThirdParty/All_ImGui.hpp"
-
 
 bool VirtualUser::Init() {
 	this->CameraSystem = this->Core->ModuleManager()->FindModule<ICameraSystem>("CameraSystem");

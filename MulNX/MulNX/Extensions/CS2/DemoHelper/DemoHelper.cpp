@@ -1,11 +1,7 @@
 #include "DemoHelper.hpp"
 
-#include "../../AbstractLayer3D/IAbstractLayer3D.hpp"
-
 #include "../../../Core/Core.hpp"
-#include "../../../Systems/MessageManager/IMessageManager.hpp"
-#include "../../../Systems/MulNXUISystem/IMulNXUISystem.hpp"
-#include "../../../Systems/Debugger/IDebugger.hpp"
+#include "../../../Systems/Systems.hpp"
 
 #include "../../../../ThirdParty/All_ImGui.hpp"
 

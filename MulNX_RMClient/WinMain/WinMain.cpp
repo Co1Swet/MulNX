@@ -5,6 +5,7 @@
 #include "../../MulNX/MulNX/Extensions/MQTT/MQTTClient/MQTTClient.hpp"
 #include "../../MulNX/MulNX/Extensions/RMClient/RMClient.hpp"
 #include "../../MulNX/MulNX/Extensions/Win32Starter/Win32Starter.hpp"
+#include "../../MulNX/MulNX/Extensions/MulNXController/MulNXController.hpp"
 
 static void MainDraw(MulNXSingleUIContext* This) {
 	ImGui::Begin("主窗口");
@@ -20,6 +21,10 @@ static void MainDraw(MulNXSingleUIContext* This) {
 		}
 		if (ImGui::BeginTabItem("RM客户端")) {
 			This->CallSingleUIContext("RMClient");
+			ImGui::EndTabItem();
+		}
+		if (ImGui::BeginTabItem("MulNX控制")) {
+			This->CallSingleUIContext("MulNXController");
 			ImGui::EndTabItem();
 		}
 		ImGui::EndTabBar();
@@ -51,6 +56,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	// 设置核心启动器
 	Core->SetCoreStarter(std::move(starter));
+
+	// MulNX控制器模块
+	std::unique_ptr<MulNXController> Controller = std::make_unique<MulNXController>();
+	Core->ModuleManager()->RegisteModule(std::move(Controller), "MulNXController", 50);
 
 	// MQTT模块
 	std::unique_ptr<MulNX::Extensions::MQTT::MQTTClient> mqttClient = std::make_unique<MulNX::Extensions::MQTT::MQTTClient>();

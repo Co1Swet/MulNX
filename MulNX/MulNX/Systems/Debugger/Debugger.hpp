@@ -19,16 +19,14 @@ namespace MulNX {
 		const std::string Warning = "[警告]";
 		const std::string Error = "[错误]";
 	public:
-		Debugger() :IDebugger() {
-			//this->Type = ModuleType::Debugger;
-		};
 
 		bool NeedAutoScroll = false;
 
 		//模块基类接口实现
 
 		bool Init()override;
-
+		void VirtualMain()override;
+		void ProcessMsg(MulNX::Message* Msg)override;
 		void Menu()override;
 		void Windows()override;
 
@@ -38,9 +36,9 @@ namespace MulNX {
 		void AddSucc(const std::string& NewMsg)override;
 		void AddWarning(const std::string& NewMsg)override;
 		void AddError(const std::string& NewMsg)override;
-
-		void ResetMaxMsgCount(const int Max)override;
-
+	private:
+		void ResetMaxMsgCount(const int Max);
+	public:
 		//其它函数
 
 		void PushBack(const std::string& NewMsg, const std::string& prefix);

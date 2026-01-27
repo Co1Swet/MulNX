@@ -1,12 +1,8 @@
 #include "CameraSystem.hpp"
 
-#include "../AbstractLayer3D/IAbstractLayer3D.hpp"
-
 #include "../../Core/Core.hpp"
 
-#include "../../Systems/IPCer/IPCer.hpp"
-#include "../../Systems/MessageManager/IMessageManager.hpp"
-#include "../../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
+#include "../../Systems/Systems.hpp"
 
 // 摄像机系统
 

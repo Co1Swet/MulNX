@@ -112,9 +112,6 @@
     <Filter Include="MulNX\Extensions\CameraSystem\Element\Elements\LockedCameraPath">
       <UniqueIdentifier>{2cd57ef5-ab74-41b2-a66a-a032d7a12d8c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MulNX\Extensions\AbstractLayer3D">
-      <UniqueIdentifier>{e13a4068-4722-4bf0-8d1d-d0b4e739b143}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MulNX\Extensions\MiniMap">
       <UniqueIdentifier>{c8da0ac4-ff9f-4b72-8689-c7c69beb9fe5}</UniqueIdentifier>
     </Filter>
@@ -243,6 +240,12 @@
     </Filter>
     <Filter Include="MulNX\Base\WinException">
       <UniqueIdentifier>{cac24aa6-d144-479c-b948-b546c6c36920}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\Systems\AbstractLayer3D">
+      <UniqueIdentifier>{e13a4068-4722-4bf0-8d1d-d0b4e739b143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MulNX\Extensions\MulNXController">
+      <UniqueIdentifier>{a173c3fd-1bfb-4c7e-a6e5-9b92b373745e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -456,12 +459,6 @@
     <ClInclude Include="MulNX\Extensions\MiniMap\MiniMap.hpp">
       <Filter>MulNX\Extensions\MiniMap</Filter>
     </ClInclude>
-    <ClInclude Include="MulNX\Extensions\AbstractLayer3D\AbstractLayer3D.hpp">
-      <Filter>MulNX\Extensions\AbstractLayer3D</Filter>
-    </ClInclude>
-    <ClInclude Include="MulNX\Extensions\AbstractLayer3D\IAbstractLayer3D.hpp">
-      <Filter>MulNX\Extensions\AbstractLayer3D</Filter>
-    </ClInclude>
     <ClInclude Include="MulNX\Extensions\CameraSystem\Element\ElementManager\ElementConfig.hpp">
       <Filter>MulNX\Extensions\CameraSystem\Element\ElementManager</Filter>
     </ClInclude>
@@ -612,6 +609,15 @@
     <ClInclude Include="MulNX\Base\WinException\WinException.hpp">
       <Filter>MulNX\Base\WinException</Filter>
     </ClInclude>
+    <ClInclude Include="MulNX\Systems\AbstractLayer3D\AbstractLayer3D.hpp">
+      <Filter>MulNX\Systems\AbstractLayer3D</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNX\Systems\AbstractLayer3D\IAbstractLayer3D.hpp">
+      <Filter>MulNX\Systems\AbstractLayer3D</Filter>
+    </ClInclude>
+    <ClInclude Include="MulNX\Extensions\MulNXController\MulNXController.hpp">
+      <Filter>MulNX\Extensions\MulNXController</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ThirdParty\imgui_d11\imgui.cpp">
@@ -718,9 +724,6 @@
     </ClCompile>
     <ClCompile Include="MulNX\Extensions\MiniMap\MiniMap.cpp">
       <Filter>MulNX\Extensions\MiniMap</Filter>
-    </ClCompile>
-    <ClCompile Include="MulNX\Extensions\AbstractLayer3D\AbstractLayer3D.cpp">
-      <Filter>MulNX\Extensions\AbstractLayer3D</Filter>
     </ClCompile>
     <ClCompile Include="MulNX\Extensions\CameraSystem\Element\ElementManager\ElementManager.cpp">
       <Filter>MulNX\Extensions\CameraSystem\Element\ElementManager</Filter>
@@ -841,6 +844,12 @@
     </ClCompile>
     <ClCompile Include="MulNX\Base\WinException\WinException.cpp">
       <Filter>MulNX\Base\WinException</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNX\Systems\AbstractLayer3D\AbstractLayer3D.cpp">
+      <Filter>MulNX\Systems\AbstractLayer3D</Filter>
+    </ClCompile>
+    <ClCompile Include="MulNX\Extensions\MulNXController\MulNXController.cpp">
+      <Filter>MulNX\Extensions\MulNXController</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -62,6 +62,8 @@ namespace MulNX {
 	class KeyTracker;
 	// 全局变量
 	class GlobalVars;
+	//3D抽象层
+	class IAbstractLayer3D;
 	// MulNX UI系统
 	class IUISystem;
 
@@ -112,22 +114,3 @@ namespace std {
 		}
 	};
 }
-
-//3D抽象层
-class IAbstractLayer3D;
-//Hook管理器
-class HookManager;
-//CS游戏控制器
-class CSController;
-//MulNX总控台
-class ConsoleManager;
-//CS游戏Cfg文件管理器
-class GameCfgManager;
-//CS游戏设置管理器
-class GameSettingsManager;
-//3D抽象层
-class IAbstractLayer3D;
-//摄像机系统接口
-class ICameraSystem;
-//虚拟用户，用于执行自动化功能
-class VirtualUser;

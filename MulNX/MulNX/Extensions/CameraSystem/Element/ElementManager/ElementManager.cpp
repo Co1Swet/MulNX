@@ -5,14 +5,9 @@
 #include "../../Solution/SolutionManager/SolutionManager.hpp"
 #include "../../Project/ProjectManager/ProjectManager.hpp"
 
-#include "../../../AbstractLayer3D/IAbstractLayer3D.hpp"
-
 #include "../../../../Core/Core.hpp"
 
-#include "../../../../Systems/Debugger/IDebugger.hpp"
-#include "../../../../Systems/KeyTracker/KeyTracker.hpp"
-#include "../../../../Systems/IPCer/IPCer.hpp"
-#include "../../../../Systems/MulNXiGlobalVars/MulNXiGlobalVars.hpp"
+#include "../../../../Systems/Systems.hpp"
 
 ElementManager::ElementManager() {
     this->ElementDebugger = new class ElementDebugger();

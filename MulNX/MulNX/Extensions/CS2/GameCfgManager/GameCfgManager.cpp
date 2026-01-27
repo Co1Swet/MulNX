@@ -1,10 +1,7 @@
 #include"GameCfgManager.hpp"
 
-#include"../../AbstractLayer3D/IAbstractLayer3D.hpp"
-
 #include"../../../Core/Core.hpp"
-#include"../../../Systems/IPCer/IPCer.hpp"
-#include"../../../Systems/Debugger/IDebugger.hpp"
+#include"../../../Systems/Systems.hpp"
 
 #include "../../../../ThirdParty/All_ImGui.hpp"
 
@@ -81,7 +78,10 @@ bool GameCfgManager::DeleteCfg(const std::string& CfgName) {
 
 void GameCfgManager::Windows() {
     if (!this->ShowWindow) return;
-    ImGui::Begin("Cfg管理器", &this->ShowWindow);
+    static bool op;
+    op = this->ShowWindow;
+    ImGui::Begin("Cfg管理器", &op);
+    this->ShowWindow = op;
     //顶部工具栏
     if (ImGui::Button("刷新列表")) {
         this->UpdateCfgList();

@@ -154,8 +154,6 @@
     <ClInclude Include="MulNX\Core\ModuleBase\ModuleBase.hpp" />
     <ClInclude Include="MulNX\Core\Core.hpp" />
     <ClInclude Include="MulNX\Core\ModuleManager\ModuleManager.hpp" />
-    <ClInclude Include="MulNX\Extensions\AbstractLayer3D\AbstractLayer3D.hpp" />
-    <ClInclude Include="MulNX\Extensions\AbstractLayer3D\IAbstractLayer3D.hpp" />
     <ClInclude Include="MulNX\Extensions\CameraSystem\CameraDrawer\CameraDrawer.hpp" />
     <ClInclude Include="MulNX\Extensions\CameraSystem\CameraSystem.hpp" />
     <ClInclude Include="MulNX\Extensions\CameraSystem\CameraSystemIO\CameraSystemIO.hpp" />
@@ -199,10 +197,13 @@
     <ClInclude Include="MulNX\Extensions\MQTT\MQTTClient\MQTTClient.hpp" />
     <ClInclude Include="MulNX\Extensions\MQTT\ThirdParty\mqtt.h" />
     <ClInclude Include="MulNX\Extensions\MQTT\ThirdParty\mqtt_pal.h" />
+    <ClInclude Include="MulNX\Extensions\MulNXController\MulNXController.hpp" />
     <ClInclude Include="MulNX\Extensions\RMClient\RMClient.hpp" />
     <ClInclude Include="MulNX\Extensions\VirtualUser\VirtualUser.hpp" />
     <ClInclude Include="MulNX\Extensions\Win32Starter\Win32Starter.hpp" />
     <ClInclude Include="MulNX\MulNX.hpp" />
+    <ClInclude Include="MulNX\Systems\AbstractLayer3D\AbstractLayer3D.hpp" />
+    <ClInclude Include="MulNX\Systems\AbstractLayer3D\IAbstractLayer3D.hpp" />
     <ClInclude Include="MulNX\Systems\Debugger\Debugger.hpp" />
     <ClInclude Include="MulNX\Systems\Debugger\IDebugger.hpp" />
     <ClInclude Include="MulNX\Systems\HandleSystem\HandleSystem.hpp" />
@@ -274,7 +275,6 @@
     <ClCompile Include="MulNX\Core\ModuleBase\ModuleBase.cpp" />
     <ClCompile Include="MulNX\Core\Core.cpp" />
     <ClCompile Include="MulNX\Core\ModuleManager\ModuleManager.cpp" />
-    <ClCompile Include="MulNX\Extensions\AbstractLayer3D\AbstractLayer3D.cpp" />
     <ClCompile Include="MulNX\Extensions\CameraSystem\CameraDrawer\CameraDrawer.cpp" />
     <ClCompile Include="MulNX\Extensions\CameraSystem\CameraSystem.cpp" />
     <ClCompile Include="MulNX\Extensions\CameraSystem\CameraSystemIO\CameraSystemIO.cpp" />
@@ -312,10 +312,12 @@
     <ClCompile Include="MulNX\Extensions\MQTT\MQTTClient\MQTTClient.cpp" />
     <ClCompile Include="MulNX\Extensions\MQTT\ThirdParty\mqtt.c" />
     <ClCompile Include="MulNX\Extensions\MQTT\ThirdParty\mqtt_pal.c" />
+    <ClCompile Include="MulNX\Extensions\MulNXController\MulNXController.cpp" />
     <ClCompile Include="MulNX\Extensions\RMClient\RMClient.cpp" />
     <ClCompile Include="MulNX\Extensions\VirtualUser\VirtualUser.cpp" />
     <ClCompile Include="MulNX\Extensions\Win32Starter\Win32Starter.cpp" />
     <ClCompile Include="MulNX\MulNX.cpp" />
+    <ClCompile Include="MulNX\Systems\AbstractLayer3D\AbstractLayer3D.cpp" />
     <ClCompile Include="MulNX\Systems\Debugger\Debugger.cpp" />
     <ClCompile Include="MulNX\Systems\HandleSystem\HandleSystem.cpp" />
     <ClCompile Include="MulNX\Systems\IPCer\IPCer.cpp" />

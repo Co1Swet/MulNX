@@ -31,9 +31,9 @@ namespace MulNX {
 		MulNX::Messaging::IMessageManager* IMsgManager = nullptr;
 	protected:
 		// 窗口显示标志
-		bool ShowWindow = false;
+		std::atomic<bool> ShowWindow = false;
 		// 运行标志
-		std::atomic<bool>Running = false;
+		std::atomic<bool> Running = false;
 		// 线程对象成员
 		std::thread MyThread;
 		// 线程运行状态
@@ -73,7 +73,7 @@ namespace MulNX {
 		// 线程主循环，执行组件线程逻辑
 		virtual void ThreadMain();
 		// 消息处理函数，只需处理即可，消息会由入口点释放
-		virtual void ProcessMsg(MulNX::Messaging::Message* Msg);
+		virtual void ProcessMsg(MulNX::Message* Msg);
 
 		// 菜单绘制
 		virtual void Menu();
