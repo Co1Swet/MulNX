@@ -71,6 +71,7 @@ void RMClient::SendControlMsg() {
 	if (Duration.count() < 13) {
 		return;
 	}
+	LastTime = Now;
 
 	// 先构建MQTT消息体
 	rm_client_up::RemoteControl controlMsg;

@@ -1,10 +1,10 @@
 #include "WinMain.hpp"
 
-#include "../../../MulNX/MulNX.hpp"
-#include "../../../MulNX/Extensions/CS2/MulNXCS2Ext.hpp"
-#include "../../../MulNX/Extensions/MQTT/MQTTClient/MQTTClient.hpp"
-#include "../../../MulNX/Extensions/RMClient/RMClient.hpp"
-#include "../../../MulNX/Extensions/Win32Starter/Win32Starter.hpp"
+#include "../../MulNX/MulNX/MulNX.hpp"
+#include "../../MulNX/MulNX/Extensions/CS2/MulNXCS2Ext.hpp"
+#include "../../MulNX/MulNX/Extensions/MQTT/MQTTClient/MQTTClient.hpp"
+#include "../../MulNX/MulNX/Extensions/RMClient/RMClient.hpp"
+#include "../../MulNX/MulNX/Extensions/Win32Starter/Win32Starter.hpp"
 
 static void MainDraw(MulNXSingleUIContext* This) {
 	ImGui::Begin("主窗口");

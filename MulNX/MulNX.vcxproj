@@ -18,45 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="MulNXeCore\ConfigManager\ConfigManager.cpp" />
-    <ClCompile Include="MulNXeCore\MulNXeCore.cpp" />
-    <ClCompile Include="MulNXeCore\IPCer\IPCer.cpp" />
-    <ClCompile Include="Include\Charsets\Charsets.cpp" />
-    <ClCompile Include="Main\Main.cpp" />
-    <ClCompile Include="ThirdParty\ImGui\imgui.cpp" />
-    <ClCompile Include="ThirdParty\ImGui\imgui_demo.cpp" />
-    <ClCompile Include="ThirdParty\ImGui\imgui_draw.cpp" />
-    <ClCompile Include="ThirdParty\ImGui\imgui_impl_dx11.cpp" />
-    <ClCompile Include="ThirdParty\ImGui\imgui_impl_win32.cpp" />
-    <ClCompile Include="ThirdParty\ImGui\imgui_tables.cpp" />
-    <ClCompile Include="ThirdParty\ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="ThirdParty\pugixml\pugixml.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="MulNXeCore\ConfigManager\ConfigManager.hpp" />
-    <ClInclude Include="MulNXeCore\MulNXeCore.hpp" />
-    <ClInclude Include="MulNXeCore\IPCer\IPCer.hpp" />
-    <ClInclude Include="Include\Charsets\Charsets.hpp" />
-    <ClInclude Include="ThirdParty\All_ImGui.hpp" />
-    <ClInclude Include="ThirdParty\All_pugixml.hpp" />
-    <ClInclude Include="ThirdParty\ImGui\imconfig.h" />
-    <ClInclude Include="ThirdParty\ImGui\imgui.h" />
-    <ClInclude Include="ThirdParty\ImGui\imgui_impl_dx11.h" />
-    <ClInclude Include="ThirdParty\ImGui\imgui_impl_win32.h" />
-    <ClInclude Include="ThirdParty\ImGui\imgui_internal.h" />
-    <ClInclude Include="ThirdParty\ImGui\imstb_rectpack.h" />
-    <ClInclude Include="ThirdParty\ImGui\imstb_textedit.h" />
-    <ClInclude Include="ThirdParty\ImGui\imstb_truetype.h" />
-    <ClInclude Include="ThirdParty\pugixml\pugiconfig.hpp" />
-    <ClInclude Include="ThirdParty\pugixml\pugixml.hpp" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{d07a59a2-ab3a-4555-8127-daab87fbbb06}</ProjectGuid>
-    <RootNamespace>MulNX</RootNamespace>
+    <ProjectGuid>{a3cac05d-54a9-41b6-ad84-3071b148bb6f}</ProjectGuid>
+    <RootNamespace>MulNXToolkit</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>MulNX</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -79,7 +47,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -104,10 +72,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>..\dist\MulNX\MulNX</OutDir>
+    <OutDir>..\dist\MulNX\MulNX\DLLToCS</OutDir>
+    <IncludePath>$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>..\dist\MulNX\MulNX</OutDir>
+    <OutDir>.\bin\x64\Release</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -141,8 +110,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalOptions>/utf-8 </AdditionalOptions>
+      <LanguageStandard>stdcpp23</LanguageStandard>
+      <AdditionalOptions>/utf-8</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -157,14 +126,225 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalOptions>-utf-8 %(AdditionalOptions)</AdditionalOptions>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpp23</LanguageStandard>
+      <AdditionalOptions>/utf-8</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="MulNX\Base\any_smart_ptr\any_smart_ptr.hpp" />
+    <ClInclude Include="MulNX\Base\Buffer\Buffer.hpp" />
+    <ClInclude Include="MulNX\Base\CharUtility\CharUtility.hpp" />
+    <ClInclude Include="MulNX\Base\HookUtility\HookUtility.hpp" />
+    <ClInclude Include="MulNX\Base\Math\Math.hpp" />
+    <ClInclude Include="MulNX\Base\Memory\Memory.hpp" />
+    <ClInclude Include="MulNX\Base\Base.hpp" />
+    <ClInclude Include="MulNX\Base\vmt\vmt.hpp" />
+    <ClInclude Include="MulNX\Base\WIN32Msg\WIN32Msg.hpp" />
+    <ClInclude Include="MulNX\Base\WinException\WinException.hpp" />
+    <ClInclude Include="MulNX\Core\CoreImpl.hpp" />
+    <ClInclude Include="MulNX\Core\Cores.hpp" />
+    <ClInclude Include="MulNX\Core\CoreStarterBase\CoreStarterBase.hpp" />
+    <ClInclude Include="MulNX\Core\ModuleBase\ModuleBase.hpp" />
+    <ClInclude Include="MulNX\Core\Core.hpp" />
+    <ClInclude Include="MulNX\Core\ModuleManager\ModuleManager.hpp" />
+    <ClInclude Include="MulNX\Extensions\AbstractLayer3D\AbstractLayer3D.hpp" />
+    <ClInclude Include="MulNX\Extensions\AbstractLayer3D\IAbstractLayer3D.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\CameraDrawer\CameraDrawer.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\CameraSystem.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\CameraSystemIO\CameraSystemIO.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Element\ElementBase\ElementBase.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Element\ElementManager\ElementConfig.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Element\ElementManager\ElementDebugger\ElementDebugger.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Element\ElementManager\ElementManager.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Element\Elements.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Element\Elements\FirstPersonCameraPath\FirstPersonCameraPath.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Element\Elements\FreeCameraPath\FreeCameraPath.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Element\Elements\LockedCameraPath\LockedCameraPath.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\ICameraSystem.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Project\ProjectManager\ProjectConfig.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Project\ProjectManager\ProjectManager.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Project\Project\Project.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Solution\SolutionManager\SolutionConfig.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Solution\SolutionManager\SolutionManager.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Solution\Solution\Solution.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Workspace\WorkspaceManager\WorkspaceManager.hpp" />
+    <ClInclude Include="MulNX\Extensions\CameraSystem\Workspace\Workspace\Workspace.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\ConsoleManager\ConsoleManager.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\ConVarSystem\ConVarSystem.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\CSController.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\CSGameRules\CSGameRules.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\EntityList\EntityList.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\EntityList\Entity\Controller\Controller.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\EntityList\Entity\Entity.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\EntityList\Entity\Pawn\CameraServices\CameraServices.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\EntityList\Entity\Pawn\GameSceneNode\GameSceneNode.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\EntityList\Entity\Pawn\ObserverServices\ObserverServices.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\EntityList\Entity\Pawn\Pawn.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\GlobalVars\GlobalVars.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\LocalPlayer\LocalPlayer.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\CSController\PlantedC4\PlantedC4.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\DemoHelper\DemoHelper.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\GameCfgManager\GameCfgManager.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\GameSettingsManager\GameSettingsManager.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\HookManager\HookManager.hpp" />
+    <ClInclude Include="MulNX\Extensions\CS2\MulNXCS2Ext.hpp" />
+    <ClInclude Include="MulNX\Extensions\MiniMap\MiniMap.hpp" />
+    <ClInclude Include="MulNX\Extensions\MQTT\MQTTClient\MQTTClient.hpp" />
+    <ClInclude Include="MulNX\Extensions\MQTT\ThirdParty\mqtt.h" />
+    <ClInclude Include="MulNX\Extensions\MQTT\ThirdParty\mqtt_pal.h" />
+    <ClInclude Include="MulNX\Extensions\RMClient\RMClient.hpp" />
+    <ClInclude Include="MulNX\Extensions\VirtualUser\VirtualUser.hpp" />
+    <ClInclude Include="MulNX\Extensions\Win32Starter\Win32Starter.hpp" />
+    <ClInclude Include="MulNX\MulNX.hpp" />
+    <ClInclude Include="MulNX\Systems\Debugger\Debugger.hpp" />
+    <ClInclude Include="MulNX\Systems\Debugger\IDebugger.hpp" />
+    <ClInclude Include="MulNX\Systems\HandleSystem\HandleSystem.hpp" />
+    <ClInclude Include="MulNX\Systems\HandleSystem\IHandleSystem.hpp" />
+    <ClInclude Include="MulNX\Systems\IPCer\IPCer.hpp" />
+    <ClInclude Include="MulNX\Systems\KeyTracker\KeyTracker.hpp" />
+    <ClInclude Include="MulNX\Systems\MessageManager\IMessageManager.hpp" />
+    <ClInclude Include="MulNX\Systems\MessageManager\MessageChannel\IMessageChannel.hpp" />
+    <ClInclude Include="MulNX\Systems\MessageManager\MessageChannel\MessageChannel.hpp" />
+    <ClInclude Include="MulNX\Systems\MessageManager\MessageManager.hpp" />
+    <ClInclude Include="MulNX\Systems\MessageManager\MulNXMessage\MulNXMessage.hpp" />
+    <ClInclude Include="MulNX\Systems\MulNXiGlobalVars\MulNXiGlobalVars.hpp" />
+    <ClInclude Include="MulNX\Systems\MulNXiGlobalVars\MulNXiGlobalVarsOnlyRead.hpp" />
+    <ClInclude Include="MulNX\Systems\MulNXUISystem\IMulNXUISystem.hpp" />
+    <ClInclude Include="MulNX\Systems\MulNXUISystem\MulNXUIContext\MulNXSingleUIContext\MulNXSingleUIContext.hpp" />
+    <ClInclude Include="MulNX\Systems\MulNXUISystem\MulNXUIContext\MulNXUIContext.hpp" />
+    <ClInclude Include="MulNX\Systems\MulNXUISystem\MulNXUISystem.hpp" />
+    <ClInclude Include="MulNX\Systems\Systems.hpp" />
+    <ClInclude Include="ThirdParty\All_cs2_dumper.hpp" />
+    <ClInclude Include="ThirdParty\All_ImGui.hpp" />
+    <ClInclude Include="ThirdParty\All_MinHook.hpp" />
+    <ClInclude Include="ThirdParty\All_pugixml.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\animationsystem_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\buttons.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\client_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\engine2_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\host_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\interfaces.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\materialsystem2_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\networksystem_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\offsets.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\panorama_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\particles_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\pulse_system_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\rendersystemdx11_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\resourcesystem_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\scenesystem_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\schemasystem_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\server_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\soundsystem_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\steamaudio_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\vphysics2_dll.hpp" />
+    <ClInclude Include="ThirdParty\cs2_dumper\worldrenderer_dll.hpp" />
+    <ClInclude Include="ThirdParty\imgui_d11\imconfig.h" />
+    <ClInclude Include="ThirdParty\imgui_d11\imgui.h" />
+    <ClInclude Include="ThirdParty\imgui_d11\imgui_impl_dx11.h" />
+    <ClInclude Include="ThirdParty\imgui_d11\imgui_impl_win32.h" />
+    <ClInclude Include="ThirdParty\imgui_d11\imgui_internal.h" />
+    <ClInclude Include="ThirdParty\imgui_d11\imgui_stdlib.h" />
+    <ClInclude Include="ThirdParty\imgui_d11\imstb_rectpack.h" />
+    <ClInclude Include="ThirdParty\imgui_d11\imstb_textedit.h" />
+    <ClInclude Include="ThirdParty\imgui_d11\imstb_truetype.h" />
+    <ClInclude Include="ThirdParty\minhook_debug_x64\include\MinHook.h" />
+    <ClInclude Include="ThirdParty\protobuf\messages_down.pb.h" />
+    <ClInclude Include="ThirdParty\protobuf\messages_up.pb.h" />
+    <ClInclude Include="ThirdParty\pugixml\pugiconfig.hpp" />
+    <ClInclude Include="ThirdParty\pugixml\pugixml.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MulNX\Base\Buffer\Buffer.cpp" />
+    <ClCompile Include="MulNX\Base\CharUtility\CharUtility.cpp" />
+    <ClCompile Include="MulNX\Base\HookUtility\HookUtility.cpp" />
+    <ClCompile Include="MulNX\Base\Math\Math.cpp" />
+    <ClCompile Include="MulNX\Base\Memory\Memory.cpp" />
+    <ClCompile Include="MulNX\Base\Base.cpp" />
+    <ClCompile Include="MulNX\Base\WIN32Msg\WIN32Msg.cpp" />
+    <ClCompile Include="MulNX\Base\WinException\WinException.cpp" />
+    <ClCompile Include="MulNX\Core\CoreStarterBase\CoreStarterBase.cpp" />
+    <ClCompile Include="MulNX\Core\ModuleBase\ModuleBase.cpp" />
+    <ClCompile Include="MulNX\Core\Core.cpp" />
+    <ClCompile Include="MulNX\Core\ModuleManager\ModuleManager.cpp" />
+    <ClCompile Include="MulNX\Extensions\AbstractLayer3D\AbstractLayer3D.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\CameraDrawer\CameraDrawer.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\CameraSystem.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\CameraSystemIO\CameraSystemIO.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\Element\ElementBase\ElementBase.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\Element\ElementManager\ElementDebugger\ElementDebugger.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\Element\ElementManager\ElementManager.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\Element\Elements\FirstPersonCameraPath\FirstPersonCameraPath.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\Element\Elements\FreeCameraPath\FreeCameraPath.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\Element\Elements\LockedCameraPath\LockedCameraPath.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\Project\ProjectManager\ProjectManager.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\Project\Project\Project.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\Solution\SolutionManager\SolutionManager.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\Solution\Solution\Solution.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\Workspace\WorkspaceManager\WorkspaceManager.cpp" />
+    <ClCompile Include="MulNX\Extensions\CameraSystem\Workspace\Workspace\Workspace.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\ConsoleManager\ConsoleManager.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\ConVarSystem\ConVarSystem.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\CSController.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\CSGameRules\CSGameRules.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\EntityList\EntityList.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\EntityList\Entity\Controller\Controller.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\EntityList\Entity\Entity.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\EntityList\Entity\Pawn\CameraServices\CameraServices.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\EntityList\Entity\Pawn\GameSceneNode\GameSceneNode.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\EntityList\Entity\Pawn\ObserverServices\ObserverServices.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\EntityList\Entity\Pawn\Pawn.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\GlobalVars\GlobalVars.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\LocalPlayer\LocalPlayer.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\CSController\PlantedC4\PlantedC4.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\DemoHelper\DemoHelper.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\GameCfgManager\GameCfgManager.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\GameSettingsManager\GameSettingsManager.cpp" />
+    <ClCompile Include="MulNX\Extensions\CS2\HookManager\HookManager.cpp" />
+    <ClCompile Include="MulNX\Extensions\MiniMap\MiniMap.cpp" />
+    <ClCompile Include="MulNX\Extensions\MQTT\MQTTClient\MQTTClient.cpp" />
+    <ClCompile Include="MulNX\Extensions\MQTT\ThirdParty\mqtt.c" />
+    <ClCompile Include="MulNX\Extensions\MQTT\ThirdParty\mqtt_pal.c" />
+    <ClCompile Include="MulNX\Extensions\RMClient\RMClient.cpp" />
+    <ClCompile Include="MulNX\Extensions\VirtualUser\VirtualUser.cpp" />
+    <ClCompile Include="MulNX\Extensions\Win32Starter\Win32Starter.cpp" />
+    <ClCompile Include="MulNX\MulNX.cpp" />
+    <ClCompile Include="MulNX\Systems\Debugger\Debugger.cpp" />
+    <ClCompile Include="MulNX\Systems\HandleSystem\HandleSystem.cpp" />
+    <ClCompile Include="MulNX\Systems\IPCer\IPCer.cpp" />
+    <ClCompile Include="MulNX\Systems\KeyTracker\KeyTracker.cpp" />
+    <ClCompile Include="MulNX\Systems\MessageManager\MessageChannel\MessageChannel.cpp" />
+    <ClCompile Include="MulNX\Systems\MessageManager\MessageManager.cpp" />
+    <ClCompile Include="MulNX\Systems\MessageManager\MulNXMessage\MulNXMessage.cpp" />
+    <ClCompile Include="MulNX\Systems\MulNXiGlobalVars\MulNXiGlobalVars.cpp" />
+    <ClCompile Include="MulNX\Systems\MulNXUISystem\MulNXUIContext\MulNXSingleUIContext\MulNXSingleUIContext.cpp" />
+    <ClCompile Include="MulNX\Systems\MulNXUISystem\MulNXUIContext\MulNXUIContext.cpp" />
+    <ClCompile Include="MulNX\Systems\MulNXUISystem\MulNXUISystem.cpp" />
+    <ClCompile Include="MulNX\Systems\Systems.cpp" />
+    <ClCompile Include="ThirdParty\imgui_d11\imgui.cpp" />
+    <ClCompile Include="ThirdParty\imgui_d11\imgui_draw.cpp" />
+    <ClCompile Include="ThirdParty\imgui_d11\imgui_impl_dx11.cpp" />
+    <ClCompile Include="ThirdParty\imgui_d11\imgui_impl_win32.cpp" />
+    <ClCompile Include="ThirdParty\imgui_d11\imgui_stdlib.cpp" />
+    <ClCompile Include="ThirdParty\imgui_d11\imgui_tables.cpp" />
+    <ClCompile Include="ThirdParty\imgui_d11\imgui_widgets.cpp" />
+    <ClCompile Include="ThirdParty\protobuf\messages_down.pb.cc" />
+    <ClCompile Include="ThirdParty\protobuf\messages_up.pb.cc" />
+    <ClCompile Include="ThirdParty\pugixml\pugixml.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="ThirdParty\minhook_debug_x64\lib\minhook.x64d.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="MulNX\Extensions\MQTT\ThirdParty\License_MQTT-C.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

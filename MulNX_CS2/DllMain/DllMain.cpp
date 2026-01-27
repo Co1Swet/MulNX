@@ -1,8 +1,8 @@
 #include "DllMain.hpp"
 
-#include "../../../MulNX/MulNX.hpp"
-#include "../../../MulNX/Extensions/CS2/MulNXCS2Ext.hpp"
-#include "../../../MulNX/Extensions/MQTT/MQTTClient/MQTTClient.hpp"
+#include "../../MulNX/MulNX/MulNX.hpp"
+#include "../../MulNX/MulNX/Extensions/CS2/MulNXCS2Ext.hpp"
+#include "../../MulNX/MulNX/Extensions/MQTT/MQTTClient/MQTTClient.hpp"
 
 #include <Windows.h>
 

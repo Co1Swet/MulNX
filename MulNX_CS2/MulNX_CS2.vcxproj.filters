@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="DllMain">
+      <UniqueIdentifier>{827ccb1a-6fe0-41fc-ad99-66bbd9b467a4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DllMain\DllMain.cpp">
+      <Filter>DllMain</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DllMain\DllMain.hpp">
+      <Filter>DllMain</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

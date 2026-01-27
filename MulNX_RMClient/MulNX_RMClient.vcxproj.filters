@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="WinMain">
+      <UniqueIdentifier>{787913fb-af69-4eb6-951a-686d5814d09b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="WinMain\WinMain.cpp">
+      <Filter>WinMain</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="WinMain\WinMain.hpp">
+      <Filter>WinMain</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
